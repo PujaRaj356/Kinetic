@@ -155,9 +155,6 @@ export const IdleSphere: React.FC = () => {
           />
         </div>
 
-        {/* Ambient floor shadow */}
-        <div className="sphere-ambient-shadow" />
-
         {/* Surrounding Floating Image Cards Around the Globe */}
         <div className="surrounding-images-layer">
           {floatingProducts.map((item) => {

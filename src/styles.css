@@ -210,11 +210,9 @@ button,input,textarea,select{font-family:inherit}
 .idle-sphere-stage{position:relative;width:100%;height:420px;display:grid;place-items:center;transform-style:preserve-3d;will-change:transform}
 
 /* Central Rotating Globe */
-.globe-anchor{position:relative;width:260px;height:260px;display:grid;place-items:center;z-index:10;border-radius:50%}
-.idle-sphere-video{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;pointer-events:none;-webkit-mask-image:radial-gradient(circle closest-side,#000 80.2%,transparent 80.6%);mask-image:radial-gradient(circle closest-side,#000 80.2%,transparent 80.6%);filter:drop-shadow(0 20px 35px rgba(0,0,0,.45));transition:filter .3s ease}
-.idle-sphere-container:hover .idle-sphere-video{filter:drop-shadow(0 25px 45px rgba(0,0,0,.6))}
-
-.sphere-ambient-shadow{position:absolute;bottom:40px;width:220px;height:24px;background:radial-gradient(ellipse at center,rgba(17,17,17,.45) 0%,transparent 70%);border-radius:50%;filter:blur(8px);pointer-events:none;z-index:2}
+.globe-anchor{position:relative;width:260px;height:260px;display:grid;place-items:center;z-index:10;border-radius:50%;overflow:hidden}
+.idle-sphere-video{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;pointer-events:none;-webkit-mask-image:radial-gradient(circle closest-side,#000 76.5%,transparent 78%);mask-image:radial-gradient(circle closest-side,#000 76.5%,transparent 78%);filter:drop-shadow(0 12px 24px rgba(0,0,0,.15));transition:filter .3s ease}
+.idle-sphere-container:hover .idle-sphere-video{filter:drop-shadow(0 16px 30px rgba(0,0,0,.22))}
 
 /* Surrounding Floating Image Cards */
 .surrounding-images-layer{position:absolute;top:50%;left:50%;width:0;height:0;pointer-events:none}
