@@ -1,4 +1,4 @@
-# Kinetic Store (React Edition)
+# Kinetic Store 
 
 Modern React e-commerce / shopping cart application powered by Vite, React 18, and React Router DOM.
 
