@@ -1,4 +1,4 @@
-# Kinetic Store 
+# Kinetic Store
 
 Modern React e-commerce / shopping cart application powered by Vite, React 18, and React Router DOM.
 
@@ -11,7 +11,7 @@ Modern React e-commerce / shopping cart application powered by Vite, React 18, a
 - Wishlist for saved products
 - Persistent state in LocalStorage (Cart, Wishlist, Current User)
 - User Registration with strong password validation
-- Login and simulated 6-digit OTP verification
+- Login and real 6-digit OTP verification via Gmail
 - Protected Routes for Cart, Wishlist, and Checkout
 - Checkout form validation & order placement summary
 - Neo-brutalist / editorial UI design
@@ -30,10 +30,6 @@ Open http://localhost:3000
 ```bash
 npm run build
 ```
-
-## Demo Verification Code
-
-OTP: `123456`
 
 ## Password Rules
 

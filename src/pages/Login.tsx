@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../core/context/AuthContext';
 
 export const Login: React.FC = () => {
-  const { login } = useAuth();
+  const { login, setPendingVerification } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -102,6 +102,36 @@ export const Login: React.FC = () => {
             Sign In →
           </button>
         </form>
+
+        <div style={{ marginTop: '14px', textAlign: 'center' }}>
+          <button
+            type="button"
+            onClick={() => {
+              if (email && isValidEmail) {
+                setPendingVerification({ email: email.trim().toLowerCase(), purpose: 'login' });
+                navigate('/verify');
+              } else {
+                navigate('/forgot-password');
+              }
+            }}
+            style={{
+              background: '#f6f1e7',
+              border: '2px solid #111',
+              padding: '12px 14px',
+              width: '100%',
+              fontSize: '13px',
+              fontWeight: 800,
+              cursor: 'pointer',
+              color: '#111',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px'
+            }}
+          >
+            ✉ Sign in with 6-Digit Email Code
+          </button>
+        </div>
 
         <Link to="/forgot-password" className="forgot">
           Forgot password?

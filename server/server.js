@@ -2,6 +2,7 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
 
 dotenv.config();
 
@@ -11,6 +12,64 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/kineti
 
 app.use(cors());
 app.use(express.json());
+
+// --- Nodemailer Gmail Transporter Setup ---
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: (process.env.EMAIL_USER || '').trim(),
+    pass: (process.env.EMAIL_PASS || '').replace(/\s+/g, ''), // 16-character Gmail App Password
+  },
+});
+
+// Dynamic In-Memory OTP Store: { email => { code, expiresAt } }
+const otpStore = new Map();
+
+function generateOtp() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+async function sendOtpEmail(toEmail, otp) {
+  // If credentials aren't set in .env yet, log to console for development testing
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log('----------------------------------------------------');
+    console.log(`[EMAIL NOTICE] Gmail credentials not set in server/.env`);
+    console.log(`[EMAIL NOTICE] To receive real emails, set EMAIL_USER & EMAIL_PASS in server/.env`);
+    console.log(`[GENERATED OTP] Verification Code for ${toEmail}: >>> ${otp} <<<`);
+    console.log('----------------------------------------------------');
+    return { sent: false, devMode: true, otp };
+  }
+
+  const mailOptions = {
+    from: `"Kinetic Store" <${process.env.EMAIL_USER}>`,
+    to: toEmail,
+    subject: `Your Kinetic Verification Code: ${otp}`,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f1e7; padding: 40px 20px; color: #111;">
+        <div style="max-width: 480px; margin: 0 auto; background: #ffffff; border: 3px solid #111111; box-shadow: 8px 8px 0px #111111; padding: 36px 30px;">
+          <div style="display: inline-block; background: #d7ff4f; border: 2px solid #111; padding: 6px 14px; font-weight: 900; font-size: 13px; letter-spacing: 1px; margin-bottom: 20px;">
+            KINETIC STORE
+          </div>
+          <h1 style="margin: 0 0 12px; font-size: 26px; font-weight: 900; letter-spacing: -0.04em;">Verify your identity</h1>
+          <p style="font-size: 15px; line-height: 1.5; color: #444; margin: 0 0 24px;">
+            Use the 6-digit verification code below to complete your sign-in to Kinetic:
+          </p>
+          <div style="background: #d7ff4f; border: 2px solid #111; padding: 18px 24px; text-align: center; font-size: 34px; font-weight: 950; letter-spacing: 10px; margin-bottom: 24px; color: #111;">
+            ${otp}
+          </div>
+          <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.5;">
+            ⏰ This code will expire in <b>10 minutes</b>.<br/>
+            If you did not request this verification code, you can safely ignore this email.
+          </p>
+        </div>
+      </div>
+    `,
+  };
+
+  const info = await transporter.sendMail(mailOptions);
+  console.log(`[EMAIL DELIVERED] Successfully sent real Gmail to ${toEmail}: ${info.messageId}`);
+  return { sent: true, messageId: info.messageId };
+}
 
 // --- MongoDB Schemas & Models ---
 const ReviewSchema = new mongoose.Schema({
@@ -155,8 +214,72 @@ app.get('/api/health', (req, res) => {
     ok: true,
     server: 'Node.js Express',
     database: isMongoConnected ? 'MongoDB Connected' : 'In-Memory Fallback (Active)',
+    emailService: process.env.EMAIL_USER ? `Configured (${process.env.EMAIL_USER})` : 'Dev Mode (Logged to console)',
     timestamp: new Date().toISOString()
   });
+});
+
+// Real Email OTP Endpoints
+app.post('/api/auth/send-otp', async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || !email.includes('@')) {
+      return res.status(400).json({ ok: false, message: 'Valid email address required.' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+    const otp = generateOtp();
+    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
+
+    otpStore.set(cleanEmail, { code: otp, expiresAt });
+
+    const result = await sendOtpEmail(cleanEmail, otp);
+
+    res.json({
+      ok: true,
+      message: result.sent
+        ? `Real verification code sent to ${cleanEmail}`
+        : `Verification code generated for ${cleanEmail} (Dev mode active)`,
+      sent: result.sent,
+      devMode: result.devMode || false,
+      devOtp: result.devMode ? otp : undefined
+    });
+  } catch (err) {
+    console.error('Error sending OTP email:', err);
+    res.status(500).json({ ok: false, message: 'Failed to send verification email: ' + err.message });
+  }
+});
+
+app.post('/api/auth/verify-otp', async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    if (!email || !code) {
+      return res.status(400).json({ ok: false, message: 'Email and verification code are required.' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanCode = String(code).trim();
+    const stored = otpStore.get(cleanEmail);
+
+    if (!stored) {
+      return res.status(400).json({ ok: false, message: 'No verification code found. Please request a new code.' });
+    }
+
+    if (Date.now() > stored.expiresAt) {
+      otpStore.delete(cleanEmail);
+      return res.status(400).json({ ok: false, message: 'Verification code has expired. Please request a new code.' });
+    }
+
+    if (stored.code !== cleanCode) {
+      return res.status(400).json({ ok: false, message: 'Incorrect verification code. Please check your email and try again.' });
+    }
+
+    // OTP Verified successfully!
+    otpStore.delete(cleanEmail);
+    res.json({ ok: true, message: 'Identity verified successfully!' });
+  } catch (err) {
+    res.status(500).json({ ok: false, message: err.message });
+  }
 });
 
 // Products Routes

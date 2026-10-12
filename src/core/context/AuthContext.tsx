@@ -13,8 +13,9 @@ interface AuthContextType {
   login: (email: string, password: string, rememberMe?: boolean) => { ok: boolean; message?: string; user?: User };
   loginAs: (role: UserRole) => void;
   register: (name: string, email: string, password: string, role?: UserRole) => { ok: boolean; message?: string; user?: User };
-  verify: (code: string) => boolean;
-  resendCode: () => string;
+  verify: (code: string) => Promise<{ ok: boolean; message?: string }>;
+  resendCode: () => Promise<{ ok: boolean; message?: string; devOtp?: string; sent?: boolean; devMode?: boolean }>;
+  sendOtp: (email: string) => Promise<{ ok: boolean; message?: string; devOtp?: string; sent?: boolean; devMode?: boolean }>;
   logout: () => void;
   updateUserRole: (userId: string, newRole: UserRole) => void;
   deleteUser: (userId: string) => void;
@@ -160,19 +161,64 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { ok: true, user: newUser };
   };
 
-  const verify = (code: string): boolean => {
-    if (!pendingVerification || code !== '123456') return false;
-    const allUsers = loadUsers();
-    const user = allUsers.find(u => u.email.toLowerCase() === pendingVerification.email.toLowerCase());
-    if (!user) return false;
-
-    localStorage.setItem(CURRENT_KEY, JSON.stringify(user));
-    setCurrentUser(user);
-    setPendingVerification(null);
-    return true;
+  const sendOtp = async (
+    email: string
+  ): Promise<{ ok: boolean; message?: string; devOtp?: string; sent?: boolean; devMode?: boolean }> => {
+    try {
+      const resp = await fetch('http://localhost:5000/api/auth/send-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim().toLowerCase() })
+      });
+      const data = await resp.json();
+      return data;
+    } catch (err: any) {
+      return { ok: false, message: 'Could not connect to authentication server: ' + err.message };
+    }
   };
 
-  const resendCode = (): string => '123456';
+  const resendCode = async (): Promise<{
+    ok: boolean;
+    message?: string;
+    devOtp?: string;
+    sent?: boolean;
+    devMode?: boolean;
+  }> => {
+    if (!pendingVerification?.email) {
+      return { ok: false, message: 'No target email specified for verification.' };
+    }
+    return await sendOtp(pendingVerification.email);
+  };
+
+  const verify = async (code: string): Promise<{ ok: boolean; message?: string }> => {
+    if (!pendingVerification) {
+      return { ok: false, message: 'No verification in progress.' };
+    }
+
+    try {
+      const resp = await fetch('http://localhost:5000/api/auth/verify-otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: pendingVerification.email, code: code.trim() })
+      });
+      const data = await resp.json();
+      if (!resp.ok || !data.ok) {
+        return { ok: false, message: data.message || 'Incorrect verification code.' };
+      }
+
+      // Successful verification
+      const allUsers = loadUsers();
+      const user = allUsers.find(u => u.email.toLowerCase() === pendingVerification.email.toLowerCase());
+      if (user) {
+        localStorage.setItem(CURRENT_KEY, JSON.stringify(user));
+        setCurrentUser(user);
+      }
+      setPendingVerification(null);
+      return { ok: true, message: data.message };
+    } catch (err: any) {
+      return { ok: false, message: 'Could not reach server: ' + err.message };
+    }
+  };
 
   const logout = () => {
     localStorage.removeItem(CURRENT_KEY);
@@ -220,6 +266,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         register,
         verify,
         resendCode,
+        sendOtp,
         logout,
         updateUserRole,
         deleteUser
