@@ -20,7 +20,7 @@ export const Home: React.FC = () => {
             <em>DIFFERENT.</em>
           </h1>
           <p className="lead">
-            Objects with personality and tactile web presence. Hover to disperse the satellite products and interact with the kinetic globe.
+            Objects with personality and tactile web presence. Interactive transparent glass orb with floating kinetic products.
           </p>
           <div className="hero-cta-group">
             <Link to="/products" className="hero-btn">
@@ -31,10 +31,6 @@ export const Home: React.FC = () => {
 
         <div className="hero-art">
           <IdleSphere />
-          <div className="stamp">
-            KINETIC<br />
-            IDLE 3D
-          </div>
         </div>
       </section>
 
