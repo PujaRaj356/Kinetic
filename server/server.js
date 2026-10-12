@@ -1,0 +1,352 @@
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
+
+dotenv.config();
+
+const app = express();
+const PORT = process.env.PORT || 5000;
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/kinetic_db';
+
+app.use(cors());
+app.use(express.json());
+
+// --- MongoDB Schemas & Models ---
+const ReviewSchema = new mongoose.Schema({
+  id: String,
+  user: String,
+  rating: Number,
+  date: String,
+  comment: String
+});
+
+const ProductSchema = new mongoose.Schema({
+  id: { type: Number, required: true, unique: true },
+  name: { type: String, required: true },
+  category: { type: String, required: true },
+  price: { type: Number, required: true },
+  oldPrice: Number,
+  rating: { type: Number, default: 4.8 },
+  stock: { type: Number, default: 12 },
+  description: String,
+  image: String,
+  accent: { type: String, default: '#d7ff4f' },
+  featured: { type: Boolean, default: false },
+  highlights: [String],
+  specs: { type: Map, of: String },
+  reviews: [ReviewSchema]
+});
+
+const UserSchema = new mongoose.Schema({
+  id: String,
+  name: String,
+  email: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, enum: ['admin', 'client'], default: 'client' }
+});
+
+const OrderItemSchema = new mongoose.Schema({
+  product: Object,
+  quantity: Number
+});
+
+const OrderSchema = new mongoose.Schema({
+  id: { type: String, required: true, unique: true },
+  customerId: String,
+  customerName: String,
+  customerEmail: String,
+  customerPhone: String,
+  shippingAddress: String,
+  city: String,
+  pincode: String,
+  items: [OrderItemSchema],
+  subtotal: Number,
+  shipping: Number,
+  total: Number,
+  paymentMethod: { type: String, enum: ['card', 'upi'], default: 'card' },
+  status: { type: String, enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled'], default: 'Processing' },
+  createdAt: { type: Date, default: Date.now }
+});
+
+const ProductModel = mongoose.model('Product', ProductSchema);
+const UserModel = mongoose.model('User', UserSchema);
+const OrderModel = mongoose.model('Order', OrderSchema);
+
+// Initial Seed Data
+const seedProducts = [
+  {
+    id: 1,
+    name: 'Orbit Wireless Headphones',
+    category: 'Audio',
+    price: 4999,
+    oldPrice: 6499,
+    rating: 4.8,
+    stock: 12,
+    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+    accent: '#d7ff4f',
+    featured: true,
+    description: 'Engineered for audio purists and daily commuters alike, the Orbit Wireless Headphones blend custom 40mm neodymium drivers with active noise cancellation.',
+    highlights: ['Active Noise Cancellation', '32 Hours Playback', 'Multipoint Bluetooth 5.2'],
+    specs: { 'Driver Size': '40mm', 'Battery': '32 Hours', 'Warranty': '1 Year' }
+  },
+  {
+    id: 2,
+    name: 'Mono Runner Sneaker',
+    category: 'Footwear',
+    price: 3299,
+    oldPrice: 3999,
+    rating: 4.6,
+    stock: 18,
+    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
+    accent: '#ff7a5c',
+    featured: true,
+    description: 'Crafted with breathable knit uppers and responsive dual-density foam midsoles for maximum impact absorption.',
+    highlights: ['Engineered Mesh', 'Dual-density EVA sole', 'Reflective heel accents'],
+    specs: { 'Upper': 'FlyKnit', 'Sole': 'Rubber', 'Fit': 'Regular' }
+  },
+  {
+    id: 3,
+    name: 'Grid Minimalist Backpack',
+    category: 'Bags',
+    price: 2499,
+    rating: 4.7,
+    stock: 9,
+    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80',
+    accent: '#8bd3ff',
+    featured: true,
+    description: 'Weather-resistant Cordura exterior with dedicated shockproof compartments for up to a 16-inch laptop.',
+    highlights: ['Water-repellent 900D Cordura', '16" Laptop Sleeve', 'RFID-blocking pocket'],
+    specs: { 'Capacity': '20L', 'Compatibility': '16" Laptop', 'Waterproof': 'IPX4' }
+  }
+];
+
+let isMongoConnected = false;
+let inMemoryProducts = [...seedProducts];
+let inMemoryUsers = [
+  { id: 'usr-admin-1', name: 'Store Administrator', email: 'admin@kinetic.com', password: 'Admin@123', role: 'admin' },
+  { id: 'usr-client-1', name: 'Alex Shopper', email: 'client@kinetic.com', password: 'Client@123', role: 'client' }
+];
+let inMemoryOrders = [
+  {
+    id: 'ORD-90214',
+    customerId: 'usr-demo-1',
+    customerName: 'Aarav Sharma',
+    customerEmail: 'aarav.sharma@example.com',
+    customerPhone: '9876543210',
+    shippingAddress: '42 Indiranagar 12th Main',
+    city: 'Bengaluru',
+    pincode: '560038',
+    items: [{ product: seedProducts[0], quantity: 1 }],
+    subtotal: 4999,
+    shipping: 0,
+    total: 4999,
+    paymentMethod: 'card',
+    status: 'Delivered',
+    createdAt: new Date().toISOString()
+  }
+];
+
+// --- API Routes ---
+
+// Health & Status check
+app.get('/api/health', (req, res) => {
+  res.json({
+    ok: true,
+    server: 'Node.js Express',
+    database: isMongoConnected ? 'MongoDB Connected' : 'In-Memory Fallback (Active)',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Products Routes
+app.get('/api/products', async (req, res) => {
+  try {
+    const { query = '', category = 'All' } = req.query;
+    let list = isMongoConnected ? await ProductModel.find() : inMemoryProducts;
+    
+    if (category !== 'All') {
+      list = list.filter(p => p.category === category);
+    }
+    if (query.trim()) {
+      const q = query.toLowerCase();
+      list = list.filter(p => p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q));
+    }
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/categories', async (req, res) => {
+  try {
+    const list = isMongoConnected ? await ProductModel.distinct('category') : Array.from(new Set(inMemoryProducts.map(p => p.category)));
+    res.json(['All', ...list]);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/products/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const product = isMongoConnected ? await ProductModel.findOne({ id }) : inMemoryProducts.find(p => p.id === id);
+    if (!product) return res.status(404).json({ message: 'Product not found' });
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Admin: Add Product
+app.post('/api/products', async (req, res) => {
+  try {
+    const data = req.body;
+    const nextId = isMongoConnected
+      ? (await ProductModel.countDocuments()) + 1
+      : inMemoryProducts.length > 0 ? Math.max(...inMemoryProducts.map(p => p.id)) + 1 : 1;
+    
+    const newProduct = { ...data, id: nextId, rating: 5.0, reviews: [] };
+    
+    if (isMongoConnected) {
+      const doc = new ProductModel(newProduct);
+      await doc.save();
+    } else {
+      inMemoryProducts.unshift(newProduct);
+    }
+    res.status(201).json({ ok: true, product: newProduct });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// Admin: Delete Product
+app.delete('/api/products/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (isMongoConnected) {
+      await ProductModel.deleteOne({ id });
+    } else {
+      inMemoryProducts = inMemoryProducts.filter(p => p.id !== id);
+    }
+    res.json({ ok: true, message: `Product ${id} deleted` });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// Orders & Transactions Routes
+app.get('/api/orders', async (req, res) => {
+  try {
+    const list = isMongoConnected ? await OrderModel.find().sort({ createdAt: -1 }) : inMemoryOrders;
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/orders', async (req, res) => {
+  try {
+    const orderData = req.body;
+    const newOrder = {
+      ...orderData,
+      id: `ORD-${Math.floor(10000 + Math.random() * 90000)}`,
+      status: 'Processing',
+      createdAt: new Date().toISOString()
+    };
+    if (isMongoConnected) {
+      const doc = new OrderModel(newOrder);
+      await doc.save();
+    } else {
+      inMemoryOrders.unshift(newOrder);
+    }
+    res.status(201).json({ ok: true, order: newOrder });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+app.patch('/api/orders/:id/status', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    if (isMongoConnected) {
+      await OrderModel.updateOne({ id }, { status });
+    } else {
+      const order = inMemoryOrders.find(o => o.id === id);
+      if (order) order.status = status;
+    }
+    res.json({ ok: true, id, status });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// Auth Routes (Admin & Client)
+app.post('/api/auth/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    let user = null;
+    if (isMongoConnected) {
+      user = await UserModel.findOne({ email: email.toLowerCase(), password });
+    } else {
+      user = inMemoryUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+    }
+    if (!user) {
+      return res.status(401).json({ ok: false, message: 'Invalid email or password.' });
+    }
+    res.json({ ok: true, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+app.post('/api/auth/register', async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+    const cleanEmail = email.trim().toLowerCase();
+    
+    const existing = isMongoConnected
+      ? await UserModel.findOne({ email: cleanEmail })
+      : inMemoryUsers.some(u => u.email.toLowerCase() === cleanEmail);
+
+    if (existing) {
+      return res.status(400).json({ ok: false, message: 'Account already exists.' });
+    }
+
+    const newUser = {
+      id: `usr-${Date.now()}`,
+      name: name.trim(),
+      email: cleanEmail,
+      password,
+      role: 'client'
+    };
+
+    if (isMongoConnected) {
+      const doc = new UserModel(newUser);
+      await doc.save();
+    } else {
+      inMemoryUsers.push(newUser);
+    }
+    res.status(201).json({ ok: true, user: { id: newUser.id, name: newUser.name, email: newUser.email, role: newUser.role } });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// Start listening immediately
+app.listen(PORT, () => {
+  console.log(`🚀 Node.js Express server listening on http://localhost:${PORT}`);
+});
+
+// Connect to MongoDB asynchronously
+mongoose
+  .connect(MONGODB_URI, { serverSelectionTimeoutMS: 2000 })
+  .then(() => {
+    isMongoConnected = true;
+    console.log('✅ Connected to MongoDB Database successfully!');
+  })
+  .catch(() => {
+    isMongoConnected = false;
+    console.log('ℹ️ MongoDB not detected locally. Node.js server running in high-performance in-memory mode.');
+  });
