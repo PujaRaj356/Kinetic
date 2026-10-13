@@ -103,6 +103,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isAdmin = currentUser?.role === 'admin';
   const isClient = currentUser?.role === 'client';
 
+  const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+
+  const notifyLogin = async (email: string, name?: string) => {
+    try {
+      await fetch(`${API_BASE}/api/auth/notify-login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email.trim().toLowerCase(), name: name || 'Shopper' })
+      });
+    } catch {
+      // Non-blocking background notification
+    }
+  };
+
   const login = (
     email: string,
     password: string,
@@ -121,6 +135,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       sessionStorage.setItem(CURRENT_KEY, JSON.stringify(user));
     }
     setCurrentUser(user);
+    notifyLogin(user.email, user.name);
     return { ok: true, user };
   };
 
@@ -157,11 +172,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Auto-login registered user and remember them
     localStorage.setItem(CURRENT_KEY, JSON.stringify(newUser));
     setCurrentUser(newUser);
+    notifyLogin(newUser.email, newUser.name);
 
     return { ok: true, user: newUser };
   };
-
-  const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
 
   const sendOtp = async (
     email: string
@@ -214,6 +228,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (user) {
         localStorage.setItem(CURRENT_KEY, JSON.stringify(user));
         setCurrentUser(user);
+        notifyLogin(user.email, user.name);
       }
       setPendingVerification(null);
       return { ok: true, message: data.message };

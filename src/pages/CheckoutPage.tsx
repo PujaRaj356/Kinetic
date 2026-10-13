@@ -35,7 +35,7 @@ export const CheckoutPage: React.FC = () => {
     city.trim().length > 0 &&
     /^\d{6}$/.test(pincode);
 
-  const handlePlaceOrder = (e: React.FormEvent) => {
+  const handlePlaceOrder = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitted(true);
 
@@ -43,7 +43,7 @@ export const CheckoutPage: React.FC = () => {
       return;
     }
 
-    const newOrder = saveOrder({
+    const orderPayload = {
       customerId: currentUser?.id || 'shopper-guest',
       customerName: fullName.trim(),
       customerEmail: email.trim(),
@@ -56,12 +56,26 @@ export const CheckoutPage: React.FC = () => {
       shipping: shipping || 0,
       total,
       paymentMethod: payment,
-      status: 'Processing',
-    });
+      status: 'Processing' as const,
+    };
+
+    const newOrder = saveOrder(orderPayload);
+
+    // Dispatch order confirmation email with delivery schedule & summary
+    try {
+      const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+      await fetch(`${API_BASE}/api/orders`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newOrder)
+      });
+    } catch (err) {
+      console.warn('Backend sync / email notice:', err);
+    }
 
     clear();
-    showToast(`Order ${newOrder.id} placed successfully! 🎉`);
-    alert(`Order placed successfully! 🎉\nOrder Reference: ${newOrder.id}\nThank you for shopping with Kinetic!`);
+    showToast(`Order ${newOrder.id} placed! Confirmation email sent to ${email.trim()} 📦`);
+    alert(`Order placed successfully! 🎉\nOrder Reference: ${newOrder.id}\n\nA complete summary and expected delivery timeline have been sent to ${email.trim()}!`);
     navigate('/home');
   };
 

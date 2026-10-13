@@ -71,6 +71,224 @@ async function sendOtpEmail(toEmail, otp) {
   return { sent: true, messageId: info.messageId };
 }
 
+// Helper: formats order placement date and 3-5 day delivery estimation
+function formatOrderDates(dateInput) {
+  const d = dateInput ? new Date(dateInput) : new Date();
+  const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  const orderDateFormatted = d.toLocaleDateString('en-US', options);
+  const orderTimeFormatted = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+  // Calculate standard 3 to 5 business days delivery window
+  const deliveryMin = new Date(d);
+  deliveryMin.setDate(d.getDate() + 3);
+  const deliveryMax = new Date(d);
+  deliveryMax.setDate(d.getDate() + 5);
+
+  const deliveryMinStr = deliveryMin.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+  const deliveryMaxStr = deliveryMax.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+
+  return {
+    orderDateFormatted,
+    orderTimeFormatted,
+    estimatedDelivery: `${deliveryMinStr} – ${deliveryMaxStr} (3–5 business days)`
+  };
+}
+
+async function sendLoginSuccessEmail(toEmail, userName) {
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log('----------------------------------------------------');
+    console.log(`[EMAIL NOTICE] (Dev Mode) Login notification for ${toEmail} (${userName || 'User'})`);
+    console.log('----------------------------------------------------');
+    return { sent: false, devMode: true };
+  }
+
+  const now = new Date();
+  const dayDate = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+  const mailOptions = {
+    from: `"Kinetic Store" <${process.env.EMAIL_USER}>`,
+    to: toEmail,
+    subject: `🔐 Login Successful - Welcome to Kinetic`,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f1e7; padding: 40px 16px; color: #111;">
+        <div style="max-width: 500px; margin: 0 auto; background: #ffffff; border: 3px solid #111111; box-shadow: 8px 8px 0px #111111; padding: 36px 30px;">
+          <div style="display: inline-block; background: #d7ff4f; border: 2px solid #111; padding: 6px 14px; font-weight: 900; font-size: 13px; letter-spacing: 1px; margin-bottom: 20px;">
+            KINETIC STORE
+          </div>
+          <h1 style="margin: 0 0 12px; font-size: 26px; font-weight: 950; letter-spacing: -0.04em;">You're logged in! 👋</h1>
+          <p style="font-size: 15px; line-height: 1.5; color: #333; margin: 0 0 24px;">
+            Hi <b>${userName || 'there'}</b>, you have successfully signed in to your Kinetic account.
+          </p>
+
+          <div style="background: #faf8f5; border: 2px solid #111; padding: 18px 20px; margin-bottom: 24px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+              <tr>
+                <td style="padding: 6px 0; color: #666; font-weight: 600;">Account Email:</td>
+                <td style="padding: 6px 0; color: #111; font-weight: 800; text-align: right;">${toEmail}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; color: #666; font-weight: 600;">Day & Date:</td>
+                <td style="padding: 6px 0; color: #111; font-weight: 800; text-align: right;">${dayDate}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; color: #666; font-weight: 600;">Time of Login:</td>
+                <td style="padding: 6px 0; color: #111; font-weight: 800; text-align: right;">${timeStr}</td>
+              </tr>
+              <tr>
+                <td style="padding: 6px 0; color: #666; font-weight: 600;">Security Status:</td>
+                <td style="padding: 6px 0; color: #10b981; font-weight: 900; text-align: right;">Session Verified ✓</td>
+              </tr>
+            </table>
+          </div>
+
+          <p style="font-size: 13px; color: #666; line-height: 1.6; margin: 0 0 24px;">
+            🛡️ <b>Security Notice:</b> If this was you, you're all set to explore and shop. If you did NOT authorize this login, please change your password immediately.
+          </p>
+
+          <div style="text-align: center; border-top: 2px dashed #ddd; padding-top: 20px;">
+            <p style="font-size: 12px; color: #888; margin: 0;">Kinetic E-Commerce · Good Products. Zero Boring.</p>
+          </div>
+        </div>
+      </div>
+    `,
+  };
+
+  const info = await transporter.sendMail(mailOptions);
+  console.log(`[LOGIN EMAIL DELIVERED] Successfully sent login notification to ${toEmail}: ${info.messageId}`);
+  return { sent: true, messageId: info.messageId };
+}
+
+async function sendOrderConfirmationEmail(order) {
+  const toEmail = order.customerEmail;
+  if (!toEmail || !toEmail.includes('@')) {
+    return { sent: false, reason: 'Valid customer email required' };
+  }
+
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log('----------------------------------------------------');
+    console.log(`[ORDER EMAIL NOTICE] (Dev Mode) Order #${order.id} summary for ${toEmail}`);
+    console.log('----------------------------------------------------');
+    return { sent: false, devMode: true };
+  }
+
+  const { orderDateFormatted, orderTimeFormatted, estimatedDelivery } = formatOrderDates(order.createdAt);
+
+  const itemsHtml = (order.items || []).map((item) => {
+    const prod = item.product || {};
+    const itemTotal = (prod.price || 0) * (item.quantity || 1);
+    return `
+      <tr style="border-bottom: 1.5px solid #eee;">
+        <td style="padding: 14px 0; width: 70px; vertical-align: top;">
+          ${prod.image ? `<img src="${prod.image}" alt="${prod.name || 'Product'}" width="60" height="60" style="object-fit: cover; border: 2px solid #111; display: block;" />` : ''}
+        </td>
+        <td style="padding: 14px 12px; vertical-align: top;">
+          <div style="font-weight: 900; font-size: 15px; color: #111; margin-bottom: 4px;">${prod.name || 'Item'}</div>
+          <div style="font-size: 12px; color: #666; font-weight: 600;">Category: ${prod.category || 'Curated'}</div>
+          <div style="font-size: 13px; color: #444; margin-top: 4px;">Qty: <b>${item.quantity || 1}</b> × ₹${(prod.price || 0).toLocaleString('en-IN')}</div>
+        </td>
+        <td style="padding: 14px 0; vertical-align: top; text-align: right; font-weight: 900; font-size: 15px; color: #111;">
+          ₹${itemTotal.toLocaleString('en-IN')}
+        </td>
+      </tr>
+    `;
+  }).join('');
+
+  const mailOptions = {
+    from: `"Kinetic Store" <${process.env.EMAIL_USER}>`,
+    to: toEmail,
+    subject: `📦 Order Confirmed: #${order.id} - Kinetic Store`,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f1e7; padding: 40px 16px; color: #111;">
+        <div style="max-width: 580px; margin: 0 auto; background: #ffffff; border: 3px solid #111111; box-shadow: 10px 10px 0px #111111; padding: 36px 30px;">
+          
+          <!-- Header -->
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 2px solid #111; padding-bottom: 18px;">
+            <div style="display: inline-block; background: #d7ff4f; border: 2px solid #111; padding: 6px 14px; font-weight: 900; font-size: 13px; letter-spacing: 1px;">
+              KINETIC STORE
+            </div>
+            <div style="font-size: 14px; font-weight: 900; color: #111;">
+              ORDER #${order.id}
+            </div>
+          </div>
+
+          <h1 style="margin: 0 0 10px; font-size: 28px; font-weight: 950; letter-spacing: -0.04em;">Thank you for your order! 🎉</h1>
+          <p style="font-size: 15px; line-height: 1.5; color: #333; margin: 0 0 24px;">
+            Hi <b>${order.customerName || 'Shopper'}</b>, we have received your order and our team is preparing it for dispatch.
+          </p>
+
+          <!-- Delivery Highlight Card -->
+          <div style="background: #d7ff4f; border: 2px solid #111; padding: 18px 20px; margin-bottom: 24px;">
+            <div style="font-size: 11px; font-weight: 900; letter-spacing: 1px; color: #111; margin-bottom: 6px;">
+              ESTIMATED DELIVERY TIMELINE
+            </div>
+            <div style="font-size: 20px; font-weight: 950; color: #111; letter-spacing: -0.02em;">
+              ${estimatedDelivery}
+            </div>
+            <div style="font-size: 13px; color: #333; margin-top: 6px;">
+              Ordered on: <b>${orderDateFormatted}</b> at ${orderTimeFormatted}
+            </div>
+          </div>
+
+          <!-- Items Ordered Table -->
+          <h2 style="font-size: 18px; font-weight: 900; margin: 24px 0 12px; letter-spacing: -0.02em;">Items Summary</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+            ${itemsHtml}
+          </table>
+
+          <!-- Financial Breakdown -->
+          <div style="background: #faf8f5; border: 2px solid #111; padding: 18px 20px; margin-bottom: 24px;">
+            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
+              <tr>
+                <td style="padding: 5px 0; color: #666; font-weight: 600;">Items Subtotal:</td>
+                <td style="padding: 5px 0; color: #111; font-weight: 800; text-align: right;">₹${(order.subtotal || 0).toLocaleString('en-IN')}</td>
+              </tr>
+              <tr>
+                <td style="padding: 5px 0; color: #666; font-weight: 600;">Shipping:</td>
+                <td style="padding: 5px 0; color: #111; font-weight: 800; text-align: right;">${order.shipping === 0 ? 'FREE' : '₹' + order.shipping}</td>
+              </tr>
+              <tr style="border-top: 2px solid #111;">
+                <td style="padding: 10px 0 0; color: #111; font-weight: 950; font-size: 18px;">Total Paid:</td>
+                <td style="padding: 10px 0 0; color: #111; font-weight: 950; font-size: 20px; text-align: right;">₹${(order.total || 0).toLocaleString('en-IN')}</td>
+              </tr>
+            </table>
+          </div>
+
+          <!-- Delivery Address & Details -->
+          <div style="border: 2px solid #111; padding: 18px 20px; margin-bottom: 26px;">
+            <div style="font-size: 12px; font-weight: 900; letter-spacing: 1px; color: #777; margin-bottom: 8px;">
+              DELIVERY ADDRESS
+            </div>
+            <div style="font-weight: 900; font-size: 15px; color: #111; margin-bottom: 4px;">
+              ${order.customerName} · ${order.customerPhone}
+            </div>
+            <div style="font-size: 14px; color: #333; line-height: 1.4;">
+              ${order.shippingAddress}<br/>
+              ${order.city} - ${order.pincode}
+            </div>
+            <div style="font-size: 12px; color: #666; margin-top: 8px; font-weight: 700;">
+              Payment Method: <b>${(order.paymentMethod || 'Card').toUpperCase()}</b>
+            </div>
+          </div>
+
+          <p style="font-size: 13px; color: #666; line-height: 1.5; margin: 0 0 24px;">
+            Have questions about this order? Reply directly to this email and our support team will assist you.
+          </p>
+
+          <div style="text-align: center; border-top: 2px dashed #ccc; padding-top: 20px;">
+            <p style="font-size: 12px; color: #888; margin: 0;">Kinetic Store · Good Products. Zero Boring.</p>
+          </div>
+
+        </div>
+      </div>
+    `,
+  };
+
+  const info = await transporter.sendMail(mailOptions);
+  console.log(`[ORDER EMAIL DELIVERED] Successfully sent order summary for #${order.id} to ${toEmail}: ${info.messageId}`);
+  return { sent: true, messageId: info.messageId };
+}
+
 // --- MongoDB Schemas & Models ---
 const ReviewSchema = new mongoose.Schema({
   id: String,
@@ -373,9 +591,9 @@ app.post('/api/orders', async (req, res) => {
     const orderData = req.body;
     const newOrder = {
       ...orderData,
-      id: `ORD-${Math.floor(10000 + Math.random() * 90000)}`,
+      id: orderData.id || `ORD-${Math.floor(10000 + Math.random() * 90000)}`,
       status: 'Processing',
-      createdAt: new Date().toISOString()
+      createdAt: orderData.createdAt || new Date().toISOString()
     };
     if (isMongoConnected) {
       const doc = new OrderModel(newOrder);
@@ -383,7 +601,23 @@ app.post('/api/orders', async (req, res) => {
     } else {
       inMemoryOrders.unshift(newOrder);
     }
-    res.status(201).json({ ok: true, order: newOrder });
+
+    // Automatically send comprehensive Order Confirmation Email
+    const emailResult = await sendOrderConfirmationEmail(newOrder);
+    res.status(201).json({ ok: true, order: newOrder, emailResult });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+app.post('/api/orders/send-confirmation', async (req, res) => {
+  try {
+    const { order } = req.body;
+    if (!order) {
+      return res.status(400).json({ ok: false, message: 'Order data required.' });
+    }
+    const result = await sendOrderConfirmationEmail(order);
+    res.json({ ok: true, result });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -406,6 +640,19 @@ app.patch('/api/orders/:id/status', async (req, res) => {
 });
 
 // Auth Routes (Admin & Client)
+app.post('/api/auth/notify-login', async (req, res) => {
+  try {
+    const { email, name } = req.body;
+    if (!email || !email.includes('@')) {
+      return res.status(400).json({ ok: false, message: 'Valid email required.' });
+    }
+    const result = await sendLoginSuccessEmail(email.trim().toLowerCase(), name || 'Shopper');
+    res.json({ ok: true, result });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -418,6 +665,8 @@ app.post('/api/auth/login', async (req, res) => {
     if (!user) {
       return res.status(401).json({ ok: false, message: 'Invalid email or password.' });
     }
+    // Send login success email notification
+    await sendLoginSuccessEmail(user.email, user.name);
     res.json({ ok: true, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
@@ -451,6 +700,9 @@ app.post('/api/auth/register', async (req, res) => {
     } else {
       inMemoryUsers.push(newUser);
     }
+
+    // Send welcome and login notification email
+    await sendLoginSuccessEmail(cleanEmail, name.trim());
     res.status(201).json({ ok: true, user: { id: newUser.id, name: newUser.name, email: newUser.email, role: newUser.role } });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
