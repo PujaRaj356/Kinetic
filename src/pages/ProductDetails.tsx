@@ -14,6 +14,7 @@ export const ProductDetails: React.FC = () => {
   const { showToast } = useToast();
 
   const [product, setProduct] = useState(initialProduct);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   // Review form state
   const [reviewerName, setReviewerName] = useState('');
@@ -24,6 +25,8 @@ export const ProductDetails: React.FC = () => {
   if (!product) {
     return <div className="not-found">Product not found.</div>;
   }
+
+  const productImages = product.images && product.images.length > 0 ? product.images : [product.image];
 
   const handleAdd = () => {
     add(product);
@@ -76,9 +79,37 @@ export const ProductDetails: React.FC = () => {
       </Link>
 
       <div className="detail-grid">
-        <div className="big-visual" style={{ background: product.accent }}>
-          <img src={product.image} alt={product.name} />
-          <b>{product.category}</b>
+        <div className="product-gallery-column">
+          <div className="big-visual" style={{ background: product.accent }}>
+            <img
+              src={productImages[activeImageIndex] || product.image}
+              alt={`${product.name} angle ${activeImageIndex + 1}`}
+              className="main-gallery-img"
+            />
+            <b>{product.category}</b>
+            {productImages.length > 1 && (
+              <span className="gallery-counter-badge">
+                {activeImageIndex + 1} / {productImages.length}
+              </span>
+            )}
+          </div>
+
+          {productImages.length > 1 && (
+            <div className="gallery-thumbnails-strip">
+              {productImages.map((imgUrl, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  className={`gallery-thumb-btn ${activeImageIndex === idx ? 'active' : ''}`}
+                  onClick={() => setActiveImageIndex(idx)}
+                  onMouseEnter={() => setActiveImageIndex(idx)}
+                  title={`View image ${idx + 1}`}
+                >
+                  <img src={imgUrl} alt={`${product.name} view ${idx + 1}`} />
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <div className="copy">

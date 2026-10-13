@@ -16,6 +16,7 @@ export interface Product {
   stock: number;
   description: string;
   image: string;
+  images?: string[];
   accent: string;
   featured?: boolean;
   highlights: string[];

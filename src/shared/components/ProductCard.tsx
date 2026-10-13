@@ -12,6 +12,7 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onAdded }) => {
   const { add } = useCart();
   const { has, toggle } = useWishlist();
+  const [isHovered, setIsHovered] = React.useState(false);
 
   const handleAddToCart = () => {
     add(product);
@@ -19,16 +20,25 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAdded }) =>
   };
 
   const isWishlisted = has(product.id);
+  const images = product.images && product.images.length > 0 ? product.images : [product.image];
+  const displayImage = isHovered && images.length > 1 ? images[1] : images[0];
 
   return (
-    <article className="card">
+    <article
+      className="card"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       <Link
         to={`/products/${product.id}`}
         className="visual"
         style={{ background: product.accent }}
       >
         <span className="badge">{product.category}</span>
-        <img src={product.image} alt={product.name} className="product-img" />
+        {images.length > 1 && (
+          <span className="angles-badge">{images.length} Angles</span>
+        )}
+        <img src={displayImage} alt={product.name} className="product-img" />
         <button
           className="heart"
           onClick={(e) => {

@@ -308,6 +308,7 @@ const ProductSchema = new mongoose.Schema({
   stock: { type: Number, default: 12 },
   description: String,
   image: String,
+  images: [String],
   accent: { type: String, default: '#d7ff4f' },
   featured: { type: Boolean, default: false },
   highlights: [String],

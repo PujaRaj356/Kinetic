@@ -10,6 +10,11 @@ export const productList: Product[] = [
     rating: 4.8,
     stock: 12,
     image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#d7ff4f',
     featured: true,
     description: 'Engineered for audio purists and daily commuters alike, the Orbit Wireless Headphones blend custom 40mm neodymium drivers with active noise cancellation. Enjoy crystal-clear highs, deep warm sub-bass, and ergonomic memory-foam ear cushions designed for all-day listening sessions without fatigue.',
@@ -52,6 +57,11 @@ export const productList: Product[] = [
     rating: 4.6,
     stock: 18,
     image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#ff7a5c',
     featured: true,
     description: 'Crafted with breathable knit uppers and responsive dual-density foam midsoles, the Mono Runner delivers incredible responsiveness for daily urban runs and casual weekend wear. Reinforced rubber outsoles ensure maximum grip on wet city pavement.',
@@ -86,6 +96,11 @@ export const productList: Product[] = [
     rating: 4.7,
     stock: 9,
     image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1577733966973-d680bffd2e80?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#8bd3ff',
     featured: true,
     description: 'Designed for modern digital nomads, the Grid Backpack combines a weather-resistant Cordura exterior with dedicated shockproof compartments for up to a 16-inch laptop, tablet, chargers, and daily carry items.',
@@ -121,7 +136,13 @@ export const productList: Product[] = [
     rating: 4.5,
     stock: 7,
     image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#c9a7ff',
+    featured: true,
     description: 'Track your health metrics, continuous heart rate, SpO2 oxygen levels, and sleep cycles with pinpoint accuracy. The Pixel Smartwatch features a stunning 1.4" Always-On AMOLED screen enclosed in an aerospace-grade aluminum casing.',
     highlights: [
       'Ultra-bright 1000-nits AMOLED display',
@@ -149,11 +170,16 @@ export const productList: Product[] = [
   {
     id: 5,
     name: 'Studio Architectural Lamp',
-    category: 'Home',
+    category: 'Workspace',
     price: 1899,
     rating: 4.4,
     stock: 15,
     image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#ffd66b',
     description: 'Elevate your desk setup with this flexible dual-arm LED studio lamp. Touch-sensitive dimming controls allow you to switch seamlessly between warm amber reading light and crisp cool white task illumination.',
     highlights: [
@@ -187,6 +213,11 @@ export const productList: Product[] = [
     rating: 4.9,
     stock: 11,
     image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#b5f6d2',
     description: 'Built for typists and enthusiasts, the Cloud Keyboard features hot-swappable tactile mechanical switches, sound-absorbing acoustic foam layers, and customizable per-key RGB backlighting encased in a solid CNC aluminum body.',
     highlights: [
@@ -215,12 +246,17 @@ export const productList: Product[] = [
   {
     id: 7,
     name: 'Field Stainless Thermal Bottle',
-    category: 'Lifestyle',
+    category: 'Everyday Carry',
     price: 899,
     oldPrice: 1199,
     rating: 4.3,
     stock: 30,
     image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#a8e6ff',
     description: 'Constructed from food-grade 18/8 stainless steel, the Field Thermal Bottle utilizes vacuum insulation to keep water ice-cold for 24 hours or coffee piping hot for up to 12 hours.',
     highlights: [
@@ -254,6 +290,11 @@ export const productList: Product[] = [
     rating: 4.7,
     stock: 4,
     image: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1580481077195-c3a821a58875?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#ffb7d5',
     description: 'A masterpiece of contemporary interior architecture, the Frame Chair pairs a powder-coated tubular steel frame with high-resilience foam cushioning upholstered in textured boucle fabric.',
     highlights: [
@@ -288,6 +329,11 @@ export const productList: Product[] = [
     rating: 4.9,
     stock: 20,
     image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#ff9ebb',
     featured: true,
     description: 'Make a futuristic statement with Cyber Shades. Meticulously handcrafted from Italian Mazzucchelli acetate, these glasses feature TAC polarized lenses providing 100% UV400 radiation protection.',
@@ -323,6 +369,11 @@ export const productList: Product[] = [
     rating: 4.7,
     stock: 16,
     image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1598331668826-20cecc596b86?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#ffe66d',
     featured: true,
     description: 'Equipped with custom graphene dynamic drivers, the Acoustic Pods deliver immersive 3D spatial audio performance. Features low-latency gaming mode and quadruple beamforming mics for HD call voice clarity.',
@@ -357,6 +408,11 @@ export const productList: Product[] = [
     rating: 4.8,
     stock: 8,
     image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1543512214-318c7553f230?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#a2d2ff',
     description: 'Fill any room or outdoor gathering with room-shaking 360-degree sound. Dual passive radiators deliver deep thumping bass, while the IPX7 waterproof casing handles pool splashes effortlessly.',
     highlights: [
@@ -391,6 +447,11 @@ export const productList: Product[] = [
     rating: 4.6,
     stock: 25,
     image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#b8c0ff',
     description: 'Cut from 450 GSM French terry organic cotton, this boxy street hoodie offers structured warmth and comfort. Double-lined hood, dropped shoulders, and ribbed cuffs complete the modern relaxed silhouette.',
     highlights: [
@@ -419,11 +480,16 @@ export const productList: Product[] = [
   {
     id: 13,
     name: 'Minimalist Aluminum Cardholder',
-    category: 'Accessories',
+    category: 'Everyday Carry',
     price: 1299,
     rating: 4.5,
     stock: 35,
     image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1559563458-527698bf5295?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1606503153255-59d8b8b82176?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#e7c6ff',
     description: 'Ditch bulky traditional wallets. This sleek aviation-grade aluminum cardholder features a push-up trigger mechanism that fans out up to 8 cards for instant one-handed access.',
     highlights: [
@@ -452,12 +518,17 @@ export const productList: Product[] = [
   {
     id: 14,
     name: 'Ergo Precision Wireless Mouse',
-    category: 'Tech',
+    category: 'Workspace',
     price: 2899,
     oldPrice: 3499,
     rating: 4.8,
     stock: 14,
     image: 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1605792657660-596af9009e82?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#c8e6c9',
     description: 'Sculpted to match the natural posture of your hand, the Ergo Precision Mouse reduces wrist strain during long work sessions. Features a hyper-fast electromagnetic scroll wheel and silent click switches.',
     highlights: [
@@ -491,6 +562,11 @@ export const productList: Product[] = [
     rating: 4.4,
     stock: 22,
     image: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#ffcc80',
     description: 'Touch the sleek lid to instantly reveal the internal liquid temperature on a bright HD LED display. Built with double-wall copper-plated insulation to preserve beverage temperature for hours.',
     highlights: [
@@ -525,6 +601,11 @@ export const productList: Product[] = [
     rating: 4.7,
     stock: 40,
     image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1577733966973-d680bffd2e80?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#fff59d',
     description: 'Constructed from heavy 16oz cotton duck canvas, this structured tote carries groceries, books, or beach essentials with ease. Features an inner zippered pocket and key leash lanyard.',
     highlights: [
@@ -558,6 +639,11 @@ export const productList: Product[] = [
     rating: 4.9,
     stock: 6,
     image: 'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#d1c4e9',
     featured: true,
     description: 'Designed for nocturnal urban explorers, this windbreaker features 3M Scotchlite 360-degree reflective patterns that glow intensely under city lights, combined with a DWR water-repellent coating.',
@@ -587,12 +673,17 @@ export const productList: Product[] = [
   {
     id: 18,
     name: 'Ambient RGB Monitor Light Bar',
-    category: 'Home',
+    category: 'Workspace',
     price: 2199,
     oldPrice: 2799,
     rating: 4.6,
     stock: 19,
     image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1593062096033-9a26b09da705?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1585792180666-f7347c490ee2?auto=format&fit=crop&w=800&q=80'
+    ],
     accent: '#b2dfdb',
     description: 'Eliminate screen glare and brighten your workstation. Mounts effortlessly to curved or flat monitors, offering asymmetric optical light forward while projecting vibrant ambient RGB backlighting.',
     highlights: [
@@ -617,6 +708,242 @@ export const productList: Product[] = [
         comment: 'Drastically reduced my eye strain during night gaming and editing sessions. Wireless dial controller is super sleek!'
       }
     ]
+  },
+  {
+    id: 19,
+    name: 'Retro 35mm Rangefinder Camera',
+    category: 'Photography',
+    price: 14999,
+    oldPrice: 17999,
+    rating: 4.9,
+    stock: 5,
+    image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'
+    ],
+    accent: '#ffd166',
+    featured: true,
+    description: 'Experience tactile street photography with this classic analog rangefinder. Crafted with a solid brass top plate, coupled optical rangefinder window, and an ultra-sharp 40mm f/1.8 multi-coated glass prime lens.',
+    highlights: [
+      'Solid brass chassis with vulcanite textured grip',
+      'Ultra-sharp 40mm f/1.8 multi-coated prime lens',
+      'Bright split-image optical coincidence rangefinder',
+      'Mechanical shutter operation requiring no batteries'
+    ],
+    specs: {
+      'Film Format': '35mm Standard (24x36mm)',
+      'Lens': '40mm f/1.8 (6 Elements in 4 Groups)',
+      'Shutter Speeds': '1s to 1/1000s + Bulb',
+      'Weight': '460g',
+      'Includes': 'Leather Strap & Metal Lens Hood'
+    },
+    reviews: [
+      {
+        id: 'r20',
+        user: 'Kabir Sen',
+        rating: 5,
+        date: 'Oct 02, 2026',
+        comment: 'Pure mechanical perfection. The shutter release click is so satisfying and the glass renders portraits with incredible character.'
+      }
+    ]
+  },
+  {
+    id: 20,
+    name: 'Modular Walnut Desk Shelf',
+    category: 'Workspace',
+    price: 3699,
+    oldPrice: 4299,
+    rating: 4.8,
+    stock: 10,
+    image: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1593062096033-9a26b09da705?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1585792180666-f7347c490ee2?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=800&q=80'
+    ],
+    accent: '#d4a373',
+    featured: true,
+    description: 'Handcrafted from solid American black walnut and sandblasted anodized aluminum risers, this ergonomic monitor riser elevates displays to eye level while clearing precious desktop real estate below.',
+    highlights: [
+      'Solid American Black Walnut with organic hand-rubbed oil finish',
+      'Aerospace aluminum legs with cork padding to protect desks',
+      'Holds up to 45 kg (supports dual monitors or iMac)',
+      'Integrated tray for Apple Magic Keyboard & trackpad storage'
+    ],
+    specs: {
+      'Material': 'Solid American Black Walnut & Aluminum',
+      'Dimensions': '110cm x 23cm x 11cm',
+      'Load Capacity': '45 kg',
+      'Under-shelf Clearance': '8.5 cm',
+      'Origin': 'Sustainably Harvested FSC Timber'
+    },
+    reviews: [
+      {
+        id: 'r21',
+        user: 'Sanjay Krishnan',
+        rating: 5,
+        date: 'Oct 04, 2026',
+        comment: 'Transforms the aesthetic of your entire workstation. The rich grain of walnut wood looks phenomenal in daylight.'
+      }
+    ]
+  },
+  {
+    id: 21,
+    name: 'Titanium Pocket Multi-Tool',
+    category: 'Everyday Carry',
+    price: 1899,
+    rating: 4.7,
+    stock: 28,
+    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80'
+    ],
+    accent: '#a8dadc',
+    description: 'Precision CNC-machined from Grade 5 titanium, this indestructible pocket pry bar combines a bottle opener, stepped hex wrench, box cutter notch, and metric ruler into a featherlight form factor.',
+    highlights: [
+      'Grade 5 Ti-6Al-4V Aerospace Titanium construction',
+      'TSA-compliant pocket friendly design with deep-carry clip',
+      'Tritium vial slot for easy location in dark environments',
+      'Lifetime guarantee against bending or corrosion'
+    ],
+    specs: {
+      'Material': 'Grade 5 Titanium (Ti-6Al-4V)',
+      'Length': '10.5 cm',
+      'Weight': '42g',
+      'Finish': 'Stonewashed Satin',
+      'Pocket Clip': 'Removable Titanium Clip'
+    },
+    reviews: [
+      {
+        id: 'r22',
+        user: 'Nikhil R.',
+        rating: 5,
+        date: 'Sept 27, 2026',
+        comment: 'Crazy tough and weighs almost nothing on my keychain. Has opened countless boxes and bottles.'
+      }
+    ]
+  },
+  {
+    id: 22,
+    name: 'Bauhaus Automatic Sapphire Watch',
+    category: 'Horology',
+    price: 11499,
+    oldPrice: 13999,
+    rating: 4.9,
+    stock: 8,
+    image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80'
+    ],
+    accent: '#e9ecef',
+    featured: true,
+    description: 'Inspired by early 20th-century German industrial design, this dress watch features a clean Bauhaus dial, blued steel hands, and a Japanese Miyota 9015 automatic mechanical movement visible through the exhibition caseback.',
+    highlights: [
+      'Miyota 9015 high-beat 28,800 vph automatic caliber',
+      'Domed scratch-resistant sapphire crystal with anti-reflective coating',
+      'Exhibition sapphire crystal caseback showing rotor movement',
+      'Full-grain Italian Horween leather quick-release strap'
+    ],
+    specs: {
+      'Case Diameter': '38 mm',
+      'Case Thickness': '9.8 mm',
+      'Case Material': '316L Stainless Steel',
+      'Power Reserve': '42 Hours',
+      'Water Resistance': '50 meters / 5 ATM'
+    },
+    reviews: [
+      {
+        id: 'r23',
+        user: 'Aditya Bose',
+        rating: 5,
+        date: 'Oct 01, 2026',
+        comment: 'Extremely clean typography on the dial. The sweep of the high-beat second hand is butter smooth.'
+      }
+    ]
+  },
+  {
+    id: 23,
+    name: 'Carbon Fiber Expedition Tripod',
+    category: 'Photography',
+    price: 6899,
+    oldPrice: 7999,
+    rating: 4.8,
+    stock: 9,
+    image: 'https://images.unsplash.com/photo-1516724562728-afc824a36e84?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1516724562728-afc824a36e84?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80'
+    ],
+    accent: '#90e0ef',
+    description: 'Constructed with 8-layer diamond cross-weave carbon fiber tubes, this travel tripod supports heavy DSLR/mirrorless zoom setups while collapsing down to just 35 cm to slip inside backpack side pockets.',
+    highlights: [
+      '8-Layer High-Density Carbon Fiber leg tubes',
+      'Arca-Swiss compatible 360-degree panoramic ball head',
+      'Invertible center column for macro floor-level shooting',
+      'Detachable leg transforms into a full-height monopod'
+    ],
+    specs: {
+      'Max Height': '155 cm',
+      'Folded Length': '35 cm',
+      'Weight': '1.18 kg',
+      'Max Payload': '12 kg',
+      'Leg Sections': '4 Twist Lock'
+    },
+    reviews: [
+      {
+        id: 'r24',
+        user: 'Pranav K.',
+        rating: 5,
+        date: 'Oct 03, 2026',
+        comment: 'Super rigid even in mountain wind. Fits into the water bottle holder of my camera backpack!'
+      }
+    ]
+  },
+  {
+    id: 24,
+    name: 'Ceramic Origami Coffee Dripper',
+    category: 'Home',
+    price: 1599,
+    rating: 4.9,
+    stock: 18,
+    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=800&q=80'
+    ],
+    accent: '#ffe5d9',
+    featured: true,
+    description: 'Crafted from Mino-ware porcelain in Japan, the Origami Dripper features 20 vertical ribs that regulate water flow velocity for maximum coffee sweetness and clarity. Compatible with conical and wave paper filters.',
+    highlights: [
+      'Authentic Mino-ware high-temperature fired porcelain',
+      '20 precision geometric ribs optimize flow drawdown speed',
+      'Exceptional thermal stability during pour extraction',
+      'Includes solid acacia wood stabilizing collar ring'
+    ],
+    specs: {
+      'Cup Capacity': '1 to 4 Cups (Size M)',
+      'Material': 'Porcelain Ceramic & Acacia Wood',
+      'Compatibility': 'V60 02 & Kalita Wave 185 Filters',
+      'Heat Resistance': 'Up to 120°C',
+      'Origin': 'Gifu Prefecture, Japan'
+    },
+    reviews: [
+      {
+        id: 'r25',
+        user: 'Alok Shenoy',
+        rating: 5,
+        date: 'Oct 05, 2026',
+        comment: 'Brews the sweetest, cleanest cup of specialty light roasts. Gorgeous matte glaze finish on my counter.'
+      }
+    ]
   }
 ];
 
@@ -634,6 +961,22 @@ export function getAllProducts(): Product[] {
       localStorage.setItem(PRODUCTS_KEY, JSON.stringify(productList));
       return productList;
     }
+
+    // Migration check: If stored products are missing new categories or multi-images, sync with latest productList
+    const needsSync =
+      productList.length > parsed.length ||
+      parsed.some((p) => !p.images || !Array.isArray(p.images) || p.images.length < 2);
+
+    if (needsSync) {
+      // Keep any user-created products (custom added by admin), and update defaults
+      const customProducts = parsed.filter(
+        (p) => !productList.some((d) => d.id === Number(p.id))
+      );
+      const merged = [...productList, ...customProducts];
+      localStorage.setItem(PRODUCTS_KEY, JSON.stringify(merged));
+      return merged;
+    }
+
     return parsed.map((p, idx) => ({
       ...p,
       id: Number(p.id) || idx + 1,
@@ -643,6 +986,7 @@ export function getAllProducts(): Product[] {
       stock: Number(p.stock) || 0,
       rating: Number(p.rating) || 5.0,
       image: p.image || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+      images: Array.isArray(p.images) && p.images.length > 0 ? p.images : [p.image],
       accent: p.accent || '#d7ff4f',
       description: p.description || '',
       highlights: Array.isArray(p.highlights) ? p.highlights : [],
@@ -653,37 +997,38 @@ export function getAllProducts(): Product[] {
   }
 }
 
-
 export function getCategories(): string[] {
   const list = getAllProducts();
-  return ['All', ...Array.from(new Set(list.map(p => p.category)))];
+  const cats = Array.from(new Set(list.map((p) => p.category)));
+  return ['All', ...cats];
 }
 
-export const categories = ['All', ...Array.from(new Set(productList.map(p => p.category)))];
+export const categories = ['All', ...Array.from(new Set(productList.map((p) => p.category)))];
 
 export function getProductById(id: number): Product | undefined {
   const list = getAllProducts();
-  return list.find(p => p.id === id);
+  return list.find((p) => p.id === id);
 }
 
 export function searchProducts(query: string, category: string): Product[] {
   const q = query.trim().toLowerCase();
   const list = getAllProducts();
-  return list.filter(p =>
-    (category === 'All' || p.category === category) &&
-    (!q || p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q))
+  return list.filter(
+    (p) =>
+      (category === 'All' || p.category.toLowerCase() === category.toLowerCase()) &&
+      (!q || p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)))
   );
 }
 
 export function addProduct(
   product: Omit<Product, 'id' | 'rating' | 'reviews'> & Partial<Pick<Product, 'id' | 'rating' | 'reviews'>>
 ): Product {
-
   const list = getAllProducts();
-  const nextId = product.id ?? (list.length > 0 ? Math.max(...list.map(p => p.id)) + 1 : 1);
+  const nextId = product.id ?? (list.length > 0 ? Math.max(...list.map((p) => p.id)) + 1 : 1);
   const newProduct: Product = {
     ...product,
     id: nextId,
+    images: product.images && product.images.length > 0 ? product.images : [product.image],
     rating: product.rating ?? 5.0,
     reviews: product.reviews ?? []
   };
@@ -694,9 +1039,12 @@ export function addProduct(
 
 export function updateProduct(product: Product): Product {
   const list = getAllProducts();
-  const index = list.findIndex(p => p.id === product.id);
+  const index = list.findIndex((p) => p.id === product.id);
   if (index !== -1) {
-    list[index] = product;
+    list[index] = {
+      ...product,
+      images: product.images && product.images.length > 0 ? product.images : [product.image]
+    };
     localStorage.setItem(PRODUCTS_KEY, JSON.stringify(list));
   }
   return product;
@@ -704,11 +1052,10 @@ export function updateProduct(product: Product): Product {
 
 export function deleteProduct(id: number): boolean {
   const list = getAllProducts();
-  const filtered = list.filter(p => p.id !== id);
+  const filtered = list.filter((p) => p.id !== id);
   if (filtered.length !== list.length) {
     localStorage.setItem(PRODUCTS_KEY, JSON.stringify(filtered));
     return true;
   }
   return false;
 }
-

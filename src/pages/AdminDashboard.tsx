@@ -103,10 +103,10 @@ export const AdminDashboard: React.FC = () => {
   };
 
   const handleResetCatalog = () => {
-    if (window.confirm('Reset catalog to the default 18 products?')) {
+    if (window.confirm('Reset catalog to the default 24 products?')) {
       localStorage.setItem(PRODUCTS_KEY, JSON.stringify(productList));
       setProducts(getAllProducts());
-      showToast('Catalog restored to default 18 products.');
+      showToast('Catalog restored to default 24 products with multi-image galleries.');
     }
   };
 
@@ -133,6 +133,7 @@ export const AdminDashboard: React.FC = () => {
         oldPrice: oldPriceNum,
         stock: stockNum,
         image: formData.image.trim(),
+        images: editingProduct.images || [formData.image.trim()],
         accent: formData.accent,
         featured: formData.featured,
         description: formData.description.trim(),
