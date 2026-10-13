@@ -1,953 +1,973 @@
 import { Product } from '../models/product.model';
 
 export const productList: Product[] = [
+  // --- FOOTWEAR ---
   {
     id: 1,
-    name: 'Orbit Wireless Headphones',
-    category: 'Audio',
-    price: 4999,
-    oldPrice: 6499,
+    name: 'Nike Air Jordan 1 Retro (Red & Black)',
+    category: 'Footwear',
+    price: 12499,
+    oldPrice: 14999,
     rating: 4.8,
-    stock: 12,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+    stock: 14,
+    image: 'https://cdn.dummyjson.com/product-images/mens-shoes/nike-air-jordan-1-red-and-black/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1484704849700-f032a568e944?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1546435770-a3e426bf472b?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mens-shoes/nike-air-jordan-1-red-and-black/1.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shoes/nike-air-jordan-1-red-and-black/2.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shoes/nike-air-jordan-1-red-and-black/3.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shoes/nike-air-jordan-1-red-and-black/4.webp'
     ],
-    accent: '#d7ff4f',
+    accent: '#ff7a5c',
     featured: true,
-    description: 'Engineered for audio purists and daily commuters alike, the Orbit Wireless Headphones blend custom 40mm neodymium drivers with active noise cancellation. Enjoy crystal-clear highs, deep warm sub-bass, and ergonomic memory-foam ear cushions designed for all-day listening sessions without fatigue.',
+    description: 'The iconic high-top basketball silhouette in the classic red, black, and white colorway. Premium full-grain leather upper paired with encapsulated Air-Sole cushioning in the heel for lasting shock absorption and timeless street style.',
     highlights: [
-      'Hybrid Active Noise Cancellation with Transparency Mode',
-      'Up to 32 hours of continuous playback on a single charge',
-      'Ultra-soft protein leather memory foam ear cups',
-      'Multipoint Bluetooth 5.2 for seamless device switching'
+      '100% Genuine full-grain leather overlays',
+      'Encapsulated Air-Sole unit for lightweight responsive cushioning',
+      'Solid rubber outsole with deep flex grooves for maximum grip',
+      'Padded high-cut collar for ankle support and comfort'
     ],
     specs: {
-      'Driver Size': '40mm Neodymium',
-      'Battery Life': '32 Hours (ANC On)',
-      'Charging Port': 'USB-C Fast Charge',
-      'Weight': '245g',
-      'Warranty': '1 Year Manufacturer Warranty'
+      'Silhouette': 'High-Top Basketball Sneaker',
+      'Upper': 'Full-grain Leather',
+      'Cushioning': 'Air-Sole Capsule',
+      'Colorway': 'Varsity Red / Black / White',
+      'Closure': '8-Eyelet Lace-Up'
     },
     reviews: [
       {
         id: 'r1',
         user: 'Aarav Sharma',
         rating: 5,
-        date: 'Sept 28, 2026',
-        comment: 'The noise cancellation is astonishing for this price point. Deep bass without muddying the vocal mids. Battery easily lasts 3 full days of work calls.'
+        date: 'Oct 02, 2026',
+        comment: 'Leather quality on this pair is top tier. The red and black contrast turns heads everywhere.'
       },
       {
         id: 'r2',
-        user: 'Rhea Kapoor',
-        rating: 4,
-        date: 'Sept 15, 2026',
-        comment: 'Extremely comfortable for long flights. Swapping between my laptop and smartphone is instant.'
+        user: 'Elena Long',
+        rating: 5,
+        date: 'Sept 28, 2026',
+        comment: 'Fits true to size and looks incredible with wide-leg pants or denim.'
       }
     ]
   },
   {
     id: 2,
-    name: 'Mono Runner Sneaker',
+    name: 'Puma Future Rider Casual Trainers',
     category: 'Footwear',
-    price: 3299,
-    oldPrice: 3999,
-    rating: 4.6,
-    stock: 18,
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
+    price: 4999,
+    oldPrice: 6499,
+    rating: 4.7,
+    stock: 22,
+    image: 'https://cdn.dummyjson.com/product-images/mens-shoes/puma-future-rider-trainers/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mens-shoes/puma-future-rider-trainers/1.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shoes/puma-future-rider-trainers/2.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shoes/puma-future-rider-trainers/3.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shoes/puma-future-rider-trainers/4.webp'
     ],
-    accent: '#ff7a5c',
+    accent: '#d7ff4f',
     featured: true,
-    description: 'Crafted with breathable knit uppers and responsive dual-density foam midsoles, the Mono Runner delivers incredible responsiveness for daily urban runs and casual weekend wear. Reinforced rubber outsoles ensure maximum grip on wet city pavement.',
+    description: 'Born in 1980 and revived for modern city life, the Future Rider features a slim silhouette with shock-absorbing Federbein outsole studs and vibrant retro color blocking.',
     highlights: [
-      'Breathable engineered mesh upper for cooling airflow',
-      'Cushioned dual-density EVA midsole for maximum impact absorption',
-      'High-traction rubber outsole tread pattern',
-      'Reflective heel accents for low-light visibility'
+      'Super-light nylon upper with suede and synthetic leather overlays',
+      'Rider Foam midsole provides cloud-like energy return',
+      'Slim Federbein rubber studded outsole for all-day traction',
+      'Breathable mesh lining prevents heat buildup'
     ],
     specs: {
-      'Upper Material': 'Engineered FlyKnit Mesh',
-      'Sole Material': 'Dual-density EVA & Rubber',
-      'Closure': 'Lace-Up',
-      'Weight': '290g per shoe',
-      'Care Instructions': 'Hand wash cool'
+      'Upper': 'Nylon, Suede & Leather',
+      'Midsole': 'IMEVA Rider Foam',
+      'Outsole': 'Federbein Rubber Studs',
+      'Weight': '280g',
+      'Origin': 'Imported'
     },
     reviews: [
       {
         id: 'r3',
         user: 'Vikram Mehta',
         rating: 5,
-        date: 'Sept 24, 2026',
-        comment: 'Unbelievably light on the feet! Wore these on a 10km city walk and had zero soreness or blisters.'
+        date: 'Oct 04, 2026',
+        comment: 'Amazingly light! Walked 15,000 steps on day one without any foot fatigue.'
       }
     ]
   },
   {
     id: 3,
-    name: 'Grid Minimalist Backpack',
-    category: 'Bags',
-    price: 2499,
-    rating: 4.7,
-    stock: 9,
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80',
+    name: 'Nike Field Performance Cleats',
+    category: 'Footwear',
+    price: 5499,
+    rating: 4.6,
+    stock: 10,
+    image: 'https://cdn.dummyjson.com/product-images/mens-shoes/nike-baseball-cleats/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1622560480605-d83c853bc5c3?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1577733966973-d680bffd2e80?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mens-shoes/nike-baseball-cleats/1.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shoes/nike-baseball-cleats/2.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shoes/nike-baseball-cleats/3.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shoes/nike-baseball-cleats/4.webp'
     ],
     accent: '#8bd3ff',
-    featured: true,
-    description: 'Designed for modern digital nomads, the Grid Backpack combines a weather-resistant Cordura exterior with dedicated shockproof compartments for up to a 16-inch laptop, tablet, chargers, and daily carry items.',
+    description: 'Engineered for explosive acceleration on turf and natural grass. Molded TPU cleat configuration provides razor-sharp traction for cutting, sprinting, and lateral stops.',
     highlights: [
-      'Water-repellent 900D Cordura nylon shell',
-      'Padded 16" laptop sleeve with faux-fur lining',
-      'Hidden RFID-blocking passport pocket on back panel',
-      'Ergonomic shoulder straps with magnetic sternum clip'
+      'Molded TPU studded cleat plate for maximum burst speed',
+      'Breathable synthetic upper with reinforced drag-resistant toe cap',
+      'Phylon foam cushioning dampens stud pressure',
+      'Padded mesh tongue with lace lock'
     ],
     specs: {
-      'Capacity': '20 Liters',
-      'Laptop Compatibility': 'Up to 16" MacBook Pro',
-      'Dimensions': '45cm x 30cm x 15cm',
-      'Water Resistance': 'IPX4 Water Repellent',
-      'Warranty': '2 Year Limited'
+      'Surface': 'Firm Turf / Natural Field',
+      'Stud Material': 'Molded TPU',
+      'Cushioning': 'Full-length Phylon Midsole',
+      'Closure': 'Asymmetrical Lace-Up'
     },
     reviews: [
       {
         id: 'r4',
-        user: 'Neha Patel',
+        user: 'Aaron Cook',
         rating: 5,
-        date: 'Sept 19, 2026',
-        comment: 'Sleek design with tons of smart organization pockets. Fits my laptop, camera gear, and lunch box perfectly.'
+        date: 'Sept 29, 2026',
+        comment: 'Great lock-down feel around the ankles. Studs bite into wet grass without slipping.'
       }
     ]
   },
+
+  // --- AUDIO ---
   {
     id: 4,
-    name: 'Pixel Smartwatch Series X',
-    category: 'Wearables',
-    price: 7499,
-    oldPrice: 8499,
-    rating: 4.5,
-    stock: 7,
-    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
+    name: 'Apple AirPods True Wireless Earphones',
+    category: 'Audio',
+    price: 11999,
+    oldPrice: 13999,
+    rating: 4.9,
+    stock: 25,
+    image: 'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1434493789847-2f02dc6ca35d?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods/1.webp',
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods/2.webp',
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-airpods/3.webp'
     ],
-    accent: '#c9a7ff',
+    accent: '#d7ff4f',
     featured: true,
-    description: 'Track your health metrics, continuous heart rate, SpO2 oxygen levels, and sleep cycles with pinpoint accuracy. The Pixel Smartwatch features a stunning 1.4" Always-On AMOLED screen enclosed in an aerospace-grade aluminum casing.',
+    description: 'Instant effortless setup with all your devices. Powered by the custom Apple H1 headphone chip, delivering rich high-quality AAC audio, optical sensors for auto-play/pause, and up to 24 hours total battery life with the wireless charging case.',
     highlights: [
-      'Ultra-bright 1000-nits AMOLED display',
-      'Real-time heart rate, SpO2, and advanced sleep tracking',
-      '50m Water Resistance (5 ATM) suitable for swimming',
-      'Fast magnetic wireless charging in 45 minutes'
+      'Apple H1 headphone chip for ultra-low latency & fast device switching',
+      'Dual beamforming microphones filter out background noise on calls',
+      'Optical sensors detect when earbuds are placed in or removed from ears',
+      'Quick 15-minute charge in case delivers 3 hours of listening'
     ],
     specs: {
-      'Display': '1.4" AMOLED (454 x 454)',
-      'Water Resistance': '5 ATM / 50 meters',
-      'Connectivity': 'Bluetooth 5.3 & Wi-Fi',
-      'Battery Life': 'Up to 7 Days',
-      'OS Compatibility': 'iOS & Android'
+      'Chipset': 'Apple H1 Audio Chip',
+      'Connectivity': 'Bluetooth 5.0 Wireless',
+      'Battery Life': 'Up to 5h listening (24h with case)',
+      'Charging': 'Lightning & Qi Wireless Case',
+      'Sensors': 'Dual Optical & Motion Accelerometers'
     },
     reviews: [
       {
         id: 'r5',
-        user: 'Karan Malhotra',
+        user: 'Emma Wilson',
         rating: 5,
-        date: 'Sept 22, 2026',
-        comment: 'Display is super crisp even under direct sunlight. Battery lasts nearly a full week with heart rate monitoring on.'
+        date: 'Oct 06, 2026',
+        comment: 'Pairing is instantaneous across my Mac and phone. Voice call clarity is the best in the market.'
       }
     ]
   },
   {
     id: 5,
-    name: 'Studio Architectural Lamp',
-    category: 'Workspace',
-    price: 1899,
-    rating: 4.4,
-    stock: 15,
-    image: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80',
+    name: 'Amazon Echo Studio Smart Speaker',
+    category: 'Audio',
+    price: 8999,
+    oldPrice: 10999,
+    rating: 4.8,
+    stock: 12,
+    image: 'https://cdn.dummyjson.com/product-images/mobile-accessories/amazon-echo-plus/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1513506003901-1e6a229e2d15?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1534349762230-e0cadf78f5da?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/amazon-echo-plus/1.webp',
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/amazon-echo-plus/2.webp'
     ],
-    accent: '#ffd66b',
-    description: 'Elevate your desk setup with this flexible dual-arm LED studio lamp. Touch-sensitive dimming controls allow you to switch seamlessly between warm amber reading light and crisp cool white task illumination.',
+    accent: '#c9a7ff',
+    featured: true,
+    description: 'Immersive 360-degree room-filling audio featuring a 3.0" neodymium woofer and 0.8" high-frequency tweeter. Built-in Smart Home Hub automatically senses room acoustics and fine-tunes playback in real time.',
     highlights: [
-      'Eye-care flicker-free LED panel with CRI > 90',
-      '5 Color Temperatures & 10 Brightness Levels',
-      'Precision counter-balanced spring arm',
-      'Integrated 10W wireless smartphone charger on base'
+      'Dolby-tuned 360° omnidirectional sound dispersion',
+      'Integrated Zigbee smart home hub for zero-hub light & plug pairing',
+      'Far-field microphone array hears commands across large living rooms',
+      'Supports lossless HD audio streaming via Wi-Fi and Bluetooth'
     ],
     specs: {
-      'Power Output': '12W LED (800 Lumens)',
-      'Color Temperature': '2700K - 6500K',
-      'Material': 'Anodized Aluminum & Steel',
-      'Base Diameter': '18cm',
-      'Lifespan': '50,000 Hours'
+      'Woofer': '3.0" Neodymium Woofer with Bass Reflex Port',
+      'Tweeter': '0.8" High-Resolution Silk Dome',
+      'Connectivity': 'Dual-band Wi-Fi & Bluetooth',
+      'Voice Assistant': 'Alexa Built-In',
+      'Weight': '780g'
     },
     reviews: [
       {
         id: 'r6',
-        user: 'Simran Gill',
-        rating: 4,
-        date: 'Aug 30, 2026',
-        comment: 'Love the minimalist matte black aesthetic! The warm light mode is super gentle on the eyes during late night coding.'
+        user: 'Karan Malhotra',
+        rating: 5,
+        date: 'Sept 22, 2026',
+        comment: 'Audio quality easily beats speakers twice its price tag. The bass port produces astonishing warmth.'
       }
     ]
   },
+
+  // --- TECH & LAPTOPS ---
   {
     id: 6,
-    name: 'Cloud Mechanical Keyboard',
+    name: 'Apple MacBook Pro 14" Space Grey',
     category: 'Tech',
-    price: 4199,
+    price: 169999,
+    oldPrice: 184999,
     rating: 4.9,
-    stock: 11,
-    image: 'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80',
+    stock: 8,
+    image: 'https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1595225476474-87563907a212?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/1.webp',
+      'https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/2.webp',
+      'https://cdn.dummyjson.com/product-images/laptops/apple-macbook-pro-14-inch-space-grey/3.webp'
     ],
     accent: '#b5f6d2',
-    description: 'Built for typists and enthusiasts, the Cloud Keyboard features hot-swappable tactile mechanical switches, sound-absorbing acoustic foam layers, and customizable per-key RGB backlighting encased in a solid CNC aluminum body.',
+    featured: true,
+    description: 'Engineered for pro workflows with Apple silicon architecture. Features the breathtaking Liquid Retina XDR display with 120Hz ProMotion, studio-grade 3-mic array, six-speaker sound system with force-cancelling woofers, and full suite of pro ports.',
     highlights: [
-      '75% Compact layout with volume rotary knob',
-      'Hot-swappable PCB supporting 3-pin & 5-pin switches',
-      'Double-shot PBT keycaps resistant to shine',
-      'Triple connection modes: Bluetooth 5.0, 2.4GHz Wireless & Type-C'
+      'Liquid Retina XDR display with 1,000,000:1 contrast & 1600 nits peak brightness',
+      'Hardware-accelerated ProRes video encode and decode engines',
+      'MagSafe 3 fast-charging port, 3x Thunderbolt 4 ports, HDMI & SDXC reader',
+      'Up to 18 hours of real-world battery life on a single charge'
     ],
     specs: {
-      'Layout': '75% Compact (82 Keys)',
-      'Switches': 'Custom Pre-lubed Tactile Cream',
-      'Keycaps': 'Double-shot PBT Cherry Profile',
-      'Battery': '4000mAh Rechargeable',
-      'Weight': '980g'
+      'Display': '14.2" Liquid Retina XDR (3024 x 1964) 120Hz ProMotion',
+      'Memory': '16GB Unified Memory',
+      'Storage': '512GB High-Speed NVMe SSD',
+      'Chassis': '100% Recycled CNC Aluminum',
+      'Weight': '1.6 kg'
     },
     reviews: [
       {
         id: 'r7',
-        user: 'Devansh Roy',
+        user: 'Hazel Evans',
         rating: 5,
-        date: 'Sept 29, 2026',
-        comment: 'The acoustics on this out-of-the-box keyboard are insane. Deep marble sound profile without needing custom mods!'
+        date: 'Oct 08, 2026',
+        comment: 'The XDR display is unbelievable for video color grading. Fans literally never turn on during daily development work.'
       }
     ]
   },
   {
     id: 7,
-    name: 'Field Stainless Thermal Bottle',
-    category: 'Everyday Carry',
-    price: 899,
-    oldPrice: 1199,
-    rating: 4.3,
-    stock: 30,
-    image: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80',
+    name: 'Dell XPS 13 InfinityEdge Ultrabook',
+    category: 'Tech',
+    price: 114999,
+    oldPrice: 129999,
+    rating: 4.7,
+    stock: 11,
+    image: 'https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1523362628745-0c100150b504?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/1.webp',
+      'https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/2.webp',
+      'https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/3.webp'
     ],
-    accent: '#a8e6ff',
-    description: 'Constructed from food-grade 18/8 stainless steel, the Field Thermal Bottle utilizes vacuum insulation to keep water ice-cold for 24 hours or coffee piping hot for up to 12 hours.',
+    accent: '#ffd66b',
+    description: 'A masterclass in laptop industrial design. Precision-cut from a single block of aerospace aluminum with aerospace carbon fiber composite palm rest and a 4-sided borderless 16:10 InfinityEdge screen.',
     highlights: [
-      'Double-wall vacuum insulation tech',
-      '100% Leakproof BPA-free cap with carabiner loop',
-      'Powder-coated non-slip matte exterior',
-      'Sweat-proof condensation-free design'
+      'Four-sided virtually borderless 16:10 InfinityEdge display',
+      'Machined aluminum chassis with black carbon fiber composite interior',
+      'Edge-to-edge MagLev keyboard with 17% larger glass touchpad',
+      'Dual thermal fans and hidden exhaust vents maximize cooling efficiency'
     ],
     specs: {
-      'Capacity': '750 ml',
-      'Material': '18/8 Food-Grade Stainless Steel',
-      'Cold Retention': '24 Hours',
-      'Hot Retention': '12 Hours',
-      'Dishwasher Safe': 'Yes (Top Rack)'
+      'Display': '13.4" FHD+ (1920 x 1200) Anti-Glare 500 nits',
+      'Processor': 'Intel Core i7 10-Core Processor',
+      'RAM': '16GB LPDDR5 Dual-Channel',
+      'Storage': '512GB PCIe 4.0 SSD',
+      'Weight': '1.2 kg'
     },
     reviews: [
       {
         id: 'r8',
-        user: 'Ananya Roy',
-        rating: 4,
-        date: 'Sept 10, 2026',
-        comment: 'Keeps water cold through entire gym sessions and outdoor hikes. Very sturdy powder coat finish.'
+        user: 'Alice Smith',
+        rating: 5,
+        date: 'Sept 24, 2026',
+        comment: 'The carbon fiber wrist rest is so comfortable to type on. Ultra light to carry in my commuter backpack.'
       }
     ]
   },
   {
     id: 8,
-    name: 'Frame Sculptural Lounge Chair',
-    category: 'Home',
-    price: 8999,
-    rating: 4.7,
-    stock: 4,
-    image: 'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=800&q=80',
+    name: 'Asus Zenbook Pro Duo Dual-Screen',
+    category: 'Tech',
+    price: 139999,
+    oldPrice: 154999,
+    rating: 4.8,
+    stock: 6,
+    image: 'https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1567538096630-e0c55bd6374c?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1580481077195-c3a821a58875?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/1.webp',
+      'https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/2.webp',
+      'https://cdn.dummyjson.com/product-images/laptops/asus-zenbook-pro-dual-screen-laptop/3.webp'
     ],
-    accent: '#ffb7d5',
-    description: 'A masterpiece of contemporary interior architecture, the Frame Chair pairs a powder-coated tubular steel frame with high-resilience foam cushioning upholstered in textured boucle fabric.',
+    accent: '#ff9ebb',
+    featured: true,
+    description: 'Revolutionize your creative workflow with dual interactive touchscreens. Features a secondary full-width ScreenPad Plus secondary display that tilts up automatically to optimize viewing ergonomics and thermal airflow.',
     highlights: [
-      'Sculptural geometric steel frame chassis',
-      'Stain-resistant premium woven boucle upholstery',
-      'Ergonomic angled back support',
-      'Non-marking floor protector feet'
+      'Tilting ScreenPad Plus 12.6" secondary touchscreen display',
+      'OLED HDR primary display with cinema-grade 100% DCI-P3 color gamut',
+      'AAS Ultra thermal mechanism increases cooling airflow by 38%',
+      'Includes active stylus pen with 4096 pressure levels'
     ],
     specs: {
-      'Frame Material': 'Heavy-Gauge Steel',
-      'Fabric': 'Premium Textured Boucle',
-      'Dimensions': '78cm x 72cm x 75cm',
-      'Max Weight Capacity': '150 kg',
-      'Assembly': 'Pre-assembled'
+      'Primary Display': '14.5" 2.8K 120Hz OLED Touchscreen',
+      'Secondary Display': '12.7" IPS ScreenPad Plus Touchscreen',
+      'Graphics': 'NVIDIA GeForce RTX Studio GPU',
+      'RAM': '32GB LPDDR5',
+      'Storage': '1TB NVMe Gen4 SSD'
     },
     reviews: [
       {
         id: 'r9',
-        user: 'Pooja V.',
+        user: 'Zoe Bennett',
         rating: 5,
-        date: 'Sept 04, 2026',
-        comment: 'The centerpiece of my living room! Gets compliments from everyone who visits. Super comfortable for reading.'
+        date: 'Oct 01, 2026',
+        comment: 'Having timeline controls and reference documents open on the bottom screen while editing 4K footage is a revelation.'
       }
     ]
   },
+
+  // --- HOROLOGY & WATCHES ---
   {
     id: 9,
-    name: 'Cyber Geometric Sunglasses',
-    category: 'Eyewear',
-    price: 1999,
-    oldPrice: 2599,
+    name: 'Rolex Cellini Moonphase Complication',
+    category: 'Horology',
+    price: 89999,
+    oldPrice: 99999,
     rating: 4.9,
-    stock: 20,
-    image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80',
+    stock: 4,
+    image: 'https://cdn.dummyjson.com/product-images/mens-watches/rolex-cellini-moonphase/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1511499767150-a48a237f0083?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1577803645773-f96470509666?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mens-watches/rolex-cellini-moonphase/1.webp',
+      'https://cdn.dummyjson.com/product-images/mens-watches/rolex-cellini-moonphase/2.webp',
+      'https://cdn.dummyjson.com/product-images/mens-watches/rolex-cellini-moonphase/3.webp'
     ],
-    accent: '#ff9ebb',
+    accent: '#ffe5d9',
     featured: true,
-    description: 'Make a futuristic statement with Cyber Shades. Meticulously handcrafted from Italian Mazzucchelli acetate, these glasses feature TAC polarized lenses providing 100% UV400 radiation protection.',
+    description: 'A celebration of astronomical precision and classical watchmaking. Displays the cycle of lunar phases on an enamelled blue disc at 6 o’clock with a genuine meteorite moon applique, framed in a fluted 18 ct gold bezel.',
     highlights: [
-      'Category 3 TAC Polarized Lenses',
-      '100% UV400 UVA & UVB Protection',
-      'Hand-polished Italian Acetate frame',
-      'Durable 5-barrel stainless steel hinges'
+      'Genuine Gibeon meteorite moon applique on blue enamelled disc',
+      'Date indicated on perimeter of dial via center hand with crescent tip',
+      'Self-winding mechanical caliber certified as Superlative Chronometer',
+      'Supple brown alligator leather strap with 18 ct gold Crownclasp'
     ],
     specs: {
-      'Frame Width': '142 mm',
-      'Bridge Width': '19 mm',
-      'Lens Type': 'Polarized Anti-Glare',
-      'Includes': 'Hard Case & Microfiber Cleaning Cloth',
-      'Gender': 'Unisex'
+      'Case Diameter': '39 mm',
+      'Case Material': '18 ct Everose Gold',
+      'Crystal': 'Domed Scratch-resistant Sapphire',
+      'Power Reserve': 'Approximately 48 Hours',
+      'Water Resistance': '50 meters / 5 ATM'
     },
     reviews: [
       {
         id: 'r10',
-        user: 'Siddharth Nair',
+        user: 'Leo Rivera',
         rating: 5,
-        date: 'Sept 18, 2026',
-        comment: 'Build quality feels luxurious. Extremely stylish shape and optics are crystal clear with zero distortion.'
+        date: 'Sept 15, 2026',
+        comment: 'The meteorite moon disc in person has depth and iridescence that photos can barely capture. Masterpiece.'
       }
     ]
   },
   {
     id: 10,
-    name: 'Acoustic Wireless Earbuds',
-    category: 'Audio',
-    price: 3499,
-    oldPrice: 4299,
-    rating: 4.7,
-    stock: 16,
-    image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80',
+    name: 'Rolex Submariner Date Diver Watch',
+    category: 'Horology',
+    price: 74999,
+    oldPrice: 82999,
+    rating: 4.9,
+    stock: 5,
+    image: 'https://cdn.dummyjson.com/product-images/mens-watches/rolex-submariner-watch/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1606220588913-b3aacb4d2f46?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1598331668826-20cecc596b86?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mens-watches/rolex-submariner-watch/1.webp',
+      'https://cdn.dummyjson.com/product-images/mens-watches/rolex-submariner-watch/2.webp',
+      'https://cdn.dummyjson.com/product-images/mens-watches/rolex-submariner-watch/3.webp'
     ],
-    accent: '#ffe66d',
+    accent: '#a8dadc',
     featured: true,
-    description: 'Equipped with custom graphene dynamic drivers, the Acoustic Pods deliver immersive 3D spatial audio performance. Features low-latency gaming mode and quadruple beamforming mics for HD call voice clarity.',
+    description: 'The archetype of the diver watch. Unidirectional rotatable Cerachrom ceramic bezel with 60-minute graduations, solid Oystersteel bracelet with Oysterlock safety clasp, and legendary 300-meter water resistance.',
     highlights: [
-      'Graphene dynamic drivers for crisp acoustic clarity',
-      'Active ENC (Environmental Noise Cancellation) for calls',
-      'IPX5 Sweat & Rain resistant rating',
-      '28 Hours total battery life with fast charge case'
+      'Unidirectional 60-minute Cerachrom ceramic bezel with platinum numerals',
+      'Chromalight display with long-lasting blue luminescent markers',
+      'Oystersteel 904L aerospace alloy resistant to ocean corrosion',
+      'Glidelock extension system allows fine adjustment over wetsuits'
     ],
     specs: {
-      'Bluetooth Version': 'v5.3',
-      'Latency': '45ms Low Latency Mode',
-      'Case Battery': '450 mAh',
-      'Playtime': '7 Hours (28 Hrs total)',
-      'Waterproof Rating': 'IPX5'
+      'Case Diameter': '41 mm',
+      'Material': 'Oystersteel (904L Stainless)',
+      'Water Resistance': '300 meters / 1,000 feet',
+      'Bezel': 'Cerachrom Ceramic Insert',
+      'Movement': 'Rolex Calibre 3235 Automatic'
     },
     reviews: [
       {
         id: 'r11',
-        user: 'Tanya Sengupta',
+        user: 'Hannah Robinson',
         rating: 5,
-        date: 'Aug 29, 2026',
-        comment: 'Great fit for workouts! Never drop connection and sound separation is excellent for acoustic acoustics and jazz.'
+        date: 'Oct 03, 2026',
+        comment: 'Robust yet slides easily under a dress cuff. The ceramic bezel click is sharp and tactile.'
       }
     ]
   },
   {
     id: 11,
-    name: 'Vibe 360 Portable Speaker',
-    category: 'Audio',
-    price: 5299,
+    name: 'Longines Master Collection Chronometer',
+    category: 'Horology',
+    price: 28999,
+    oldPrice: 34999,
     rating: 4.8,
-    stock: 8,
-    image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80',
+    stock: 12,
+    image: 'https://cdn.dummyjson.com/product-images/mens-watches/longines-master-collection/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1543512214-318c7553f230?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mens-watches/longines-master-collection/1.webp',
+      'https://cdn.dummyjson.com/product-images/mens-watches/longines-master-collection/2.webp',
+      'https://cdn.dummyjson.com/product-images/mens-watches/longines-master-collection/3.webp'
     ],
-    accent: '#a2d2ff',
-    description: 'Fill any room or outdoor gathering with room-shaking 360-degree sound. Dual passive radiators deliver deep thumping bass, while the IPX7 waterproof casing handles pool splashes effortlessly.',
+    accent: '#b8c0ff',
+    description: 'Classical Swiss horology at its finest. Silver barleycorn textured dial, painted Arabic numerals, blued steel hands, and transparent exhibition caseback revealing the automatic balance wheel.',
     highlights: [
-      'Omnidirectional 360° sound dispersion',
-      'Dual passive bass radiators for chest-thumping low end',
-      'IPX7 100% Waterproof & Dustproof',
-      'TWS Party mode link: Connect 2 speakers for stereo sound'
+      'Barleycorn guilloche engraved dial texture with heat-blued hands',
+      'Exhibition sapphire caseback displays Geneva stripes on rotor',
+      'Automatic self-winding caliber beating at 28,800 vibrations/hour',
+      'Genuine brown calf leather strap with triple folding safety clasp'
     ],
     specs: {
-      'Power Output': '25W RMS',
-      'Playtime': '16 Hours',
-      'Wireless Range': '30 meters / 100 ft',
-      'Weight': '520g',
-      'Charging Time': '2.5 Hours'
+      'Case Diameter': '40 mm',
+      'Dial': 'Silver "Barleycorn" with Blued Steel Hands',
+      'Movement': 'Automatic Calibre L888',
+      'Power Reserve': '72 Hours',
+      'Glass': 'Scratch-resistant Sapphire'
     },
     reviews: [
       {
         id: 'r12',
-        user: 'Rahul Saxena',
+        user: 'Nathan Reed',
         rating: 5,
-        date: 'Sept 01, 2026',
-        comment: 'Punches way above its weight! Took it on a beach trip and the volume and clarity outdoor were incredible.'
+        date: 'Sept 19, 2026',
+        comment: 'The blued steel hands against the barleycorn textured dial look sublime when catching light.'
       }
     ]
   },
   {
     id: 12,
-    name: 'Urban Heavyweight Hoodie',
-    category: 'Apparel',
-    price: 2799,
-    oldPrice: 3499,
+    name: 'Classic Stitched Leather Heritage Watch',
+    category: 'Horology',
+    price: 6499,
+    oldPrice: 7999,
     rating: 4.6,
-    stock: 25,
-    image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80',
+    stock: 20,
+    image: 'https://cdn.dummyjson.com/product-images/mens-watches/brown-leather-belt-watch/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mens-watches/brown-leather-belt-watch/1.webp',
+      'https://cdn.dummyjson.com/product-images/mens-watches/brown-leather-belt-watch/2.webp',
+      'https://cdn.dummyjson.com/product-images/mens-watches/brown-leather-belt-watch/3.webp'
     ],
-    accent: '#b8c0ff',
-    description: 'Cut from 450 GSM French terry organic cotton, this boxy street hoodie offers structured warmth and comfort. Double-lined hood, dropped shoulders, and ribbed cuffs complete the modern relaxed silhouette.',
+    accent: '#d4a373',
+    description: 'Timeless vintage aesthetic for everyday gentleman wear. Features a sunray dial, baton indices, quick-set date complication, and thick vegetable-tanned stitched leather strap that patinas gracefully with age.',
     highlights: [
-      '450 GSM Heavyweight 100% Organic French Terry Cotton',
-      'Pre-shrunk fabric for lasting true fit',
-      'Double-stitched kangaroo pocket & reinforced seams',
-      'Unisex oversized boxy fit'
+      'Vegetable-tanned full-grain leather strap with reinforced stitching',
+      'Polished 316L stainless steel case with coin-edge crown',
+      'Hardened mineral crystal with anti-glare undercoating',
+      'Japanese high-precision quartz movement accurate to ±10s/month'
     ],
     specs: {
-      'Fabric Weight': '450 GSM',
-      'Material': '100% Organic Cotton',
-      'Fit': 'Oversized Boxy',
-      'Care': 'Machine wash cold inside out',
-      'Origin': 'Ethically Manufactured'
+      'Case Size': '42 mm',
+      'Strap Width': '22 mm Genuine Leather',
+      'Movement': 'Precision Quartz Movement',
+      'Battery Life': '3 Years',
+      'Water Resistance': '30 meters / 3 ATM'
     },
     reviews: [
       {
         id: 'r13',
-        user: 'Zaid Khan',
-        rating: 4,
-        date: 'Sept 14, 2026',
-        comment: 'Thick, premium fabric that keeps its structured shape after washing. Highly recommended!'
+        user: 'David Martinez',
+        rating: 5,
+        date: 'Sept 26, 2026',
+        comment: 'The leather band broke in after just two days and is super supple now. Great daily beater watch.'
       }
     ]
   },
+
+  // --- SMARTPHONES & MOBILE ---
   {
     id: 13,
-    name: 'Minimalist Aluminum Cardholder',
-    category: 'Everyday Carry',
-    price: 1299,
-    rating: 4.5,
-    stock: 35,
-    image: 'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=800&q=80',
+    name: 'Apple iPhone 13 Pro (Alpine Silver)',
+    category: 'Smartphones',
+    price: 69999,
+    oldPrice: 79999,
+    rating: 4.8,
+    stock: 9,
+    image: 'https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1559563458-527698bf5295?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1606503153255-59d8b8b82176?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/1.webp',
+      'https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/2.webp',
+      'https://cdn.dummyjson.com/product-images/smartphones/iphone-13-pro/3.webp'
     ],
-    accent: '#e7c6ff',
-    description: 'Ditch bulky traditional wallets. This sleek aviation-grade aluminum cardholder features a push-up trigger mechanism that fans out up to 8 cards for instant one-handed access.',
+    accent: '#e9ecef',
+    featured: true,
+    description: 'Pro camera system with 3x optical zoom telephoto, macro photography capabilities, Cinematic mode in 1080p 30fps, and Super Retina XDR display with ProMotion 120Hz adaptive refresh rate.',
     highlights: [
-      'Instant push-button card ejection mechanism',
-      'Integrated RFID & NFC blocking shield against wireless theft',
-      'Flexible silicone cash strap holds folded bills securely',
-      'Ultra-thin 12mm profile fits front pockets seamlessly'
+      'Super Retina XDR OLED display with ProMotion up to 120Hz',
+      'Pro 12MP camera array (Telephoto, Wide, Ultra Wide) with LiDAR scanner',
+      'A15 Bionic chip with 5-core GPU for lightning gaming and rendering',
+      'Ceramic Shield front cover and surgical-grade stainless steel frame'
     ],
     specs: {
-      'Card Capacity': '1 to 8 Cards',
-      'Material': 'Aerospace Anodized Aluminum',
-      'Dimensions': '10cm x 6.2cm x 1.2cm',
-      'Weight': '65g',
-      'Security': 'RFID Blocking Tech'
+      'Display': '6.1" Super Retina XDR OLED 120Hz',
+      'Processor': 'Apple A15 Bionic (6-Core CPU, 5-Core GPU)',
+      'Water Resistance': 'IP68 (6 meters for up to 30 mins)',
+      'Storage': '256GB NVMe',
+      'Frame': 'Surgical-Grade Stainless Steel'
     },
     reviews: [
       {
         id: 'r14',
-        user: 'Mohit Rao',
+        user: 'Christian Perez',
         rating: 5,
-        date: 'Sept 26, 2026',
-        comment: 'Game changer for front pocket carry. Cards pop out smoothly with the lever.'
+        date: 'Oct 05, 2026',
+        comment: 'ProMotion 120Hz makes everyday scrolling butter smooth. Macro camera mode is astonishingly sharp.'
       }
     ]
   },
   {
     id: 14,
-    name: 'Ergo Precision Wireless Mouse',
-    category: 'Workspace',
-    price: 2899,
-    oldPrice: 3499,
-    rating: 4.8,
-    stock: 14,
-    image: 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=800&q=80',
+    name: 'Apple Watch Series 4 Gold Edition',
+    category: 'Smartphones',
+    price: 24999,
+    oldPrice: 29999,
+    rating: 4.7,
+    stock: 15,
+    image: 'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-watch-series-4-gold/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1605792657660-596af9009e82?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-watch-series-4-gold/1.webp',
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-watch-series-4-gold/2.webp',
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-watch-series-4-gold/3.webp'
     ],
-    accent: '#c8e6c9',
-    description: 'Sculpted to match the natural posture of your hand, the Ergo Precision Mouse reduces wrist strain during long work sessions. Features a hyper-fast electromagnetic scroll wheel and silent click switches.',
+    accent: '#ffd166',
+    featured: true,
+    description: 'Fundamentally redesigned with edge-to-edge curved OLED screen, electrical heart sensor capable of generating an ECG, haptic Digital Crown with click feedback, and comprehensive activity ring tracking.',
     highlights: [
-      'Ergonomic 57° vertical palm grip angle',
-      'Quiet-click buttons (90% noise reduction)',
-      '4000 DPI high-precision optical tracking sensor',
-      'Connect up to 3 devices with seamless Flow switching'
+      'Curved OLED Retina display with 30% more screen real estate',
+      'Electrical and optical heart sensors with low/high heart rate notifications',
+      'Fall detection with automatic Emergency SOS call routing',
+      'Water resistant to 50 meters, ready for open water swim tracking'
     ],
     specs: {
-      'DPI Range': '200 to 4000 DPI',
-      'Connectivity': 'Bluetooth Low Energy & 2.4G Receiver',
-      'Battery Life': 'Up to 70 days on full charge',
-      'Recharge Time': 'Quick charge (3 min charge = 1 day use)',
-      'Compatibility': 'Windows, Mac, iPadOS, ChromeOS'
+      'Case Size': '44 mm Anodized Gold Aluminum',
+      'Display': 'LTPO OLED Retina with Force Touch (1000 nits)',
+      'Sensors': 'ECG Sensor, Optical Heart Sensor, Accelerometer',
+      'Connectivity': 'GPS, Wi-Fi, Bluetooth 5.0',
+      'Battery': 'All-Day 18 Hours'
     },
     reviews: [
       {
         id: 'r15',
-        user: 'Meera Iyer',
+        user: 'Nicholas Bailey',
         rating: 5,
-        date: 'Sept 11, 2026',
-        comment: 'Cured my wrist pain after switching to this! Silent clicks are great for working in quiet office environments.'
+        date: 'Sept 20, 2026',
+        comment: 'Gold finish looks very premium on the wrist. Haptic feedback on the digital crown is a delight.'
       }
     ]
   },
   {
     id: 15,
-    name: 'Smart Temperature Flask',
-    category: 'Lifestyle',
-    price: 1499,
-    rating: 4.4,
-    stock: 22,
-    image: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=800&q=80',
+    name: 'Apple MagSafe Magnetic Battery Pack',
+    category: 'Smartphones',
+    price: 5999,
+    oldPrice: 7499,
+    rating: 4.6,
+    stock: 28,
+    image: 'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-magsafe-battery-pack/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-magsafe-battery-pack/1.webp',
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-magsafe-battery-pack/2.webp'
     ],
-    accent: '#ffcc80',
-    description: 'Touch the sleek lid to instantly reveal the internal liquid temperature on a bright HD LED display. Built with double-wall copper-plated insulation to preserve beverage temperature for hours.',
+    accent: '#e7c6ff',
+    description: 'Snap on to charge wirelessly. Perfectly aligned magnets attach securely to your iPhone, providing safe and reliable wireless power on the move without pressing buttons or carrying cables.',
     highlights: [
-      'Touch-activated LED lid temperature display',
-      '316 Medical-grade stainless steel inner liner',
-      'Removable tea filter infuser basket included',
-      'Long-life CR2450 battery lasts up to 2 years'
+      'Zero-button magnetic snap-on wireless charging',
+      'Pass-through charging: charges both pack and phone simultaneously',
+      'Intelligent battery widget integration in iOS lock screen',
+      'Soft-touch matte exterior provides comfortable palm grip'
     ],
     specs: {
-      'Capacity': '500 ml',
-      'Liner Material': '316 Medical-grade Stainless Steel',
-      'Display': 'OLED Touch Screen',
-      'Retention': 'Hot 12h / Cold 24h',
-      'BPA Free': 'Yes'
+      'Capacity': '1460 mAh (11.13 Wh)',
+      'Charging Speed': 'Up to 15W with 20W+ adapter',
+      'Compatibility': 'iPhone 12, 13, 14, 15 series',
+      'Weight': '115g'
     },
     reviews: [
       {
         id: 'r16',
-        user: 'Gaurav Joshi',
-        rating: 4,
-        date: 'Sept 07, 2026',
-        comment: 'Very handy for making green tea on the go. Temperature display is responsive and accurate.'
+        user: 'Cameron Burke',
+        rating: 5,
+        date: 'Oct 04, 2026',
+        comment: 'Essential accessory for full travel days. Magnets grip strong and it fits flat in your pocket.'
       }
     ]
   },
   {
     id: 16,
-    name: 'Heavyweight Canvas Carry Tote',
-    category: 'Bags',
-    price: 1199,
-    oldPrice: 1599,
-    rating: 4.7,
-    stock: 40,
-    image: 'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
+    name: 'MagSafe Silicone Protective Case (Plum)',
+    category: 'Smartphones',
+    price: 1999,
+    oldPrice: 2499,
+    rating: 4.8,
+    stock: 35,
+    image: 'https://cdn.dummyjson.com/product-images/mobile-accessories/iphone-12-silicone-case-with-magsafe-plum/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1577733966973-d680bffd2e80?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/iphone-12-silicone-case-with-magsafe-plum/1.webp',
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/iphone-12-silicone-case-with-magsafe-plum/2.webp',
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/iphone-12-silicone-case-with-magsafe-plum/3.webp',
+      'https://cdn.dummyjson.com/product-images/mobile-accessories/iphone-12-silicone-case-with-magsafe-plum/4.webp'
     ],
-    accent: '#fff59d',
-    description: 'Constructed from heavy 16oz cotton duck canvas, this structured tote carries groceries, books, or beach essentials with ease. Features an inner zippered pocket and key leash lanyard.',
+    accent: '#d1c4e9',
+    description: 'Silky, soft-touch finish of the silicone exterior feels great in your hand, while soft microfiber lining inside protects the glass back from scratches. Embedded MagSafe magnets ensure fast magnetic alignment.',
     highlights: [
-      'Heavy-duty 16oz 100% Cotton Duck Canvas',
-      'Reinforced double-stitched webbing handles',
-      'Internal zip pocket for phone & wallet security',
-      'Flat reinforced base stands upright'
+      'Built-in neodymium magnets align with MagSafe chargers & wallets',
+      'Soft-touch liquid silicone exterior resists fingerprints and lint',
+      'Internal microfiber velvet lining prevents micro-abrasions',
+      'Raised camera bevel protects sapphire lenses from table scratches'
     ],
     specs: {
-      'Material': '16oz Natural Cotton Canvas',
-      'Dimensions': '40cm x 35cm x 14cm',
-      'Handle Drop': '26 cm',
-      'Closure': 'Magnetic Snap Top',
-      'Washable': 'Machine Wash Gentle'
+      'Material': 'Liquid Silicone & Microfiber Lining',
+      'Drop Protection': 'Military Standard Drop Tested',
+      'MagSafe Compatible': 'Yes (Built-in ring)',
+      'Color': 'Deep Plum Purple'
     },
     reviews: [
       {
         id: 'r17',
-        user: 'Divya Nair',
+        user: 'Isabella Anderson',
         rating: 5,
-        date: 'Sept 02, 2026',
-        comment: 'Super sturdy tote! Holds my 15-inch laptop, water bottle, and sweater without sagging.'
+        date: 'Sept 27, 2026',
+        comment: 'The plum shade is gorgeous in person! Grippy texture and fits like a second skin.'
       }
     ]
   },
+
+  // --- EYEWEAR ---
   {
     id: 17,
-    name: 'Reflective Night Windbreaker',
-    category: 'Apparel',
-    price: 4599,
-    rating: 4.9,
-    stock: 6,
-    image: 'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80',
+    name: 'Classic Minimalist UV Sunglasses',
+    category: 'Eyewear',
+    price: 2499,
+    oldPrice: 3199,
+    rating: 4.7,
+    stock: 24,
+    image: 'https://cdn.dummyjson.com/product-images/sunglasses/classic-sun-glasses/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1509967419530-da38b4704bc6?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/sunglasses/classic-sun-glasses/1.webp',
+      'https://cdn.dummyjson.com/product-images/sunglasses/classic-sun-glasses/2.webp',
+      'https://cdn.dummyjson.com/product-images/sunglasses/classic-sun-glasses/3.webp'
     ],
-    accent: '#d1c4e9',
+    accent: '#ffcc80',
     featured: true,
-    description: 'Designed for nocturnal urban explorers, this windbreaker features 3M Scotchlite 360-degree reflective patterns that glow intensely under city lights, combined with a DWR water-repellent coating.',
+    description: 'A timeless silhouette engineered with hand-finished cellulose acetate and TAC polarized lenses. Provides full UV400 radiation filtering and glare reduction for coastal drives and bright city walks.',
     highlights: [
-      '3M Scotchlite high-visibility reflective print',
-      'DWR (Durable Water Repellent) stormproof shell',
-      'Packable into its own chest pocket with sling strap',
-      'Adjustable toggle hood and elasticated cuffs'
+      'UV400 Polarized Triacetate Cellulose (TAC) lenses',
+      'Handcrafted cellulose acetate frame with wire core temples',
+      'Stainless steel 5-barrel barrel hinges for smooth hinge action',
+      'Includes faux-leather collapsible travel case & cleaning cloth'
     ],
     specs: {
-      'Shell': '100% Ripstop Nylon with DWR',
-      'Reflectivity': '3M Scotchlite 360°',
-      'Weight': '210g ultra-light packable',
-      'Zippers': 'YKK Aquaguard Waterproof',
-      'Fit': 'Athletic Cut'
+      'Frame Width': '142 mm',
+      'Lens Width': '52 mm',
+      'Bridge': '19 mm',
+      'Lens Color': 'Neutral Smoke Grey',
+      'Protection': '100% UVA / UVB Filtering'
     },
     reviews: [
       {
         id: 'r18',
-        user: 'Arjun Das',
+        user: 'Julian James',
         rating: 5,
-        date: 'Sept 25, 2026',
-        comment: 'Insane reflective effect at night! Perfect for evening cycling and running in rainy weather.'
+        date: 'Sept 29, 2026',
+        comment: 'High optical clarity without any chromatic distortion. Frame has good substantial weight.'
       }
     ]
   },
   {
     id: 18,
-    name: 'Ambient RGB Monitor Light Bar',
-    category: 'Workspace',
-    price: 2199,
-    oldPrice: 2799,
-    rating: 4.6,
-    stock: 19,
-    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80',
+    name: 'Cyber Geometric Two-Tone Sunglasses',
+    category: 'Eyewear',
+    price: 2899,
+    oldPrice: 3599,
+    rating: 4.8,
+    stock: 18,
+    image: 'https://cdn.dummyjson.com/product-images/sunglasses/green-and-black-glasses/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1593062096033-9a26b09da705?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1585792180666-f7347c490ee2?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/sunglasses/green-and-black-glasses/1.webp',
+      'https://cdn.dummyjson.com/product-images/sunglasses/green-and-black-glasses/2.webp',
+      'https://cdn.dummyjson.com/product-images/sunglasses/green-and-black-glasses/3.webp'
     ],
     accent: '#b2dfdb',
-    description: 'Eliminate screen glare and brighten your workstation. Mounts effortlessly to curved or flat monitors, offering asymmetric optical light forward while projecting vibrant ambient RGB backlighting.',
+    description: 'Distinctive architectural angles combined with contrasting two-tone emerald green and matte black Italian acetate. Dark-tinted lenses offer privacy and high-contrast acuity under direct harsh sunlight.',
     highlights: [
-      'Asymmetric optical light design (zero screen glare)',
-      'Rear ambient RGB lighting with music sync mode',
-      'Wireless desktop magnetic touch puck control',
-      'USB-powered directly from monitor or PC'
+      'Bold beveled architectural acetate face front',
+      'High-contrast Category 3 anti-reflective lenses',
+      'Reinforced internal temple core wires for custom optician adjustments',
+      'Laser-engraved temple logos'
     ],
     specs: {
-      'Length': '45 cm / 17.7 inches',
-      'Monitor Thickness': 'Fits 0.5cm - 4.5cm',
-      'Power Input': '5V 2A USB Type-C',
-      'Light Output': 'CRI Ra > 95 High Color Accuracy',
-      'Controls': 'Wireless Desktop Remote Dial'
+      'Frame Material': 'Italian Mazzucchelli Acetate',
+      'Lens Coating': 'Anti-scratch & Hydrophobic',
+      'Gender': 'Unisex',
+      'Weight': '38g'
     },
     reviews: [
       {
         id: 'r19',
-        user: 'Tarun Kapoor',
+        user: 'Victoria McDonald',
         rating: 5,
-        date: 'Sept 17, 2026',
-        comment: 'Drastically reduced my eye strain during night gaming and editing sessions. Wireless dial controller is super sleek!'
+        date: 'Oct 02, 2026',
+        comment: 'Unique angular shape! Constantly get asked where I got them.'
       }
     ]
   },
+
+  // --- BAGS & CARRY ---
   {
     id: 19,
-    name: 'Retro 35mm Rangefinder Camera',
-    category: 'Photography',
-    price: 14999,
-    oldPrice: 17999,
+    name: 'Prada Saffiano Sculptural Leather Handbag',
+    category: 'Bags & Carry',
+    price: 38999,
+    oldPrice: 44999,
     rating: 4.9,
     stock: 5,
-    image: 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80',
+    image: 'https://cdn.dummyjson.com/product-images/womens-bags/prada-women-bag/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/womens-bags/prada-women-bag/1.webp',
+      'https://cdn.dummyjson.com/product-images/womens-bags/prada-women-bag/2.webp',
+      'https://cdn.dummyjson.com/product-images/womens-bags/prada-women-bag/3.webp'
     ],
-    accent: '#ffd166',
+    accent: '#ffb7d5',
     featured: true,
-    description: 'Experience tactile street photography with this classic analog rangefinder. Crafted with a solid brass top plate, coupled optical rangefinder window, and an ultra-sharp 40mm f/1.8 multi-coated glass prime lens.',
+    description: 'Iconic luxury Italian craftsmanship. Characterized by its crosshatch textured Saffiano leather finish, double rolled leather handles, detachable shoulder strap, and signature enamelled metal triangle logo.',
     highlights: [
-      'Solid brass chassis with vulcanite textured grip',
-      'Ultra-sharp 40mm f/1.8 multi-coated prime lens',
-      'Bright split-image optical coincidence rangefinder',
-      'Mechanical shutter operation requiring no batteries'
+      'Scratch-resistant crosshatch textured Saffiano calf leather',
+      'Polished gold-tone hardware and two-way zipper closure',
+      'Two internal zip pockets and central compartment with logo lining',
+      'Protective metal purse feet on flat base'
     ],
     specs: {
-      'Film Format': '35mm Standard (24x36mm)',
-      'Lens': '40mm f/1.8 (6 Elements in 4 Groups)',
-      'Shutter Speeds': '1s to 1/1000s + Bulb',
-      'Weight': '460g',
-      'Includes': 'Leather Strap & Metal Lens Hood'
+      'Dimensions': '32cm x 24cm x 14cm',
+      'Material': 'Calf Saffiano Leather',
+      'Hardware': '24k Gold Plated Brass',
+      'Origin': 'Made in Italy',
+      'Includes': 'Certificate of Authenticity & Dust Bag'
     },
     reviews: [
       {
         id: 'r20',
-        user: 'Kabir Sen',
+        user: 'Lucas Ramirez',
         rating: 5,
-        date: 'Oct 02, 2026',
-        comment: 'Pure mechanical perfection. The shutter release click is so satisfying and the glass renders portraits with incredible character.'
+        date: 'Oct 04, 2026',
+        comment: 'Structured, timeless, and the leather texture is practically indestructible against scuffs.'
       }
     ]
   },
   {
     id: 20,
-    name: 'Modular Walnut Desk Shelf',
-    category: 'Workspace',
-    price: 3699,
-    oldPrice: 4299,
+    name: 'Noir Structured Architectural Handbag',
+    category: 'Bags & Carry',
+    price: 8999,
+    oldPrice: 10999,
     rating: 4.8,
-    stock: 10,
-    image: 'https://images.unsplash.com/photo-1593062096033-9a26b09da705?auto=format&fit=crop&w=800&q=80',
+    stock: 14,
+    image: 'https://cdn.dummyjson.com/product-images/womens-bags/women-handbag-black/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1593062096033-9a26b09da705?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1585792180666-f7347c490ee2?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1518455027359-f3f8164ba6bd?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/womens-bags/women-handbag-black/1.webp',
+      'https://cdn.dummyjson.com/product-images/womens-bags/women-handbag-black/2.webp',
+      'https://cdn.dummyjson.com/product-images/womens-bags/women-handbag-black/3.webp'
     ],
     accent: '#d4a373',
-    featured: true,
-    description: 'Handcrafted from solid American black walnut and sandblasted anodized aluminum risers, this ergonomic monitor riser elevates displays to eye level while clearing precious desktop real estate below.',
+    description: 'Rich top-grain cowhide leather with a warm vintage hand-waxed patina. Features multiple exterior zip organizer pockets, dual top carrying handles, and an adjustable crossbody strap.',
     highlights: [
-      'Solid American Black Walnut with organic hand-rubbed oil finish',
-      'Aerospace aluminum legs with cork padding to protect desks',
-      'Holds up to 45 kg (supports dual monitors or iMac)',
-      'Integrated tray for Apple Magic Keyboard & trackpad storage'
+      '100% Top-grain cowhide leather with natural pebble texture',
+      'Spacious main compartment holds up to 13" laptop & notebook',
+      'Heavy-duty gunmetal zipper hardware and reinforced rivets',
+      'Adjustable canvas-backed leather crossbody strap'
     ],
     specs: {
-      'Material': 'Solid American Black Walnut & Aluminum',
-      'Dimensions': '110cm x 23cm x 11cm',
-      'Load Capacity': '45 kg',
-      'Under-shelf Clearance': '8.5 cm',
-      'Origin': 'Sustainably Harvested FSC Timber'
+      'Capacity': '15 Liters',
+      'Material': 'Genuine Top-Grain Leather',
+      'Dimensions': '36cm x 28cm x 12cm',
+      'Pockets': '6 Total (3 Exterior, 3 Interior)'
     },
     reviews: [
       {
         id: 'r21',
-        user: 'Sanjay Krishnan',
+        user: 'Hunter Gordon',
         rating: 5,
-        date: 'Oct 04, 2026',
-        comment: 'Transforms the aesthetic of your entire workstation. The rich grain of walnut wood looks phenomenal in daylight.'
+        date: 'Sept 30, 2026',
+        comment: 'Smells of wonderful real leather. Fits my tablet, water bottle, and daily wallet effortlessly.'
       }
     ]
   },
   {
     id: 21,
-    name: 'Titanium Pocket Multi-Tool',
-    category: 'Everyday Carry',
-    price: 1899,
-    rating: 4.7,
-    stock: 28,
-    image: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80',
+    name: 'Urban Faux Leather Commuter Backpack',
+    category: 'Bags & Carry',
+    price: 3299,
+    rating: 4.6,
+    stock: 20,
+    image: 'https://cdn.dummyjson.com/product-images/womens-bags/white-faux-leather-backpack/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1581092160607-ee22621dd758?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/womens-bags/white-faux-leather-backpack/1.webp',
+      'https://cdn.dummyjson.com/product-images/womens-bags/white-faux-leather-backpack/2.webp',
+      'https://cdn.dummyjson.com/product-images/womens-bags/white-faux-leather-backpack/3.webp'
     ],
-    accent: '#a8dadc',
-    description: 'Precision CNC-machined from Grade 5 titanium, this indestructible pocket pry bar combines a bottle opener, stepped hex wrench, box cutter notch, and metric ruler into a featherlight form factor.',
+    accent: '#fff59d',
+    description: 'Clean architectural minimalist white backpack. Water-repellent vegan leather exterior with concealed rear anti-theft zipper pocket, padded shoulder straps, and dedicated padded tablet sleeve.',
     highlights: [
-      'Grade 5 Ti-6Al-4V Aerospace Titanium construction',
-      'TSA-compliant pocket friendly design with deep-carry clip',
-      'Tritium vial slot for easy location in dark environments',
-      'Lifetime guarantee against bending or corrosion'
+      'Clean white vegan PU leather wipes clean with a damp cloth',
+      'Anti-theft rear zippered pocket keeps phone and passport safe',
+      'Ergonomic padded shoulder straps with metal adjustment sliders',
+      'Top grab handle for quick transit carrying'
     ],
     specs: {
-      'Material': 'Grade 5 Titanium (Ti-6Al-4V)',
-      'Length': '10.5 cm',
-      'Weight': '42g',
-      'Finish': 'Stonewashed Satin',
-      'Pocket Clip': 'Removable Titanium Clip'
+      'Dimensions': '38cm x 29cm x 13cm',
+      'Material': 'Waterproof PU Vegan Leather',
+      'Capacity': '14 Liters',
+      'Weight': '680g'
     },
     reviews: [
       {
         id: 'r22',
-        user: 'Nikhil R.',
+        user: 'Ava Harrison',
         rating: 5,
-        date: 'Sept 27, 2026',
-        comment: 'Crazy tough and weighs almost nothing on my keychain. Has opened countless boxes and bottles.'
+        date: 'Sept 25, 2026',
+        comment: 'Looks super chic with work clothes and keeps its sharp structured shape even when empty.'
       }
     ]
   },
+
+  // --- WORKSPACE & FURNITURE ---
   {
     id: 22,
-    name: 'Bauhaus Automatic Sapphire Watch',
-    category: 'Horology',
-    price: 11499,
-    oldPrice: 13999,
+    name: 'Knoll Saarinen Executive Chair',
+    category: 'Workspace',
+    price: 32999,
+    oldPrice: 38999,
     rating: 4.9,
-    stock: 8,
-    image: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=800&q=80',
+    stock: 6,
+    image: 'https://cdn.dummyjson.com/product-images/furniture/knoll-saarinen-executive-conference-chair/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1524805444758-089113d48a6d?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/furniture/knoll-saarinen-executive-conference-chair/1.webp',
+      'https://cdn.dummyjson.com/product-images/furniture/knoll-saarinen-executive-conference-chair/2.webp',
+      'https://cdn.dummyjson.com/product-images/furniture/knoll-saarinen-executive-conference-chair/3.webp'
     ],
-    accent: '#e9ecef',
+    accent: '#ffd66b',
     featured: true,
-    description: 'Inspired by early 20th-century German industrial design, this dress watch features a clean Bauhaus dial, blued steel hands, and a Japanese Miyota 9015 automatic mechanical movement visible through the exhibition caseback.',
+    description: 'Designed by Eero Saarinen in 1950, this design icon revolutionized executive seating with its fluid sculptural polyurethane shell, lumbar cutout for ventilation, and plush contoured foam cushioning.',
     highlights: [
-      'Miyota 9015 high-beat 28,800 vph automatic caliber',
-      'Domed scratch-resistant sapphire crystal with anti-reflective coating',
-      'Exhibition sapphire crystal caseback showing rotor movement',
-      'Full-grain Italian Horween leather quick-release strap'
+      'Sculptural reinforced molded polyurethane inner shell',
+      'Lumbar opening provides cooling airflow and ergonomic flex',
+      'Commercial-grade wool blend woven upholstery with welted piping',
+      'Four-star polished chrome swivel base with floor glide feet'
     ],
     specs: {
-      'Case Diameter': '38 mm',
-      'Case Thickness': '9.8 mm',
-      'Case Material': '316L Stainless Steel',
-      'Power Reserve': '42 Hours',
-      'Water Resistance': '50 meters / 5 ATM'
+      'Dimensions': '66cm W x 63cm D x 80cm H',
+      'Seat Height': '46 cm',
+      'Upholstery': 'KnollTextiles Premium Wool Weave',
+      'Frame': 'Tubular Chrome Steel',
+      'Weight Capacity': '160 kg'
     },
     reviews: [
       {
         id: 'r23',
-        user: 'Aditya Bose',
+        user: 'Elena Long',
         rating: 5,
         date: 'Oct 01, 2026',
-        comment: 'Extremely clean typography on the dial. The sweep of the high-beat second hand is butter smooth.'
+        comment: 'An absolute design icon for the home office. Supports your back during 8-hour work stretches.'
       }
     ]
   },
   {
     id: 23,
-    name: 'Carbon Fiber Expedition Tripod',
-    category: 'Photography',
-    price: 6899,
-    oldPrice: 7999,
+    name: 'Annibale Colombo Tailored Lounge Sofa',
+    category: 'Workspace',
+    price: 49999,
+    oldPrice: 58999,
     rating: 4.8,
-    stock: 9,
-    image: 'https://images.unsplash.com/photo-1516724562728-afc824a36e84?auto=format&fit=crop&w=800&q=80',
+    stock: 3,
+    image: 'https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-sofa/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1516724562728-afc824a36e84?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-sofa/1.webp',
+      'https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-sofa/2.webp',
+      'https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-sofa/3.webp'
     ],
-    accent: '#90e0ef',
-    description: 'Constructed with 8-layer diamond cross-weave carbon fiber tubes, this travel tripod supports heavy DSLR/mirrorless zoom setups while collapsing down to just 35 cm to slip inside backpack side pockets.',
+    accent: '#c8e6c9',
+    description: 'Handcrafted luxury Italian lounge sofa. Features high-resilience memory foam cushions wrapped in channel-quilted textile upholstery, resting atop a kiln-dried solid beechwood frame.',
     highlights: [
-      '8-Layer High-Density Carbon Fiber leg tubes',
-      'Arca-Swiss compatible 360-degree panoramic ball head',
-      'Invertible center column for macro floor-level shooting',
-      'Detachable leg transforms into a full-height monopod'
+      'Solid kiln-dried beechwood internal frame guaranteed for 20 years',
+      'Multi-density polyurethane foam core with hypoallergenic down feather topper',
+      'Stain-resistant textured weave fabric with removable dry-cleanable covers',
+      'Low architectural profile ideal for open-plan studios'
     ],
     specs: {
-      'Max Height': '155 cm',
-      'Folded Length': '35 cm',
-      'Weight': '1.18 kg',
-      'Max Payload': '12 kg',
-      'Leg Sections': '4 Twist Lock'
+      'Dimensions': '210cm L x 95cm D x 74cm H',
+      'Frame': 'FSC Certified Solid Beechwood',
+      'Fabric': 'Italian Textured Linen Weave',
+      'Seating Capacity': '3 Persons Comfortably'
     },
     reviews: [
       {
         id: 'r24',
-        user: 'Pranav K.',
+        user: 'Lillian Bishop',
         rating: 5,
-        date: 'Oct 03, 2026',
-        comment: 'Super rigid even in mountain wind. Fits into the water bottle holder of my camera backpack!'
+        date: 'Sept 22, 2026',
+        comment: 'The cushions have that perfect balance of cloud-like softness with firm underneath support.'
       }
     ]
   },
   {
     id: 24,
-    name: 'Ceramic Origami Coffee Dripper',
-    category: 'Home',
-    price: 1599,
-    rating: 4.9,
-    stock: 18,
-    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
+    name: 'African Cherry Wood Minimalist Nightstand',
+    category: 'Workspace',
+    price: 9999,
+    oldPrice: 12499,
+    rating: 4.7,
+    stock: 12,
+    image: 'https://cdn.dummyjson.com/product-images/furniture/bedside-table-african-cherry/1.webp',
     images: [
-      'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=800&q=80'
+      'https://cdn.dummyjson.com/product-images/furniture/bedside-table-african-cherry/1.webp',
+      'https://cdn.dummyjson.com/product-images/furniture/bedside-table-african-cherry/2.webp',
+      'https://cdn.dummyjson.com/product-images/furniture/bedside-table-african-cherry/3.webp'
     ],
-    accent: '#ffe5d9',
+    accent: '#d4a373',
     featured: true,
-    description: 'Crafted from Mino-ware porcelain in Japan, the Origami Dripper features 20 vertical ribs that regulate water flow velocity for maximum coffee sweetness and clarity. Compatible with conical and wave paper filters.',
+    description: 'Constructed from sustainably sourced African Cherry hardwood, this minimalist table features dovetailed soft-close drawer slides, open display cubby, and a satin beeswax hand-rubbed finish.',
     highlights: [
-      'Authentic Mino-ware high-temperature fired porcelain',
-      '20 precision geometric ribs optimize flow drawdown speed',
-      'Exceptional thermal stability during pour extraction',
-      'Includes solid acacia wood stabilizing collar ring'
+      '100% Solid African Cherry wood with rich red-amber grain',
+      'Traditional English dovetail joinery drawer construction',
+      'Soft-close concealed German ball-bearing drawer glides',
+      'Recessed rear cable pass-through notch for phone and lamp chargers'
     ],
     specs: {
-      'Cup Capacity': '1 to 4 Cups (Size M)',
-      'Material': 'Porcelain Ceramic & Acacia Wood',
-      'Compatibility': 'V60 02 & Kalita Wave 185 Filters',
-      'Heat Resistance': 'Up to 120°C',
-      'Origin': 'Gifu Prefecture, Japan'
+      'Dimensions': '50cm W x 42cm D x 55cm H',
+      'Wood Species': 'African Cherry (Makore)',
+      'Finish': 'Natural Beeswax & Linseed Oil',
+      'Assembly': 'Fully Assembled'
     },
     reviews: [
       {
         id: 'r25',
-        user: 'Alok Shenoy',
+        user: 'Liam Smith',
         rating: 5,
-        date: 'Oct 05, 2026',
-        comment: 'Brews the sweetest, cleanest cup of specialty light roasts. Gorgeous matte glaze finish on my counter.'
+        date: 'Sept 30, 2026',
+        comment: 'Wood grain is breathtaking. Drawer slides shut silently with a gentle push.'
       }
     ]
   }
 ];
 
-export const PRODUCTS_KEY = 'kinetic-products-catalog';
+export const PRODUCTS_KEY = 'kinetic-products-catalog-v3';
 
 export function getAllProducts(): Product[] {
   try {
@@ -962,13 +982,12 @@ export function getAllProducts(): Product[] {
       return productList;
     }
 
-    // Migration check: If stored products are missing new categories or multi-images, sync with latest productList
+    // Migration check: Ensure catalog stays in sync with v3 multi-angle product list
     const needsSync =
       productList.length > parsed.length ||
       parsed.some((p) => !p.images || !Array.isArray(p.images) || p.images.length < 2);
 
     if (needsSync) {
-      // Keep any user-created products (custom added by admin), and update defaults
       const customProducts = parsed.filter(
         (p) => !productList.some((d) => d.id === Number(p.id))
       );
@@ -985,7 +1004,7 @@ export function getAllProducts(): Product[] {
       price: Number(p.price) || 0,
       stock: Number(p.stock) || 0,
       rating: Number(p.rating) || 5.0,
-      image: p.image || 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
+      image: p.image || (p.images && p.images[0]) || '',
       images: Array.isArray(p.images) && p.images.length > 0 ? p.images : [p.image],
       accent: p.accent || '#d7ff4f',
       description: p.description || '',
@@ -1016,7 +1035,10 @@ export function searchProducts(query: string, category: string): Product[] {
   return list.filter(
     (p) =>
       (category === 'All' || p.category.toLowerCase() === category.toLowerCase()) &&
-      (!q || p.name.toLowerCase().includes(q) || p.category.toLowerCase().includes(q) || (p.description && p.description.toLowerCase().includes(q)))
+      (!q ||
+        p.name.toLowerCase().includes(q) ||
+        p.category.toLowerCase().includes(q) ||
+        (p.description && p.description.toLowerCase().includes(q)))
   );
 }
 
