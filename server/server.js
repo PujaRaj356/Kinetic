@@ -559,9 +559,24 @@ app.post('/api/auth/verify-otp', async (req, res) => {
       return res.status(400).json({ ok: false, message: 'Incorrect verification code. Please check your email and try again.' });
     }
 
-    // Retrieve verified user
+    // Retrieve verified user (supports both login and pending registration)
     let user = stored.user;
-    if (!user) {
+    if (stored.pendingUser) {
+      user = stored.pendingUser;
+      const exists = diskStore.users.some(u => u.email.toLowerCase() === cleanEmail);
+      if (!exists) {
+        diskStore.users.push(user);
+        saveDiskStore();
+      }
+      if (isMongoConnected) {
+        const mongoExists = await UserModel.findOne({ email: cleanEmail });
+        if (!mongoExists) {
+          const doc = new UserModel(user);
+          await doc.save();
+        }
+      }
+      console.log(`[USER REGISTRATION VERIFIED] ${user.name} (${cleanEmail}) confirmed OTP and activated account!`);
+    } else if (!user) {
       user = diskStore.users.find(u => u.email.toLowerCase() === cleanEmail);
       if (!user && isMongoConnected) {
         const mongoUser = await UserModel.findOne({ email: cleanEmail });
@@ -1057,7 +1072,7 @@ app.post('/api/auth/register', async (req, res) => {
     // 5. Encrypt password with salted bcrypt hash
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
-    const newUser = {
+    const pendingUser = {
       id: `usr-${Date.now()}`,
       name: name.trim(),
       email: cleanEmail,
@@ -1066,23 +1081,28 @@ app.post('/api/auth/register', async (req, res) => {
       createdAt: new Date().toISOString()
     };
 
-    diskStore.users.push(newUser);
-    saveDiskStore();
+    // 6. Generate 6-digit OTP & store pending registration in otpStore
+    const otp = generateOtp();
+    const expiresAt = Date.now() + 10 * 60 * 1000;
+    otpStore.set(cleanEmail, {
+      code: otp,
+      expiresAt,
+      pendingUser,
+      purpose: 'register'
+    });
 
-    if (isMongoConnected) {
-      const doc = new UserModel(newUser);
-      await doc.save();
-    }
+    const otpResult = await sendOtpEmail(cleanEmail, otp);
 
-    await sendLoginSuccessEmail(cleanEmail, name.trim());
-    res.status(201).json({
+    res.status(200).json({
       ok: true,
-      user: {
-        id: newUser.id,
-        name: newUser.name,
-        email: newUser.email,
-        role: newUser.role
-      }
+      requiresVerification: true,
+      email: cleanEmail,
+      message: otpResult.sent
+        ? `Verification code sent to ${cleanEmail}. Please enter the 6-digit code to activate your account.`
+        : `Verification code generated for ${cleanEmail} (Dev mode active).`,
+      sent: otpResult.sent,
+      devMode: otpResult.devMode || false,
+      devOtp: otpResult.devMode ? otp : undefined
     });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });

@@ -113,10 +113,14 @@ export const Verify: React.FC = () => {
     <section className="verify">
       <div className="box">
         <div className="symbol">✉</div>
-        <p className="eyebrow">IDENTITY CHECK</p>
-        <h1 style={{ fontSize: '48px', margin: '14px 0 8px', letterSpacing: '-0.04em' }}>Verify.</h1>
+        <p className="eyebrow">{pendingVerification?.purpose === 'register' ? 'ACCOUNT ACTIVATION' : 'IDENTITY CHECK'}</p>
+        <h1 style={{ fontSize: '48px', margin: '14px 0 8px', letterSpacing: '-0.04em' }}>
+          {pendingVerification?.purpose === 'register' ? 'Activate.' : 'Verify.'}
+        </h1>
         <p style={{ margin: '0 0 16px', color: '#444', lineHeight: 1.4 }}>
-          Enter the 6-digit code sent to your original email:
+          {pendingVerification?.purpose === 'register'
+            ? 'Enter the 6-digit verification code sent to confirm your email and activate your account:'
+            : 'Enter the 6-digit security code sent to your email:'}
         </p>
 
         <div

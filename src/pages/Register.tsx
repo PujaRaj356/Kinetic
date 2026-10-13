@@ -105,6 +105,11 @@ export const Register: React.FC = () => {
         return;
       }
 
+      if (res.requiresVerification) {
+        navigate('/verify');
+        return;
+      }
+
       navigate('/products');
     } finally {
       setIsLoading(false);

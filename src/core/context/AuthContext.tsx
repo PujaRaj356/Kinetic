@@ -13,7 +13,7 @@ interface AuthContextType {
   setPendingVerification: React.Dispatch<React.SetStateAction<PendingVerification | null>>;
   login: (email: string, password: string, rememberMe?: boolean) => Promise<{ ok: boolean; message?: string; user?: User; code?: string; requires2FA?: boolean }>;
   loginAs: (role: UserRole) => void;
-  register: (name: string, email: string, password: string, role?: UserRole) => Promise<{ ok: boolean; message?: string; user?: User; code?: string }>;
+  register: (name: string, email: string, password: string, role?: UserRole) => Promise<{ ok: boolean; message?: string; user?: User; code?: string; requiresVerification?: boolean }>;
   verify: (code: string) => Promise<{ ok: boolean; message?: string; user?: User }>;
   resendCode: () => Promise<{ ok: boolean; message?: string; devOtp?: string; sent?: boolean; devMode?: boolean }>;
   sendOtp: (email: string) => Promise<{ ok: boolean; message?: string; devOtp?: string; sent?: boolean; devMode?: boolean }>;
@@ -212,7 +212,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     email: string,
     password: string,
     role: UserRole = 'client'
-  ): Promise<{ ok: boolean; message?: string; user?: User; code?: string }> => {
+  ): Promise<{ ok: boolean; message?: string; user?: User; code?: string; requiresVerification?: boolean }> => {
     const cleanEmail = email.trim().toLowerCase();
     const cleanName = name.trim();
 
@@ -248,6 +248,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (!resp.ok || !data.ok) {
         return { ok: false, message: data.message || 'Registration failed.', code: data.code };
+      }
+
+      if (data.requiresVerification) {
+        setPendingVerification({
+          email: cleanEmail,
+          purpose: 'register',
+          codeSent: true,
+          devOtp: data.devOtp
+        });
+        return { ok: true, requiresVerification: true, message: data.message };
       }
 
       const newUser: User = data.user;
