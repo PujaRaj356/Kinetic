@@ -1,41 +1,99 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../core/context/AuthContext';
 
 export const Register: React.FC = () => {
   const { register } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [errorCode, setErrorCode] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
+  const [touchedEmail, setTouchedEmail] = useState(false);
   const [touchedPassword, setTouchedPassword] = useState(false);
-  const [touchedForm, setTouchedForm] = useState(false);
+  const [touchedConfirm, setTouchedConfirm] = useState(false);
 
+  // Auto-fill email if passed in query string from login
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const queryEmail = params.get('email');
+    if (queryEmail) {
+      setEmail(queryEmail);
+    }
+  }, [location.search]);
+
+  // Strict email regex validation
+  const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  const isValidEmail = EMAIL_REGEX.test(email.trim());
   const isValidName = name.trim().length >= 2;
-  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const isValidPassword = password.length >= 6;
-  const isMatch = password === confirmPassword;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Real-time password criteria
+  const hasMinLength = password.length >= 8;
+  const hasUpper = /[A-Z]/.test(password);
+  const hasLower = /[a-z]/.test(password);
+  const hasNumber = /[0-9]/.test(password);
+  const hasSpecial = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password);
+
+  const passedRules = [hasMinLength, hasUpper, hasLower, hasNumber, hasSpecial].filter(Boolean).length;
+  const isPasswordSecure = hasMinLength && hasUpper && hasLower && hasNumber && hasSpecial;
+  const isMatch = password.length > 0 && password === confirmPassword;
+
+  // Strength score and color
+  const getStrengthData = () => {
+    if (password.length === 0) return { percent: 0, label: 'None', color: '#e5e7eb' };
+    if (passedRules <= 2) return { percent: 30, label: 'Weak', color: '#ef4444' };
+    if (passedRules === 3) return { percent: 60, label: 'Fair', color: '#f97316' };
+    if (passedRules === 4) return { percent: 80, label: 'Good', color: '#eab308' };
+    return { percent: 100, label: 'Strong & Secure', color: '#10b981' };
+  };
+
+  const strength = getStrengthData();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setErrorCode('');
+    setTouchedEmail(true);
     setTouchedPassword(true);
-    setTouchedForm(true);
+    setTouchedConfirm(true);
 
-    if (!isValidName || !isValidEmail || !isValidPassword || !isMatch) return;
-
-    // All registered users are clients (shoppers)
-    const res = register(name, email, password, 'client');
-    if (!res.ok) {
-      setError(res.message ?? 'Registration failed.');
+    if (!isValidName) {
+      setError('Please provide your full name (at least 2 characters).');
+      return;
+    }
+    if (!isValidEmail) {
+      setError('Please enter a valid email address (e.g. name@domain.com).');
+      return;
+    }
+    if (!isPasswordSecure) {
+      setError('Please ensure your password meets all 5 security requirements below.');
+      return;
+    }
+    if (!isMatch) {
+      setError('Passwords do not match. Please verify your confirmation password.');
       return;
     }
 
-    navigate('/products');
+    setIsLoading(true);
+    try {
+      const res = await register(name, email, password, 'client');
+      if (!res.ok) {
+        setError(res.message ?? 'Registration failed.');
+        setErrorCode(res.code || '');
+        return;
+      }
+
+      navigate('/products');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -43,16 +101,31 @@ export const Register: React.FC = () => {
       <div className="auth-form">
         <p className="eyebrow">NEW ACCOUNT</p>
         <h1>Join Kinetic.</h1>
-        <p className="sub">Create an account to start shopping.</p>
+        <p className="sub">Create an account to start shopping our in-house gear.</p>
 
-        {error && <div className="error">{error}</div>}
+        {error && (
+          <div className="auth-alert-banner">
+            <div>⚠️ {error}</div>
+            {(errorCode === 'EMAIL_ALREADY_EXISTS' || error.toLowerCase().includes('already exists')) && (
+              <div>
+                Already registered?{' '}
+                <Link to="/login">
+                  Click here to log into your account →
+                </Link>
+              </div>
+            )}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit}>
           <label>
             Full Name
             <input
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                setName(e.target.value);
+                if (error) setError('');
+              }}
               placeholder="e.g. Maya Lin"
               required
             />
@@ -63,41 +136,103 @@ export const Register: React.FC = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (error) setError('');
+              }}
+              onBlur={() => setTouchedEmail(true)}
               placeholder="you@example.com"
               required
             />
           </label>
+          {touchedEmail && !isValidEmail && email.trim().length > 0 && (
+            <small>Please enter a valid email address format (e.g. name@domain.com).</small>
+          )}
 
           <label>
             Password
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              onBlur={() => setTouchedPassword(true)}
-              placeholder="At least 6 characters"
-              required
-            />
+            <div className="password">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (error) setError('');
+                }}
+                onBlur={() => setTouchedPassword(true)}
+                placeholder="Create a strong password"
+                required
+              />
+              <button type="button" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? 'Hide' : 'Show'}
+              </button>
+            </div>
           </label>
-          {touchedPassword && !isValidPassword && (
-            <small>Must be at least 6 characters long.</small>
+
+          {/* Interactive Password Strength Meter */}
+          {password.length > 0 && (
+            <div className="password-meter-wrap">
+              <div className="password-meter-bar">
+                <div
+                  className="password-meter-fill"
+                  style={{
+                    width: `${strength.percent}%`,
+                    backgroundColor: strength.color
+                  }}
+                />
+              </div>
+              <div className="password-meter-label">
+                <span>Password Strength</span>
+                <span style={{ color: strength.color }}>{strength.label}</span>
+              </div>
+            </div>
           )}
+
+          {/* Real-time Password Rules Checklist */}
+          <div className="password-rules">
+            <div className={`password-rule ${hasMinLength ? 'met' : 'unmet'}`}>
+              <span>{hasMinLength ? '✓' : '○'}</span> 8+ characters
+            </div>
+            <div className={`password-rule ${hasUpper ? 'met' : 'unmet'}`}>
+              <span>{hasUpper ? '✓' : '○'}</span> Uppercase letter (A-Z)
+            </div>
+            <div className={`password-rule ${hasLower ? 'met' : 'unmet'}`}>
+              <span>{hasLower ? '✓' : '○'}</span> Lowercase letter (a-z)
+            </div>
+            <div className={`password-rule ${hasNumber ? 'met' : 'unmet'}`}>
+              <span>{hasNumber ? '✓' : '○'}</span> Number (0-9)
+            </div>
+            <div className={`password-rule ${hasSpecial ? 'met' : 'unmet'}`} style={{ gridColumn: 'span 2' }}>
+              <span>{hasSpecial ? '✓' : '○'}</span> Special character (!@#$%^&*)
+            </div>
+          </div>
 
           <label>
             Confirm Password
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Repeat password"
+              onChange={(e) => {
+                setConfirmPassword(e.target.value);
+                setTouchedConfirm(true);
+                if (error) setError('');
+              }}
+              placeholder="Re-enter your password"
               required
             />
           </label>
-          {touchedForm && !isMatch && <small>Passwords do not match.</small>}
+          {touchedConfirm && confirmPassword.length > 0 && (
+            <div className={`match-status ${isMatch ? 'match' : 'mismatch'}`}>
+              {isMatch ? '✓ Passwords match' : '✕ Passwords do not match'}
+            </div>
+          )}
 
-          <button className="submit" type="submit">
-            Create Account & Sign In →
+          <button
+            className={`submit ${isLoading ? 'auth-btn-loading' : ''}`}
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Creating Secure Account...' : 'Create Account & Sign In →'}
           </button>
         </form>
 

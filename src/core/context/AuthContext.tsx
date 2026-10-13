@@ -11,9 +11,9 @@ interface AuthContextType {
   users: User[];
   pendingVerification: PendingVerification | null;
   setPendingVerification: React.Dispatch<React.SetStateAction<PendingVerification | null>>;
-  login: (email: string, password: string, rememberMe?: boolean) => { ok: boolean; message?: string; user?: User };
+  login: (email: string, password: string, rememberMe?: boolean) => Promise<{ ok: boolean; message?: string; user?: User; code?: string }>;
   loginAs: (role: UserRole) => void;
-  register: (name: string, email: string, password: string, role?: UserRole) => { ok: boolean; message?: string; user?: User };
+  register: (name: string, email: string, password: string, role?: UserRole) => Promise<{ ok: boolean; message?: string; user?: User; code?: string }>;
   verify: (code: string) => Promise<{ ok: boolean; message?: string }>;
   resendCode: () => Promise<{ ok: boolean; message?: string; devOtp?: string; sent?: boolean; devMode?: boolean }>;
   sendOtp: (email: string) => Promise<{ ok: boolean; message?: string; devOtp?: string; sent?: boolean; devMode?: boolean }>;
@@ -119,26 +119,71 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const login = (
+  const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+  const login = async (
     email: string,
     password: string,
     rememberMe = true
-  ): { ok: boolean; message?: string; user?: User } => {
-    const allUsers = loadUsers();
-    const user = allUsers.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
-    if (!user || user.password !== password) {
-      return { ok: false, message: 'Invalid email or password.' };
+  ): Promise<{ ok: boolean; message?: string; user?: User; code?: string }> => {
+    const cleanEmail = email.trim().toLowerCase();
+
+    // 1. Email format check
+    if (!cleanEmail || !EMAIL_REGEX.test(cleanEmail)) {
+      return { ok: false, code: 'INVALID_EMAIL', message: 'Please enter a valid email address (e.g. name@example.com).' };
+    }
+    if (!password || password.trim().length === 0) {
+      return { ok: false, code: 'MISSING_PASSWORD', message: 'Please enter your password.' };
     }
 
-    // Persist login immediately so user is remembered across page refreshes and browser restarts
-    if (rememberMe) {
-      localStorage.setItem(CURRENT_KEY, JSON.stringify(user));
-    } else {
-      sessionStorage.setItem(CURRENT_KEY, JSON.stringify(user));
+    try {
+      const resp = await fetch(`${API_BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanEmail, password })
+      });
+      const data = await resp.json();
+
+      if (!resp.ok || !data.ok) {
+        return { ok: false, message: data.message || 'Login failed.', code: data.code };
+      }
+
+      const user = data.user;
+      if (rememberMe) {
+        localStorage.setItem(CURRENT_KEY, JSON.stringify(user));
+      } else {
+        sessionStorage.setItem(CURRENT_KEY, JSON.stringify(user));
+      }
+      setCurrentUser(user);
+      return { ok: true, user };
+    } catch {
+      // Offline fallback: check local storage
+      const allUsers = loadUsers();
+      const user = allUsers.find(u => u.email.toLowerCase() === cleanEmail);
+      if (!user) {
+        return {
+          ok: false,
+          code: 'USER_NOT_FOUND',
+          message: 'No account found with this email. Please check your spelling or register for a new account.'
+        };
+      }
+      if (user.password !== password) {
+        return {
+          ok: false,
+          code: 'INCORRECT_PASSWORD',
+          message: 'Incorrect password for this account. Please double-check and try again.'
+        };
+      }
+
+      if (rememberMe) {
+        localStorage.setItem(CURRENT_KEY, JSON.stringify(user));
+      } else {
+        sessionStorage.setItem(CURRENT_KEY, JSON.stringify(user));
+      }
+      setCurrentUser(user);
+      notifyLogin(user.email, user.name);
+      return { ok: true, user };
     }
-    setCurrentUser(user);
-    notifyLogin(user.email, user.name);
-    return { ok: true, user };
   };
 
   const loginAs = (role: UserRole) => {
@@ -148,35 +193,74 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCurrentUser(target);
   };
 
-  const register = (
+  const register = async (
     name: string,
     email: string,
     password: string,
     role: UserRole = 'client'
-  ): { ok: boolean; message?: string; user?: User } => {
-    const allUsers = loadUsers();
-    if (allUsers.some(u => u.email.toLowerCase() === email.trim().toLowerCase())) {
-      return { ok: false, message: 'An account with this email already exists.' };
+  ): Promise<{ ok: boolean; message?: string; user?: User; code?: string }> => {
+    const cleanEmail = email.trim().toLowerCase();
+    const cleanName = name.trim();
+
+    if (!cleanName || cleanName.length < 2) {
+      return { ok: false, code: 'INVALID_NAME', message: 'Please provide a valid full name (minimum 2 characters).' };
+    }
+    if (!cleanEmail || !EMAIL_REGEX.test(cleanEmail)) {
+      return { ok: false, code: 'INVALID_EMAIL', message: 'Please enter a valid email address (e.g. name@example.com).' };
     }
 
-    const newUser: User = {
-      id: `usr-${Date.now()}`,
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      password,
-      role
-    };
+    try {
+      const resp = await fetch(`${API_BASE}/api/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: cleanName, email: cleanEmail, password, role })
+      });
+      const data = await resp.json();
 
-    const updated = [...allUsers, newUser];
-    localStorage.setItem(USERS_KEY, JSON.stringify(updated));
-    setUsers(updated);
+      if (!resp.ok || !data.ok) {
+        return { ok: false, message: data.message || 'Registration failed.', code: data.code };
+      }
 
-    // Auto-login registered user and remember them
-    localStorage.setItem(CURRENT_KEY, JSON.stringify(newUser));
-    setCurrentUser(newUser);
-    notifyLogin(newUser.email, newUser.name);
+      const newUser: User = data.user;
+      localStorage.setItem(CURRENT_KEY, JSON.stringify(newUser));
+      setCurrentUser(newUser);
 
-    return { ok: true, user: newUser };
+      // Keep local list in sync
+      const allUsers = loadUsers();
+      if (!allUsers.some(u => u.email.toLowerCase() === cleanEmail)) {
+        allUsers.push(newUser);
+        localStorage.setItem(USERS_KEY, JSON.stringify(allUsers));
+        setUsers(allUsers);
+      }
+
+      return { ok: true, user: newUser };
+    } catch {
+      // Offline fallback: check local storage
+      const allUsers = loadUsers();
+      if (allUsers.some(u => u.email.toLowerCase() === cleanEmail)) {
+        return {
+          ok: false,
+          code: 'EMAIL_ALREADY_EXISTS',
+          message: 'An account with this email address already exists. Please log in instead.'
+        };
+      }
+
+      const newUser: User = {
+        id: `usr-${Date.now()}`,
+        name: cleanName,
+        email: cleanEmail,
+        role
+      };
+
+      const updated = [...allUsers, newUser];
+      localStorage.setItem(USERS_KEY, JSON.stringify(updated));
+      setUsers(updated);
+      localStorage.setItem(CURRENT_KEY, JSON.stringify(newUser));
+      setCurrentUser(newUser);
+      notifyLogin(newUser.email, newUser.name);
+
+      return { ok: true, user: newUser };
+    }
   };
 
   const sendOtp = async (

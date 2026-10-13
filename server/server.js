@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
+import bcrypt from 'bcryptjs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -16,6 +17,39 @@ const DATA_FILE = path.join(__dirname, 'data', 'kinetic_store.json');
 const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/kinetic_db';
+const SALT_ROUNDS = 10;
+
+// Strict RFC-compliant email regex
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+function validateEmail(email) {
+  if (!email || typeof email !== 'string') return false;
+  const trimmed = email.trim();
+  if (trimmed.length < 5 || trimmed.length > 254) return false;
+  return EMAIL_REGEX.test(trimmed);
+}
+
+function validatePasswordStrength(pwd) {
+  if (!pwd || typeof pwd !== 'string') {
+    return { ok: false, message: 'Password is required.' };
+  }
+  if (pwd.length < 8) {
+    return { ok: false, message: 'Password must be at least 8 characters long.' };
+  }
+  if (!/[A-Z]/.test(pwd)) {
+    return { ok: false, message: 'Password must contain at least one uppercase letter (A-Z).' };
+  }
+  if (!/[a-z]/.test(pwd)) {
+    return { ok: false, message: 'Password must contain at least one lowercase letter (a-z).' };
+  }
+  if (!/[0-9]/.test(pwd)) {
+    return { ok: false, message: 'Password must contain at least one number (0-9).' };
+  }
+  if (!/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(pwd)) {
+    return { ok: false, message: 'Password must contain at least one special character (!@#$%^&*).' };
+  }
+  return { ok: true };
+}
 
 app.use(cors());
 app.use(express.json());
@@ -27,6 +61,21 @@ function loadDiskStore() {
       const raw = fs.readFileSync(DATA_FILE, 'utf8');
       const parsed = JSON.parse(raw);
       if (parsed && Array.isArray(parsed.products)) {
+        // Automatically encrypt/hash any legacy plain passwords in diskStore
+        if (Array.isArray(parsed.users)) {
+          let updated = false;
+          parsed.users.forEach(u => {
+            if (u.password && !u.password.startsWith('$2a$') && !u.password.startsWith('$2b$')) {
+              u.password = bcrypt.hashSync(u.password, SALT_ROUNDS);
+              updated = true;
+            }
+          });
+          if (updated) {
+            try {
+              fs.writeFileSync(DATA_FILE, JSON.stringify(parsed, null, 2), 'utf8');
+            } catch {}
+          }
+        }
         return parsed;
       }
     }
@@ -723,7 +772,7 @@ app.patch('/api/orders/:id/status', async (req, res) => {
 app.post('/api/auth/notify-login', async (req, res) => {
   try {
     const { email, name } = req.body;
-    if (!email || !email.includes('@')) {
+    if (!email || !validateEmail(email)) {
       return res.status(400).json({ ok: false, message: 'Valid email required.' });
     }
     const result = await sendLoginSuccessEmail(email.trim().toLowerCase(), name || 'Shopper');
@@ -736,21 +785,87 @@ app.post('/api/auth/notify-login', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // 1. Email format validation
+    if (!email || !validateEmail(email)) {
+      return res.status(400).json({
+        ok: false,
+        code: 'INVALID_EMAIL_FORMAT',
+        message: 'Please provide a valid email address (e.g. name@domain.com).'
+      });
+    }
+
+    // 2. Password presence check
+    if (!password || typeof password !== 'string' || password.trim().length === 0) {
+      return res.status(400).json({
+        ok: false,
+        code: 'MISSING_PASSWORD',
+        message: 'Please enter your password.'
+      });
+    }
+
     const cleanEmail = email.toLowerCase().trim();
 
-    let user = diskStore.users.find(u => u.email.toLowerCase() === cleanEmail && u.password === password);
+    // 3. User existence check in local JSON diskStore and MongoDB
+    let user = diskStore.users.find(u => u.email.toLowerCase() === cleanEmail);
 
-    if (isMongoConnected) {
-      const mongoUser = await UserModel.findOne({ email: cleanEmail, password });
+    if (!user && isMongoConnected) {
+      const mongoUser = await UserModel.findOne({ email: cleanEmail });
       if (mongoUser) user = mongoUser.toObject();
     }
 
+    // Email not registered
     if (!user) {
-      return res.status(401).json({ ok: false, message: 'Invalid email or password.' });
+      return res.status(404).json({
+        ok: false,
+        code: 'USER_NOT_FOUND',
+        message: 'No account found with this email. Please check your spelling or register for a new account.'
+      });
     }
 
+    // 4. Password validation with bcrypt hashing
+    let passwordMatches = false;
+    const isBcrypt = user.password && (user.password.startsWith('$2a$') || user.password.startsWith('$2b$'));
+
+    if (isBcrypt) {
+      passwordMatches = await bcrypt.compare(password, user.password);
+    } else {
+      // Legacy plaintext password verification
+      passwordMatches = (user.password === password);
+      if (passwordMatches) {
+        // Transparently upgrade legacy plaintext password to secure bcrypt hash
+        user.password = await bcrypt.hash(password, SALT_ROUNDS);
+        saveDiskStore();
+        if (isMongoConnected) {
+          await UserModel.updateOne({ email: cleanEmail }, { password: user.password });
+        }
+      }
+    }
+
+    if (!passwordMatches) {
+      return res.status(401).json({
+        ok: false,
+        code: 'INCORRECT_PASSWORD',
+        message: 'Incorrect password for this account. Please double-check and try again.'
+      });
+    }
+
+    // Send login notification email via Nodemailer
     await sendLoginSuccessEmail(user.email, user.name);
-    res.json({ ok: true, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+
+    res.json({
+      ok: true,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        phone: user.phone,
+        address: user.address,
+        city: user.city,
+        pincode: user.pincode
+      }
+    });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
@@ -759,19 +874,62 @@ app.post('/api/auth/login', async (req, res) => {
 app.post('/api/auth/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
+
+    // 1. Name validation
+    if (!name || typeof name !== 'string' || name.trim().length < 2) {
+      return res.status(400).json({
+        ok: false,
+        code: 'INVALID_NAME',
+        message: 'Please provide a valid full name (minimum 2 characters).'
+      });
+    }
+
+    // 2. Email format validation
+    if (!email || !validateEmail(email)) {
+      return res.status(400).json({
+        ok: false,
+        code: 'INVALID_EMAIL_FORMAT',
+        message: 'Please provide a valid email address (e.g. name@domain.com).'
+      });
+    }
+
     const cleanEmail = email.trim().toLowerCase();
 
-    const existing = diskStore.users.some(u => u.email.toLowerCase() === cleanEmail);
-    if (existing) {
-      return res.status(400).json({ ok: false, message: 'Account already exists.' });
+    // 3. Existing email check
+    let existing = diskStore.users.some(u => u.email.toLowerCase() === cleanEmail);
+    if (!existing && isMongoConnected) {
+      const mongoUser = await UserModel.findOne({ email: cleanEmail });
+      if (mongoUser) existing = true;
     }
+
+    if (existing) {
+      return res.status(409).json({
+        ok: false,
+        code: 'EMAIL_ALREADY_EXISTS',
+        message: 'An account with this email address already exists. Please log in instead.'
+      });
+    }
+
+    // 4. Password strength validation
+    const strengthCheck = validatePasswordStrength(password);
+    if (!strengthCheck.ok) {
+      return res.status(400).json({
+        ok: false,
+        code: 'WEAK_PASSWORD',
+        message: strengthCheck.message
+      });
+    }
+
+    // 5. Encrypt password with salted bcrypt hash
+    const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
     const newUser = {
       id: `usr-${Date.now()}`,
       name: name.trim(),
       email: cleanEmail,
-      password,
-      role: 'client'
+      password: hashedPassword,
+      role: 'client',
+      createdAt: new Date().toISOString()
     };
 
     diskStore.users.push(newUser);
@@ -783,7 +941,15 @@ app.post('/api/auth/register', async (req, res) => {
     }
 
     await sendLoginSuccessEmail(cleanEmail, name.trim());
-    res.status(201).json({ ok: true, user: { id: newUser.id, name: newUser.name, email: newUser.email, role: newUser.role } });
+    res.status(201).json({
+      ok: true,
+      user: {
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role
+      }
+    });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }
