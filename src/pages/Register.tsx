@@ -34,6 +34,17 @@ export const Register: React.FC = () => {
   const isValidEmail = EMAIL_REGEX.test(email.trim());
   const isValidName = name.trim().length >= 2;
 
+  // Known placeholder and disposable spam domains
+  const BLOCKED_DOMAINS = new Set([
+    'example.com', 'example.org', 'example.net', 'test.com', 'sample.com',
+    'fake.com', 'dummy.com', 'tempmail.com', 'temp-mail.org', 'mailinator.com',
+    '10minutemail.com', 'guerrillamail.com', 'trashmail.com', 'sharklasers.com',
+    'yopmail.com', 'dispostable.com', 'throwawaymail.com', 'inboxkitten.com'
+  ]);
+
+  const emailDomain = email.includes('@') ? email.split('@')[1]?.toLowerCase().trim() : '';
+  const isBlockedDomain = !!(emailDomain && BLOCKED_DOMAINS.has(emailDomain));
+
   // Real-time password criteria
   const hasMinLength = password.length >= 8;
   const hasUpper = /[A-Z]/.test(password);
@@ -70,6 +81,10 @@ export const Register: React.FC = () => {
     }
     if (!isValidEmail) {
       setError('Please enter a valid email address (e.g. name@domain.com).');
+      return;
+    }
+    if (isBlockedDomain) {
+      setError(`The domain "@${emailDomain}" is a test/placeholder domain and cannot receive real emails. Please use a real active email address (e.g. Gmail, Outlook, Yahoo).`);
       return;
     }
     if (!isPasswordSecure) {
@@ -147,6 +162,11 @@ export const Register: React.FC = () => {
           </label>
           {touchedEmail && !isValidEmail && email.trim().length > 0 && (
             <small>Please enter a valid email address format (e.g. name@domain.com).</small>
+          )}
+          {isBlockedDomain && (
+            <small style={{ color: '#b32b16', fontWeight: 900 }}>
+              ⚠️ &quot;@{emailDomain}&quot; is a placeholder or test domain and cannot receive real emails.
+            </small>
           )}
 
           <label>

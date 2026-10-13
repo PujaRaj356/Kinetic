@@ -4,6 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
 import bcrypt from 'bcryptjs';
+import dns from 'dns';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -22,11 +23,90 @@ const SALT_ROUNDS = 10;
 // Strict RFC-compliant email regex
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+// Known placeholder, dummy, test, and disposable spam domains
+const BLOCKED_EMAIL_DOMAINS = new Set([
+  'example.com',
+  'example.org',
+  'example.net',
+  'test.com',
+  'sample.com',
+  'fake.com',
+  'dummy.com',
+  'tempmail.com',
+  'temp-mail.org',
+  'mailinator.com',
+  '10minutemail.com',
+  'guerrillamail.com',
+  'trashmail.com',
+  'sharklasers.com',
+  'getairmail.com',
+  'yopmail.com',
+  'dispostable.com',
+  'throwawaymail.com',
+  'inboxkitten.com'
+]);
+
 function validateEmail(email) {
   if (!email || typeof email !== 'string') return false;
   const trimmed = email.trim();
   if (trimmed.length < 5 || trimmed.length > 254) return false;
   return EMAIL_REGEX.test(trimmed);
+}
+
+// Live DNS & Domain verification to reject dummy, non-existent, and fake domains
+async function verifyEmailDomain(email) {
+  if (!email || !email.includes('@')) {
+    return { ok: false, code: 'INVALID_EMAIL_FORMAT', message: 'Invalid email address.' };
+  }
+  const parts = email.trim().toLowerCase().split('@');
+  if (parts.length !== 2) {
+    return { ok: false, code: 'INVALID_EMAIL_FORMAT', message: 'Invalid email address.' };
+  }
+
+  const domain = parts[1];
+
+  // 1. Block reserved placeholder, test, and disposable domains (e.g. example.com, test.com)
+  if (BLOCKED_EMAIL_DOMAINS.has(domain)) {
+    return {
+      ok: false,
+      code: 'DISPOSABLE_OR_TEST_DOMAIN',
+      message: `The domain "@${domain}" is a test/placeholder domain and cannot receive real emails. Please use an active, real email address (e.g. Gmail, Outlook, Yahoo).`
+    };
+  }
+
+  // 2. Perform live DNS MX record lookup
+  try {
+    const mxRecords = await dns.promises.resolveMx(domain);
+    if (!mxRecords || mxRecords.length === 0) {
+      return {
+        ok: false,
+        code: 'DOMAIN_NO_MAILSERVER',
+        message: `The domain "@${domain}" has no active mail server configured to receive emails. Please check your spelling.`
+      };
+    }
+
+    // RFC 7505 null MX check (domains explicitly rejecting email return exchange: '' or '.')
+    const validMx = mxRecords.some(r => r.exchange && r.exchange.trim().length > 0 && r.exchange !== '.');
+    if (!validMx) {
+      return {
+        ok: false,
+        code: 'DOMAIN_NO_MAILSERVER',
+        message: `The domain "@${domain}" does not accept incoming emails. Please use a valid, active email address.`
+      };
+    }
+
+    return { ok: true, domain };
+  } catch (err) {
+    if (err.code === 'ENOTFOUND' || err.code === 'ENODATA' || err.code === 'ESERVFAIL') {
+      return {
+        ok: false,
+        code: 'DOMAIN_NOT_FOUND',
+        message: `The domain "@${domain}" does not exist on the internet. Please provide a real email address.`
+      };
+    }
+    // If DNS query times out, allow through so slow connections are not penalized
+    return { ok: true, domain };
+  }
 }
 
 function validatePasswordStrength(pwd) {
@@ -894,6 +974,16 @@ app.post('/api/auth/register', async (req, res) => {
     }
 
     const cleanEmail = email.trim().toLowerCase();
+
+    // 2b. Live Domain & MX Record verification (blocks example.com, disposable, & fake domains)
+    const domainCheck = await verifyEmailDomain(cleanEmail);
+    if (!domainCheck.ok) {
+      return res.status(400).json({
+        ok: false,
+        code: domainCheck.code,
+        message: domainCheck.message
+      });
+    }
 
     // 3. Existing email check
     let existing = diskStore.users.some(u => u.email.toLowerCase() === cleanEmail);
