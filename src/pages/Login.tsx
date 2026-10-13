@@ -97,47 +97,6 @@ export const Login: React.FC = () => {
           </div>
         )}
 
-        <div
-          style={{
-            background: '#f8fafc',
-            border: '1px solid #e2e8f0',
-            borderRadius: '6px',
-            padding: '8px 12px',
-            marginBottom: '16px',
-            fontSize: '12px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '8px'
-          }}
-        >
-          <div>
-            <span style={{ fontWeight: 700, color: '#0f172a' }}>Admin:</span>{' '}
-            <code style={{ fontSize: '11px', color: '#64748b' }}>admin@kinetic.com</code>{' '}
-            <span style={{ color: '#94a3b8' }}>(2FA Bypassed)</span>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              setEmail('admin@kinetic.com');
-              setPassword('Admin@123');
-              setError('');
-            }}
-            style={{
-              background: '#0f172a',
-              color: '#fff',
-              border: 'none',
-              borderRadius: '4px',
-              padding: '4px 10px',
-              fontSize: '11px',
-              fontWeight: 700,
-              cursor: 'pointer'
-            }}
-          >
-            Auto Fill
-          </button>
-        </div>
-
         <form onSubmit={handleSubmit}>
           <label>
             Email Address
