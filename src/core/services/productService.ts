@@ -1,10 +1,141 @@
 import { Product } from '../models/product.model';
 
 export const productList: Product[] = [
-  // --- FOOTWEAR ---
+  // --- APPAREL & MERCH ---
   {
     id: 1,
-    name: 'Nike Air Jordan 1 Retro (Red & Black)',
+    name: 'Kinetic Heavyweight Brutalist Graphic Merch Tee',
+    category: 'Apparel & Merch',
+    price: 2499,
+    oldPrice: 3199,
+    rating: 4.9,
+    stock: 45,
+    image: 'https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/1.webp',
+    images: [
+      'https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/1.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/2.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/3.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/4.webp'
+    ],
+    accent: '#ff7a5c',
+    featured: true,
+    description: 'Official Kinetic Studio merch. Custom milled in-house from ultra-heavyweight 280 GSM combed organic cotton. Features dropped streetwear shoulders, thick ribbed collar binding, and high-density screenprinted Kinetic cyber-industrial graphics that never crack.',
+    highlights: [
+      'Manufactured by Kinetic Studio with 100% pre-shrunk 280 GSM organic cotton',
+      'Relaxed boxy streetwear fit with dropped shoulder seams',
+      'High-density tactile chest and back graphics in signature cyber orange',
+      'Double-needle chainstitched hem and cuffs for lifelong durability'
+    ],
+    specs: {
+      'Manufacturer': 'Kinetic Studio (In-House Merch)',
+      'Fabric Weight': '280 GSM Heavyweight Jersey',
+      'Composition': '100% Combed Organic Cotton',
+      'Fit': 'Boxy / Oversized Drop-Shoulder',
+      'Care': 'Machine wash cold inside-out'
+    },
+    reviews: [
+      {
+        id: 'r-m1',
+        user: 'Devansh K.',
+        rating: 5,
+        date: 'Oct 11, 2026',
+        comment: 'The collar and fabric thickness are insane. Easily the best graphic merch tee in my wardrobe.'
+      },
+      {
+        id: 'r-m2',
+        user: 'Maya Chen',
+        rating: 5,
+        date: 'Oct 09, 2026',
+        comment: 'Heavyweight drape is unmatched. Kinetic merch quality beats luxury streetwear brands.'
+      }
+    ]
+  },
+  {
+    id: 2,
+    name: 'Kinetic Studio Oversized Heavy Flannel Over-Shirt',
+    category: 'Apparel & Merch',
+    price: 3899,
+    oldPrice: 4799,
+    rating: 4.8,
+    stock: 28,
+    image: 'https://cdn.dummyjson.com/product-images/mens-shirts/blue-&-black-check-shirt/1.webp',
+    images: [
+      'https://cdn.dummyjson.com/product-images/mens-shirts/blue-&-black-check-shirt/1.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shirts/blue-&-black-check-shirt/2.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shirts/blue-&-black-check-shirt/3.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shirts/blue-&-black-check-shirt/4.webp'
+    ],
+    accent: '#8bd3ff',
+    featured: true,
+    description: 'Designed and manufactured by Kinetic Studio. Crafted from custom double-brushed cotton twill flannel in our signature blue-and-charcoal geometric grid. Features dual flap utility chest pockets and custom matte black Kinetic hardware buttons.',
+    highlights: [
+      'Custom woven by Kinetic with double-brushed heavyweight 320 GSM flannel',
+      'Laser-engraved matte black Kinetic branded snap buttons',
+      'Dual chest pockets with hidden pencil stall and gusseted seams',
+      'Curved scalloped hem engineered for layering over Kinetic hoodies and tees'
+    ],
+    specs: {
+      'Manufacturer': 'Kinetic Studio',
+      'Material': '320 GSM Brushed Cotton Flannel',
+      'Hardware': 'Custom Matte Black Kinetic Snap Buttons',
+      'Pattern': 'Signature Kinetic Blue & Charcoal Grid',
+      'Fit': 'Relaxed Over-Shirt Silhouette'
+    },
+    reviews: [
+      {
+        id: 'r-m3',
+        user: 'Rohan Verma',
+        rating: 5,
+        date: 'Oct 08, 2026',
+        comment: 'Super warm and heavy. Fits perfectly over the Kinetic graphic tee for cold evening rides.'
+      }
+    ]
+  },
+  {
+    id: 3,
+    name: 'Kinetic Minimalist Resort Camp-Collar Merch Shirt',
+    category: 'Apparel & Merch',
+    price: 2999,
+    oldPrice: 3599,
+    rating: 4.7,
+    stock: 32,
+    image: 'https://cdn.dummyjson.com/product-images/mens-shirts/man-short-sleeve-shirt/1.webp',
+    images: [
+      'https://cdn.dummyjson.com/product-images/mens-shirts/man-short-sleeve-shirt/1.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shirts/man-short-sleeve-shirt/2.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shirts/man-short-sleeve-shirt/3.webp',
+      'https://cdn.dummyjson.com/product-images/mens-shirts/man-short-sleeve-shirt/4.webp'
+    ],
+    accent: '#ffd66b',
+    description: 'An architectural summer staple tailored in Kinetic’s micro-atelier. Features a breezy, open Cuban camp collar, relaxed boxy cut, and premium garment-dyed textured weave designed for maximum airflow during high-energy city days.',
+    highlights: [
+      'Bespoke Kinetic breathable linen-cotton textured weave',
+      'Camp collar silhouette with concealed under-collar button',
+      'Clean French seams throughout with split side vents',
+      'Embroidered tonal Kinetic monogram at the lower left hem'
+    ],
+    specs: {
+      'Manufacturer': 'Kinetic Studio',
+      'Fabric': '65% Garment-Dyed Cotton, 35% Belgian Linen',
+      'Collar': 'Notched Cuban Camp Collar',
+      'Buttons': 'Recycled Matte Urea Buttons',
+      'Fit': 'Boxy Relaxed'
+    },
+    reviews: [
+      {
+        id: 'r-m4',
+        user: 'Arjun Das',
+        rating: 5,
+        date: 'Oct 06, 2026',
+        comment: 'The drape and breathability are unbelievable. Essential summer piece.'
+      }
+    ]
+  },
+
+  // --- FOOTWEAR ---
+  {
+    id: 4,
+    name: 'Kinetic Apex-1 High-Top Court Sneaker',
     category: 'Footwear',
     price: 12499,
     oldPrice: 14999,
@@ -19,19 +150,20 @@ export const productList: Product[] = [
     ],
     accent: '#ff7a5c',
     featured: true,
-    description: 'The iconic high-top basketball silhouette in the classic red, black, and white colorway. Premium full-grain leather upper paired with encapsulated Air-Sole cushioning in the heel for lasting shock absorption and timeless street style.',
+    description: 'Engineered and manufactured by Kinetic Footwear Labs. The Apex-1 features hand-selected full-grain leather uppers in our signature high-contrast red and onyx black colorway, paired with proprietary Kinetic-Pulsion encapsulated air cushioning for shock absorption.',
     highlights: [
-      '100% Genuine full-grain leather overlays',
-      'Encapsulated Air-Sole unit for lightweight responsive cushioning',
-      'Solid rubber outsole with deep flex grooves for maximum grip',
-      'Padded high-cut collar for ankle support and comfort'
+      'Manufactured by Kinetic with hand-finished full-grain leather panels',
+      'Proprietary Kinetic-Pulsion air capsule heel cushioning',
+      'High-traction vulcanized rubber cupsole with custom geometric grip tread',
+      'Ergonomic padded ankle collar with memory foam lining'
     ],
     specs: {
-      'Silhouette': 'High-Top Basketball Sneaker',
-      'Upper': 'Full-grain Leather',
-      'Cushioning': 'Air-Sole Capsule',
-      'Colorway': 'Varsity Red / Black / White',
-      'Closure': '8-Eyelet Lace-Up'
+      'Manufacturer': 'Kinetic Footwear Labs',
+      'Silhouette': 'High-Top Court Sneaker',
+      'Upper': '100% Full-grain Napa Leather',
+      'Cushioning': 'Kinetic-Pulsion Encapsulated Air Unit',
+      'Colorway': 'Kinetic Crimson / Onyx Black / White',
+      'Closure': 'Reinforced 8-Eyelet Lace-Up'
     },
     reviews: [
       {
@@ -39,7 +171,7 @@ export const productList: Product[] = [
         user: 'Aarav Sharma',
         rating: 5,
         date: 'Oct 02, 2026',
-        comment: 'Leather quality on this pair is top tier. The red and black contrast turns heads everywhere.'
+        comment: 'The leather quality on this Kinetic release is top tier. The red and black contrast turns heads everywhere.'
       },
       {
         id: 'r2',
@@ -51,8 +183,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 2,
-    name: 'Puma Future Rider Casual Trainers',
+    id: 5,
+    name: 'Kinetic Velocity-01 Retro Urban Trainers',
     category: 'Footwear',
     price: 4999,
     oldPrice: 6499,
@@ -67,19 +199,19 @@ export const productList: Product[] = [
     ],
     accent: '#d7ff4f',
     featured: true,
-    description: 'Born in 1980 and revived for modern city life, the Future Rider features a slim silhouette with shock-absorbing Federbein outsole studs and vibrant retro color blocking.',
+    description: 'Designed and manufactured in-house by Kinetic Footwear Labs. Combines ultra-lightweight ripstop nylon, buttery suede overlays, and our shock-dissipating Kinetic-Foam studded outsole for effortless all-day city commuting.',
     highlights: [
-      'Super-light nylon upper with suede and synthetic leather overlays',
-      'Rider Foam midsole provides cloud-like energy return',
-      'Slim Federbein rubber studded outsole for all-day traction',
-      'Breathable mesh lining prevents heat buildup'
+      'In-house Kinetic hybrid construction: ballistic nylon & suede overlays',
+      'Kinetic-Foam midsole provides 42% higher energy return',
+      'Low-profile studded rubber outsole for wet pavement traction',
+      'Antibacterial mesh insole prevents moisture and odor buildup'
     ],
     specs: {
-      'Upper': 'Nylon, Suede & Leather',
-      'Midsole': 'IMEVA Rider Foam',
-      'Outsole': 'Federbein Rubber Studs',
-      'Weight': '280g',
-      'Origin': 'Imported'
+      'Manufacturer': 'Kinetic Footwear Labs',
+      'Upper': 'Ballistic Nylon & Suede Leather',
+      'Midsole': 'Proprietary Kinetic-Foam Midsole',
+      'Outsole': 'Multi-Studded Anti-Slip Rubber',
+      'Weight': '275g (Per shoe, Size 9)'
     },
     reviews: [
       {
@@ -92,8 +224,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 3,
-    name: 'Nike Field Performance Cleats',
+    id: 6,
+    name: 'Kinetic Field-Grip Athletic Turf Cleats',
     category: 'Footwear',
     price: 5499,
     rating: 4.6,
@@ -106,18 +238,19 @@ export const productList: Product[] = [
       'https://cdn.dummyjson.com/product-images/mens-shoes/nike-baseball-cleats/4.webp'
     ],
     accent: '#8bd3ff',
-    description: 'Engineered for explosive acceleration on turf and natural grass. Molded TPU cleat configuration provides razor-sharp traction for cutting, sprinting, and lateral stops.',
+    description: 'Engineered for explosive acceleration and lateral cutting by Kinetic Performance Engineering. Features molded TPU traction studs, abrasion-resistant toe shields, and responsive dual-density sole plate.',
     highlights: [
-      'Molded TPU studded cleat plate for maximum burst speed',
-      'Breathable synthetic upper with reinforced drag-resistant toe cap',
-      'Phylon foam cushioning dampens stud pressure',
-      'Padded mesh tongue with lace lock'
+      'Kinetic TPU stud configuration for instantaneous turf grip and release',
+      'Drag-resistant composite toe cap survives intense drag and turf friction',
+      'Phylon-dampened footbed reduces stud pressure on the soles of feet',
+      'Asymmetrical lace routing eliminates instep pinch'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Performance Engineering',
       'Surface': 'Firm Turf / Natural Field',
-      'Stud Material': 'Molded TPU',
-      'Cushioning': 'Full-length Phylon Midsole',
-      'Closure': 'Asymmetrical Lace-Up'
+      'Studs': 'Molded High-Density TPU',
+      'Cushioning': 'Dual-Density Midsole',
+      'Closure': 'Asymmetrical Speed Lace'
     },
     reviews: [
       {
@@ -132,8 +265,8 @@ export const productList: Product[] = [
 
   // --- AUDIO ---
   {
-    id: 4,
-    name: 'Apple AirPods True Wireless Earphones',
+    id: 7,
+    name: 'Kinetic SoundPod Pro True Wireless Earphones',
     category: 'Audio',
     price: 11999,
     oldPrice: 13999,
@@ -147,19 +280,20 @@ export const productList: Product[] = [
     ],
     accent: '#d7ff4f',
     featured: true,
-    description: 'Instant effortless setup with all your devices. Powered by the custom Apple H1 headphone chip, delivering rich high-quality AAC audio, optical sensors for auto-play/pause, and up to 24 hours total battery life with the wireless charging case.',
+    description: 'Custom acoustic hardware manufactured by Kinetic Audio Labs. Powered by our proprietary K-Acoustics DSP chip, offering low-latency wireless transmission, rich warm sub-bass, crystal treble, and up to 28 hours playtime with the wireless magnetic case.',
     highlights: [
-      'Apple H1 headphone chip for ultra-low latency & fast device switching',
-      'Dual beamforming microphones filter out background noise on calls',
-      'Optical sensors detect when earbuds are placed in or removed from ears',
-      'Quick 15-minute charge in case delivers 3 hours of listening'
+      'Proprietary Kinetic K-Acoustics DSP processor with custom low-latency code',
+      'Dual AI beamforming mics isolate vocal frequencies from street noise',
+      'Capacitive touch & in-ear optical detection sensors for auto play/pause',
+      '15-minute quick USB-C / Qi wireless charge gives 3 hours playback'
     ],
     specs: {
-      'Chipset': 'Apple H1 Audio Chip',
-      'Connectivity': 'Bluetooth 5.0 Wireless',
-      'Battery Life': 'Up to 5h listening (24h with case)',
-      'Charging': 'Lightning & Qi Wireless Case',
-      'Sensors': 'Dual Optical & Motion Accelerometers'
+      'Manufacturer': 'Kinetic Audio Labs',
+      'Processor': 'Kinetic K-Acoustics DSP 64-bit',
+      'Connectivity': 'Bluetooth 5.3 + Kinetic Low-Latency Link',
+      'Battery Life': '6h per charge (28h total with charging case)',
+      'Charging': 'Qi Wireless & USB-C Fast Charge',
+      'Water Resistance': 'IPX5 Sweat & Rain Resistant'
     },
     reviews: [
       {
@@ -167,13 +301,13 @@ export const productList: Product[] = [
         user: 'Emma Wilson',
         rating: 5,
         date: 'Oct 06, 2026',
-        comment: 'Pairing is instantaneous across my Mac and phone. Voice call clarity is the best in the market.'
+        comment: 'Pairing is instantaneous across my laptop and phone. Voice call clarity is the best in the market.'
       }
     ]
   },
   {
-    id: 5,
-    name: 'Amazon Echo Studio Smart Speaker',
+    id: 8,
+    name: 'Kinetic SoundSphere 360 Acoustic Studio Speaker',
     category: 'Audio',
     price: 8999,
     oldPrice: 10999,
@@ -186,19 +320,20 @@ export const productList: Product[] = [
     ],
     accent: '#c9a7ff',
     featured: true,
-    description: 'Immersive 360-degree room-filling audio featuring a 3.0" neodymium woofer and 0.8" high-frequency tweeter. Built-in Smart Home Hub automatically senses room acoustics and fine-tunes playback in real time.',
+    description: 'Immersive omnidirectional sound engineered by Kinetic Audio Labs. Combines a 3.0" neodymium downward woofer, silk dome high-frequency tweeter, and real-time room calibration algorithms wrapped in seamless acoustic weave.',
     highlights: [
-      'Dolby-tuned 360° omnidirectional sound dispersion',
-      'Integrated Zigbee smart home hub for zero-hub light & plug pairing',
-      'Far-field microphone array hears commands across large living rooms',
-      'Supports lossless HD audio streaming via Wi-Fi and Bluetooth'
+      '360° cylindrical sound dispersion fills rooms with rich spatial sound',
+      'Automatic acoustic sensing measures wall reflections and tunes EQ in real-time',
+      'Supports high-res 24-bit/96kHz lossless streaming over Wi-Fi and Bluetooth',
+      'Far-field microphone array with physical hardware mute toggle'
     ],
     specs: {
-      'Woofer': '3.0" Neodymium Woofer with Bass Reflex Port',
+      'Manufacturer': 'Kinetic Audio Labs',
+      'Woofer': '3.0" Neodymium Driver with Bass Reflex Port',
       'Tweeter': '0.8" High-Resolution Silk Dome',
-      'Connectivity': 'Dual-band Wi-Fi & Bluetooth',
-      'Voice Assistant': 'Alexa Built-In',
-      'Weight': '780g'
+      'Connectivity': 'Dual-Band Wi-Fi 6 & Bluetooth 5.2',
+      'Weight': '780g',
+      'Power': 'Direct AC Wall Adapter Included'
     },
     reviews: [
       {
@@ -211,10 +346,10 @@ export const productList: Product[] = [
     ]
   },
 
-  // --- TECH & LAPTOPS ---
+  // --- TECH & COMPUTING ---
   {
-    id: 6,
-    name: 'Apple MacBook Pro 14" Space Grey',
+    id: 9,
+    name: 'Kinetic Book Pro 14" Studio Edition',
     category: 'Tech',
     price: 169999,
     oldPrice: 184999,
@@ -228,19 +363,21 @@ export const productList: Product[] = [
     ],
     accent: '#b5f6d2',
     featured: true,
-    description: 'Engineered for pro workflows with Apple silicon architecture. Features the breathtaking Liquid Retina XDR display with 120Hz ProMotion, studio-grade 3-mic array, six-speaker sound system with force-cancelling woofers, and full suite of pro ports.',
+    description: 'Manufactured by Kinetic Hardware Labs. Engineered for pro developers and digital creators. Features a 14.2" high-refresh 120Hz Liquid Studio display, aerospace CNC aluminum unibody chassis, studio-grade triple-mic array, and up to 18 hours battery life.',
     highlights: [
-      'Liquid Retina XDR display with 1,000,000:1 contrast & 1600 nits peak brightness',
-      'Hardware-accelerated ProRes video encode and decode engines',
-      'MagSafe 3 fast-charging port, 3x Thunderbolt 4 ports, HDMI & SDXC reader',
-      'Up to 18 hours of real-world battery life on a single charge'
+      'Manufactured by Kinetic with 100% recycled CNC machined aerospace aluminum',
+      'Kinetic Liquid Studio XDR display (3024 x 1964) with 120Hz adaptive refresh',
+      'High-bandwidth 16GB Unified Architecture with 512GB NVMe Gen4 storage',
+      'Triple Thunderbolt 4 ports, HDMI 2.1, full-size SDXC card reader, & MagCharge'
     ],
     specs: {
-      'Display': '14.2" Liquid Retina XDR (3024 x 1964) 120Hz ProMotion',
-      'Memory': '16GB Unified Memory',
-      'Storage': '512GB High-Speed NVMe SSD',
-      'Chassis': '100% Recycled CNC Aluminum',
-      'Weight': '1.6 kg'
+      'Manufacturer': 'Kinetic Hardware Labs',
+      'Display': '14.2" Liquid Studio XDR (3024 x 1964) 120Hz',
+      'Processor': 'Kinetic Silicon 10-Core SoC',
+      'Memory': '16GB Unified High-Speed Memory',
+      'Storage': '512GB Ultra NVMe SSD',
+      'Battery': '70Wh Li-Polymer (Up to 18 Hours)',
+      'Weight': '1.58 kg'
     },
     reviews: [
       {
@@ -248,13 +385,13 @@ export const productList: Product[] = [
         user: 'Hazel Evans',
         rating: 5,
         date: 'Oct 08, 2026',
-        comment: 'The XDR display is unbelievable for video color grading. Fans literally never turn on during daily development work.'
+        comment: 'The display is unbelievable for color grading and programming. Fans literally never turn on during daily development work.'
       }
     ]
   },
   {
-    id: 7,
-    name: 'Dell XPS 13 InfinityEdge Ultrabook',
+    id: 10,
+    name: 'Kinetic UltraBook Infinity-13 Borderless Laptop',
     category: 'Tech',
     price: 114999,
     oldPrice: 129999,
@@ -267,18 +404,19 @@ export const productList: Product[] = [
       'https://cdn.dummyjson.com/product-images/laptops/new-dell-xps-13-9300-laptop/3.webp'
     ],
     accent: '#ffd66b',
-    description: 'A masterclass in laptop industrial design. Precision-cut from a single block of aerospace aluminum with aerospace carbon fiber composite palm rest and a 4-sided borderless 16:10 InfinityEdge screen.',
+    description: 'A benchmark in ultra-portable computing from Kinetic Hardware Labs. Carved from a solid billet of aerospace aluminum with composite carbon-fiber wrist rests and a 4-sided edge-to-edge 16:10 borderless display.',
     highlights: [
-      'Four-sided virtually borderless 16:10 InfinityEdge display',
-      'Machined aluminum chassis with black carbon fiber composite interior',
-      'Edge-to-edge MagLev keyboard with 17% larger glass touchpad',
-      'Dual thermal fans and hidden exhaust vents maximize cooling efficiency'
+      'Engineered by Kinetic with 4-sided Infinity 16:10 borderless screen',
+      'CNC machined aluminum shell with aerospace carbon fiber composite interior',
+      'Precision edge-to-edge magnetic keyboard with glass multi-touch trackpad',
+      'Dual hidden vapor-chamber cooling vents keep performance peak without throttling'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Hardware Labs',
       'Display': '13.4" FHD+ (1920 x 1200) Anti-Glare 500 nits',
-      'Processor': 'Intel Core i7 10-Core Processor',
+      'CPU': '10-Core High Efficiency Performance Processor',
       'RAM': '16GB LPDDR5 Dual-Channel',
-      'Storage': '512GB PCIe 4.0 SSD',
+      'Storage': '512GB PCIe Gen4 SSD',
       'Weight': '1.2 kg'
     },
     reviews: [
@@ -292,8 +430,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 8,
-    name: 'Asus Zenbook Pro Duo Dual-Screen',
+    id: 11,
+    name: 'Kinetic DuoScreen Pro Dual-Display Workstation',
     category: 'Tech',
     price: 139999,
     oldPrice: 154999,
@@ -307,19 +445,20 @@ export const productList: Product[] = [
     ],
     accent: '#ff9ebb',
     featured: true,
-    description: 'Revolutionize your creative workflow with dual interactive touchscreens. Features a secondary full-width ScreenPad Plus secondary display that tilts up automatically to optimize viewing ergonomics and thermal airflow.',
+    description: 'A revolutionary creative powerhouse developed by Kinetic Labs. Features dual full-width interactive displays with an auto-tilting secondary Kinetic ScreenPad Plus that enhances ergonomics and increases thermal cooling airflow by 38%.',
     highlights: [
-      'Tilting ScreenPad Plus 12.6" secondary touchscreen display',
-      'OLED HDR primary display with cinema-grade 100% DCI-P3 color gamut',
-      'AAS Ultra thermal mechanism increases cooling airflow by 38%',
-      'Includes active stylus pen with 4096 pressure levels'
+      'Kinetic dual-display architecture with auto-tilting 12.7" secondary screen',
+      'Primary 14.5" 2.8K 120Hz OLED display with cinema-grade 100% DCI-P3 color',
+      'Integrated active digitizer support with 4096 pressure levels',
+      'Dual-fan AAS Ultra thermal cooling exhaust'
     ],
     specs: {
-      'Primary Display': '14.5" 2.8K 120Hz OLED Touchscreen',
-      'Secondary Display': '12.7" IPS ScreenPad Plus Touchscreen',
-      'Graphics': 'NVIDIA GeForce RTX Studio GPU',
+      'Manufacturer': 'Kinetic Hardware Labs',
+      'Primary Screen': '14.5" 2.8K 120Hz OLED Touchscreen',
+      'Secondary Screen': '12.7" Kinetic ScreenPad Plus IPS',
       'RAM': '32GB LPDDR5',
-      'Storage': '1TB NVMe Gen4 SSD'
+      'Storage': '1TB NVMe High-Speed SSD',
+      'Graphics': 'Dedicated Studio RTX GPU'
     },
     reviews: [
       {
@@ -334,8 +473,8 @@ export const productList: Product[] = [
 
   // --- HOROLOGY & WATCHES ---
   {
-    id: 9,
-    name: 'Rolex Cellini Moonphase Complication',
+    id: 12,
+    name: 'Kinetic Celestial Moonphase Automatic Watch',
     category: 'Horology',
     price: 89999,
     oldPrice: 99999,
@@ -349,18 +488,19 @@ export const productList: Product[] = [
     ],
     accent: '#ffe5d9',
     featured: true,
-    description: 'A celebration of astronomical precision and classical watchmaking. Displays the cycle of lunar phases on an enamelled blue disc at 6 o’clock with a genuine meteorite moon applique, framed in a fluted 18 ct gold bezel.',
+    description: 'Crafted in Kinetic’s master horology atelier. A celebration of astronomical complication and precision mechanics. Displays the synodic lunar cycle on an enamelled midnight disc at 6 o’clock with an authentic meteorite moon applique, framed in a fluted rose bezel.',
     highlights: [
-      'Genuine Gibeon meteorite moon applique on blue enamelled disc',
-      'Date indicated on perimeter of dial via center hand with crescent tip',
-      'Self-winding mechanical caliber certified as Superlative Chronometer',
-      'Supple brown alligator leather strap with 18 ct gold Crownclasp'
+      'Handcrafted by Kinetic Horology Atelier with genuine meteorite moon disc',
+      'Perimeter calendar date indicated by blued crescent center hand',
+      'Self-winding mechanical caliber certified for precision chronometry',
+      'Supple vegetable-tanned alligator leather band with Kinetic Crownclasp'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Horology Atelier',
       'Case Diameter': '39 mm',
-      'Case Material': '18 ct Everose Gold',
-      'Crystal': 'Domed Scratch-resistant Sapphire',
-      'Power Reserve': 'Approximately 48 Hours',
+      'Case Finish': 'Everose Gold Anodized 316L Steel',
+      'Crystal': 'Double-domed Anti-Reflective Sapphire',
+      'Power Reserve': '48 Hours Mechanical',
       'Water Resistance': '50 meters / 5 ATM'
     },
     reviews: [
@@ -374,8 +514,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 10,
-    name: 'Rolex Submariner Date Diver Watch',
+    id: 13,
+    name: 'Kinetic DeepSea 300M Diver Automatic Watch',
     category: 'Horology',
     price: 74999,
     oldPrice: 82999,
@@ -389,19 +529,20 @@ export const productList: Product[] = [
     ],
     accent: '#a8dadc',
     featured: true,
-    description: 'The archetype of the diver watch. Unidirectional rotatable Cerachrom ceramic bezel with 60-minute graduations, solid Oystersteel bracelet with Oysterlock safety clasp, and legendary 300-meter water resistance.',
+    description: 'Built for oceanic exploration by Kinetic Marine Labs. Features a 60-minute unidirectional ceramic timing bezel with platinum graduations, solid 904L aerospace steel bracelet, and certified 300-meter deep water resistance.',
     highlights: [
-      'Unidirectional 60-minute Cerachrom ceramic bezel with platinum numerals',
-      'Chromalight display with long-lasting blue luminescent markers',
-      'Oystersteel 904L aerospace alloy resistant to ocean corrosion',
-      'Glidelock extension system allows fine adjustment over wetsuits'
+      'Manufactured by Kinetic with ultra-corrosion-resistant 904L alloy steel',
+      'Scratchproof ceramic bezel insert with precision 120-click uni-directional action',
+      'Kinetic BlueGlow luminescent markers for underwater visibility',
+      'Glidelock extension clasp adjusts easily over wetsuits'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Marine & Horology Labs',
       'Case Diameter': '41 mm',
-      'Material': 'Oystersteel (904L Stainless)',
-      'Water Resistance': '300 meters / 1,000 feet',
-      'Bezel': 'Cerachrom Ceramic Insert',
-      'Movement': 'Rolex Calibre 3235 Automatic'
+      'Material': 'Oyster-Grade 904L Stainless Steel',
+      'Bezel': 'Ceramic 60-Minute Rotatable Insert',
+      'Movement': 'Kinetic Automatic Calibre 3200',
+      'Water Depth': '300 meters / 1,000 feet'
     },
     reviews: [
       {
@@ -414,8 +555,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 11,
-    name: 'Longines Master Collection Chronometer',
+    id: 14,
+    name: 'Kinetic Heritage Barleycorn Mechanical Chronometer',
     category: 'Horology',
     price: 28999,
     oldPrice: 34999,
@@ -428,17 +569,18 @@ export const productList: Product[] = [
       'https://cdn.dummyjson.com/product-images/mens-watches/longines-master-collection/3.webp'
     ],
     accent: '#b8c0ff',
-    description: 'Classical Swiss horology at its finest. Silver barleycorn textured dial, painted Arabic numerals, blued steel hands, and transparent exhibition caseback revealing the automatic balance wheel.',
+    description: 'An homage to classic horology from Kinetic Studio. Features a silver guilloche barleycorn dial texture, heat-blued hands, painted Arabic numerals, and transparent exhibition caseback revealing Kinetic’s decorated mechanical balance wheel.',
     highlights: [
-      'Barleycorn guilloche engraved dial texture with heat-blued hands',
+      'Guilloche barleycorn engraved dial with thermally blued steel hands',
       'Exhibition sapphire caseback displays Geneva stripes on rotor',
       'Automatic self-winding caliber beating at 28,800 vibrations/hour',
-      'Genuine brown calf leather strap with triple folding safety clasp'
+      'Supple brown leather strap with triple folding safety deployment clasp'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Horology Atelier',
       'Case Diameter': '40 mm',
-      'Dial': 'Silver "Barleycorn" with Blued Steel Hands',
-      'Movement': 'Automatic Calibre L888',
+      'Dial': 'Silver "Barleycorn" Guilloche with Blued Hands',
+      'Movement': 'Kinetic Automatic Calibre K-888',
       'Power Reserve': '72 Hours',
       'Glass': 'Scratch-resistant Sapphire'
     },
@@ -453,8 +595,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 12,
-    name: 'Classic Stitched Leather Heritage Watch',
+    id: 15,
+    name: 'Kinetic Vintage Hand-Stitched Leather Field Watch',
     category: 'Horology',
     price: 6499,
     oldPrice: 7999,
@@ -467,17 +609,18 @@ export const productList: Product[] = [
       'https://cdn.dummyjson.com/product-images/mens-watches/brown-leather-belt-watch/3.webp'
     ],
     accent: '#d4a373',
-    description: 'Timeless vintage aesthetic for everyday gentleman wear. Features a sunray dial, baton indices, quick-set date complication, and thick vegetable-tanned stitched leather strap that patinas gracefully with age.',
+    description: 'Everyday gentleman field watch from Kinetic Goods. Features a warm sunray dial, quick-set date calendar, coin-edge crown, and thick vegetable-tanned hand-stitched leather strap that patinas richly over years of daily wear.',
     highlights: [
-      'Vegetable-tanned full-grain leather strap with reinforced stitching',
+      'Vegetable-tanned full-grain leather strap with reinforced wax stitching',
       'Polished 316L stainless steel case with coin-edge crown',
       'Hardened mineral crystal with anti-glare undercoating',
-      'Japanese high-precision quartz movement accurate to ±10s/month'
+      'High-precision quartz movement accurate to ±10 seconds/month'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Goods & Horology',
       'Case Size': '42 mm',
-      'Strap Width': '22 mm Genuine Leather',
-      'Movement': 'Precision Quartz Movement',
+      'Strap Width': '22 mm Hand-Stitched Leather',
+      'Movement': 'High-Precision Quartz Movement',
       'Battery Life': '3 Years',
       'Water Resistance': '30 meters / 3 ATM'
     },
@@ -492,10 +635,10 @@ export const productList: Product[] = [
     ]
   },
 
-  // --- SMARTPHONES & MOBILE ---
+  // --- SMART DEVICES ---
   {
-    id: 13,
-    name: 'Apple iPhone 13 Pro (Alpine Silver)',
+    id: 16,
+    name: 'Kinetic Titan-13 Pro Smartphone (Alpine Edition)',
     category: 'Smartphones',
     price: 69999,
     oldPrice: 79999,
@@ -509,19 +652,20 @@ export const productList: Product[] = [
     ],
     accent: '#e9ecef',
     featured: true,
-    description: 'Pro camera system with 3x optical zoom telephoto, macro photography capabilities, Cinematic mode in 1080p 30fps, and Super Retina XDR display with ProMotion 120Hz adaptive refresh rate.',
+    description: 'Designed and manufactured in-house by Kinetic Mobile Labs. Engineered with a surgical-grade stainless steel frame, Ceramic Shield glass, 120Hz adaptive fluid display, and triple computational studio cameras with LiDAR depth sensing.',
     highlights: [
-      'Super Retina XDR OLED display with ProMotion up to 120Hz',
-      'Pro 12MP camera array (Telephoto, Wide, Ultra Wide) with LiDAR scanner',
-      'A15 Bionic chip with 5-core GPU for lightning gaming and rendering',
-      'Ceramic Shield front cover and surgical-grade stainless steel frame'
+      'Crafted by Kinetic with surgical-grade steel frame and matte glass back',
+      'Fluid 120Hz adaptive refresh OLED display (up to 1200 nits peak)',
+      'Triple 12MP computational camera array (Telephoto, Wide, Macro) with LiDAR',
+      'Kinetic Quantum 6-Core processor with hardware neural accelerator'
     ],
     specs: {
-      'Display': '6.1" Super Retina XDR OLED 120Hz',
-      'Processor': 'Apple A15 Bionic (6-Core CPU, 5-Core GPU)',
-      'Water Resistance': 'IP68 (6 meters for up to 30 mins)',
-      'Storage': '256GB NVMe',
-      'Frame': 'Surgical-Grade Stainless Steel'
+      'Manufacturer': 'Kinetic Mobile Labs',
+      'Display': '6.1" OLED Fluid Display (120Hz ProMotion)',
+      'Chipset': 'Kinetic Quantum Bionic 6-Core',
+      'Storage': '256GB High-Speed UFS',
+      'Water Rating': 'IP68 Certified (Submersible to 6m)',
+      'Chassis': 'Surgical-Grade Stainless Steel & Ceramic Shield'
     },
     reviews: [
       {
@@ -529,13 +673,13 @@ export const productList: Product[] = [
         user: 'Christian Perez',
         rating: 5,
         date: 'Oct 05, 2026',
-        comment: 'ProMotion 120Hz makes everyday scrolling butter smooth. Macro camera mode is astonishingly sharp.'
+        comment: 'The 120Hz display makes everyday scrolling butter smooth. Macro camera mode is astonishingly sharp.'
       }
     ]
   },
   {
-    id: 14,
-    name: 'Apple Watch Series 4 Gold Edition',
+    id: 17,
+    name: 'Kinetic CyberPulse Series 4 Smartwatch (Gold Anodized)',
     category: 'Smartphones',
     price: 24999,
     oldPrice: 29999,
@@ -549,19 +693,20 @@ export const productList: Product[] = [
     ],
     accent: '#ffd166',
     featured: true,
-    description: 'Fundamentally redesigned with edge-to-edge curved OLED screen, electrical heart sensor capable of generating an ECG, haptic Digital Crown with click feedback, and comprehensive activity ring tracking.',
+    description: 'Wearable health & performance hub designed by Kinetic Labs. Features a curved edge-to-edge OLED Retina display, medical-grade electrical ECG sensor, haptic Digital Dial with mechanical feedback, and real-time biometrics tracking.',
     highlights: [
-      'Curved OLED Retina display with 30% more screen real estate',
-      'Electrical and optical heart sensors with low/high heart rate notifications',
-      'Fall detection with automatic Emergency SOS call routing',
-      'Water resistant to 50 meters, ready for open water swim tracking'
+      'Curved borderless OLED Retina display with 1000 nits daylight brightness',
+      'Integrated electrical ECG & PPG heart rate sensors with abnormality alerts',
+      'Kinetic Haptic Dial crown simulates mechanical balance clicks',
+      'Water resistant to 50 meters for open-water swim tracking'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Wearables Lab',
       'Case Size': '44 mm Anodized Gold Aluminum',
-      'Display': 'LTPO OLED Retina with Force Touch (1000 nits)',
-      'Sensors': 'ECG Sensor, Optical Heart Sensor, Accelerometer',
-      'Connectivity': 'GPS, Wi-Fi, Bluetooth 5.0',
-      'Battery': 'All-Day 18 Hours'
+      'Display': 'Curved LTPO OLED Retina with Force Touch',
+      'Sensors': 'Electrical ECG, PPG Pulse, Accelerometer, Gyroscope',
+      'Battery Life': '18+ Hours All-Day Battery',
+      'Connectivity': 'Bluetooth 5.0, Wi-Fi, GPS'
     },
     reviews: [
       {
@@ -569,13 +714,13 @@ export const productList: Product[] = [
         user: 'Nicholas Bailey',
         rating: 5,
         date: 'Sept 20, 2026',
-        comment: 'Gold finish looks very premium on the wrist. Haptic feedback on the digital crown is a delight.'
+        comment: 'Gold finish looks very premium on the wrist. Haptic feedback on the dial is a delight.'
       }
     ]
   },
   {
-    id: 15,
-    name: 'Apple MagSafe Magnetic Battery Pack',
+    id: 18,
+    name: 'Kinetic MagSnap Wireless Magnetic Power Bank',
     category: 'Smartphones',
     price: 5999,
     oldPrice: 7499,
@@ -587,17 +732,18 @@ export const productList: Product[] = [
       'https://cdn.dummyjson.com/product-images/mobile-accessories/apple-magsafe-battery-pack/2.webp'
     ],
     accent: '#e7c6ff',
-    description: 'Snap on to charge wirelessly. Perfectly aligned magnets attach securely to your iPhone, providing safe and reliable wireless power on the move without pressing buttons or carrying cables.',
+    description: 'Instant wireless snap-on power engineered by Kinetic Hardware. Built with neodymium rare-earth magnets that lock securely to the rear of your device, providing safe, temperature-regulated wireless charging on the go.',
     highlights: [
-      'Zero-button magnetic snap-on wireless charging',
-      'Pass-through charging: charges both pack and phone simultaneously',
-      'Intelligent battery widget integration in iOS lock screen',
-      'Soft-touch matte exterior provides comfortable palm grip'
+      'Precision magnetic snap alignment with zero cords required',
+      'Pass-through dual charging: charges both battery pack and phone simultaneously',
+      'Thermal regulation chip prevents phone overheating during fast charging',
+      'Soft-touch matte tactile shell feels great in hand'
     ],
     specs: {
-      'Capacity': '1460 mAh (11.13 Wh)',
-      'Charging Speed': 'Up to 15W with 20W+ adapter',
-      'Compatibility': 'iPhone 12, 13, 14, 15 series',
+      'Manufacturer': 'Kinetic Hardware Labs',
+      'Capacity': '5000 mAh High-Density Li-Po',
+      'Output': 'Up to 15W Fast Wireless Power',
+      'Port': 'USB-C Bi-Directional Fast Input/Output',
       'Weight': '115g'
     },
     reviews: [
@@ -611,8 +757,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 16,
-    name: 'MagSafe Silicone Protective Case (Plum)',
+    id: 19,
+    name: 'Kinetic MagShield Liquid Silicone Case (Plum Edition)',
     category: 'Smartphones',
     price: 1999,
     oldPrice: 2499,
@@ -626,18 +772,19 @@ export const productList: Product[] = [
       'https://cdn.dummyjson.com/product-images/mobile-accessories/iphone-12-silicone-case-with-magsafe-plum/4.webp'
     ],
     accent: '#d1c4e9',
-    description: 'Silky, soft-touch finish of the silicone exterior feels great in your hand, while soft microfiber lining inside protects the glass back from scratches. Embedded MagSafe magnets ensure fast magnetic alignment.',
+    description: 'Manufactured by Kinetic Studio. Formed from silky medical-grade liquid silicone with internal microfiber velvet lining. Features built-in magnetic rings for snap-on charging and raised camera protection bezels.',
     highlights: [
-      'Built-in neodymium magnets align with MagSafe chargers & wallets',
-      'Soft-touch liquid silicone exterior resists fingerprints and lint',
-      'Internal microfiber velvet lining prevents micro-abrasions',
-      'Raised camera bevel protects sapphire lenses from table scratches'
+      'Molded by Kinetic with premium fingerprint-resistant liquid silicone',
+      'Internal microfiber velvet liner protects glass back from scratches',
+      'Embedded magnetic array aligns with all magnetic charging docks',
+      '1.2mm raised screen lip and reinforced camera ring'
     ],
     specs: {
-      'Material': 'Liquid Silicone & Microfiber Lining',
-      'Drop Protection': 'Military Standard Drop Tested',
-      'MagSafe Compatible': 'Yes (Built-in ring)',
-      'Color': 'Deep Plum Purple'
+      'Manufacturer': 'Kinetic Studio',
+      'Material': 'Medical-Grade Liquid Silicone & Microfiber',
+      'Drop Protection': 'Military 2-Meter Shock Absorption',
+      'Magnetic Support': 'Embedded MagSnap Ring',
+      'Colorway': 'Deep Plum Purple'
     },
     reviews: [
       {
@@ -652,8 +799,8 @@ export const productList: Product[] = [
 
   // --- EYEWEAR ---
   {
-    id: 17,
-    name: 'Classic Minimalist UV Sunglasses',
+    id: 20,
+    name: 'Kinetic Zero-01 Polarized Minimalist UV Shades',
     category: 'Eyewear',
     price: 2499,
     oldPrice: 3199,
@@ -667,19 +814,20 @@ export const productList: Product[] = [
     ],
     accent: '#ffcc80',
     featured: true,
-    description: 'A timeless silhouette engineered with hand-finished cellulose acetate and TAC polarized lenses. Provides full UV400 radiation filtering and glare reduction for coastal drives and bright city walks.',
+    description: 'Designed and manufactured in-house by Kinetic Optics. Features hand-polished plant-based cellulose acetate frames and Triacetate Cellulose (TAC) polarized lenses with 100% UV400 radiation protection.',
     highlights: [
-      'UV400 Polarized Triacetate Cellulose (TAC) lenses',
-      'Handcrafted cellulose acetate frame with wire core temples',
-      'Stainless steel 5-barrel barrel hinges for smooth hinge action',
-      'Includes faux-leather collapsible travel case & cleaning cloth'
+      'Handcrafted by Kinetic Optics with organic Mazzucchelli acetate',
+      'TAC polarized Category 3 lenses eliminate harsh road and water reflections',
+      '5-barrel stainless steel hinges with teflon-coated screws',
+      'Includes rigid collapsible faux-leather Kinetic protective case'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Optics Studio',
       'Frame Width': '142 mm',
       'Lens Width': '52 mm',
       'Bridge': '19 mm',
-      'Lens Color': 'Neutral Smoke Grey',
-      'Protection': '100% UVA / UVB Filtering'
+      'Lens Tint': 'Neutral Smoke Grey (Category 3)',
+      'UV Block': '100% UVA & UVB (UV400 Certified)'
     },
     reviews: [
       {
@@ -692,8 +840,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 18,
-    name: 'Cyber Geometric Two-Tone Sunglasses',
+    id: 21,
+    name: 'Kinetic CyberFrame Two-Tone Geometric Acetate Shades',
     category: 'Eyewear',
     price: 2899,
     oldPrice: 3599,
@@ -706,17 +854,18 @@ export const productList: Product[] = [
       'https://cdn.dummyjson.com/product-images/sunglasses/green-and-black-glasses/3.webp'
     ],
     accent: '#b2dfdb',
-    description: 'Distinctive architectural angles combined with contrasting two-tone emerald green and matte black Italian acetate. Dark-tinted lenses offer privacy and high-contrast acuity under direct harsh sunlight.',
+    description: 'Brutalist architectural silhouette sculpted by Kinetic Optics. Combines bold emerald green and matte black Italian acetate layers with dark high-contrast lenses for maximum attitude and visual shielding.',
     highlights: [
-      'Bold beveled architectural acetate face front',
-      'High-contrast Category 3 anti-reflective lenses',
-      'Reinforced internal temple core wires for custom optician adjustments',
-      'Laser-engraved temple logos'
+      'Beveled cyber-architectural faceted front frame',
+      'High-contrast Category 3 hydrophobic and anti-scratch coated lenses',
+      'Reinforced interior temple wire cores for custom adjustment by opticians',
+      'Laser-engraved Kinetic monogram on left temple'
     ],
     specs: {
-      'Frame Material': 'Italian Mazzucchelli Acetate',
-      'Lens Coating': 'Anti-scratch & Hydrophobic',
-      'Gender': 'Unisex',
+      'Manufacturer': 'Kinetic Optics Studio',
+      'Material': 'Dual-Tone Hand-Layered Acetate',
+      'Lens Coating': 'Anti-Reflective & Hydrophobic Oleophobic',
+      'Gender': 'Unisex Brutalist Fit',
       'Weight': '38g'
     },
     reviews: [
@@ -732,8 +881,8 @@ export const productList: Product[] = [
 
   // --- BAGS & CARRY ---
   {
-    id: 19,
-    name: 'Prada Saffiano Sculptural Leather Handbag',
+    id: 22,
+    name: 'Kinetic Saffiano Sculptural Crosshatch Leather Handbag',
     category: 'Bags & Carry',
     price: 38999,
     oldPrice: 44999,
@@ -747,19 +896,19 @@ export const productList: Product[] = [
     ],
     accent: '#ffb7d5',
     featured: true,
-    description: 'Iconic luxury Italian craftsmanship. Characterized by its crosshatch textured Saffiano leather finish, double rolled leather handles, detachable shoulder strap, and signature enamelled metal triangle logo.',
+    description: 'Mastercrafted in Kinetic’s leather goods atelier. Features our signature crosshatch-textured Saffiano calfskin, rolled dual top handles, removable leather crossbody strap, and custom matte brushed gold Kinetic hardware.',
     highlights: [
-      'Scratch-resistant crosshatch textured Saffiano calf leather',
-      'Polished gold-tone hardware and two-way zipper closure',
-      'Two internal zip pockets and central compartment with logo lining',
-      'Protective metal purse feet on flat base'
+      'Handcrafted by Kinetic Atelier with scratch-resistant Saffiano calf leather',
+      'Bespoke gold-finish hardware with heavy-duty two-way zipper',
+      'Divided interior with dual zipper organizer pockets and signature lining',
+      'Protective metal feet on flat structured base keep bag standing upright'
     ],
     specs: {
-      'Dimensions': '32cm x 24cm x 14cm',
-      'Material': 'Calf Saffiano Leather',
-      'Hardware': '24k Gold Plated Brass',
-      'Origin': 'Made in Italy',
-      'Includes': 'Certificate of Authenticity & Dust Bag'
+      'Manufacturer': 'Kinetic Leather Atelier',
+      'Dimensions': '32cm W x 24cm H x 14cm D',
+      'Material': 'Crosshatch Textured Saffiano Calf Leather',
+      'Hardware': 'Brushed Gold-Plated Brass',
+      'Includes': 'Kinetic Dust Bag & Authenticity Card'
     },
     reviews: [
       {
@@ -772,8 +921,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 20,
-    name: 'Noir Structured Architectural Handbag',
+    id: 23,
+    name: 'Kinetic Noir Architectural Crossbody Handbag',
     category: 'Bags & Carry',
     price: 8999,
     oldPrice: 10999,
@@ -786,17 +935,18 @@ export const productList: Product[] = [
       'https://cdn.dummyjson.com/product-images/womens-bags/women-handbag-black/3.webp'
     ],
     accent: '#d4a373',
-    description: 'Rich top-grain cowhide leather with a warm vintage hand-waxed patina. Features multiple exterior zip organizer pockets, dual top carrying handles, and an adjustable crossbody strap.',
+    description: 'Sculpted from rich vegetable-tanned full-grain leather by Kinetic Goods. Features multiple exterior quick-access zip pockets, ergonomic rolled carry handles, and a detachable webbing crossbody strap.',
     highlights: [
-      '100% Top-grain cowhide leather with natural pebble texture',
-      'Spacious main compartment holds up to 13" laptop & notebook',
-      'Heavy-duty gunmetal zipper hardware and reinforced rivets',
-      'Adjustable canvas-backed leather crossbody strap'
+      'Constructed by Kinetic Goods with 100% full-grain pebble leather',
+      'Spacious main compartment holds 13" laptop, tablet, and everyday carry',
+      'Heavy-duty gunmetal zipper pulls with reinforced stress points',
+      'Detachable padded crossbody shoulder strap'
     ],
     specs: {
-      'Capacity': '15 Liters',
-      'Material': 'Genuine Top-Grain Leather',
+      'Manufacturer': 'Kinetic Goods & Carry',
       'Dimensions': '36cm x 28cm x 12cm',
+      'Capacity': '15 Liters',
+      'Material': 'Full-Grain Pebble Leather',
       'Pockets': '6 Total (3 Exterior, 3 Interior)'
     },
     reviews: [
@@ -810,8 +960,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 21,
-    name: 'Urban Faux Leather Commuter Backpack',
+    id: 24,
+    name: 'Kinetic Urban Commuter Ballistic Backpack',
     category: 'Bags & Carry',
     price: 3299,
     rating: 4.6,
@@ -823,18 +973,19 @@ export const productList: Product[] = [
       'https://cdn.dummyjson.com/product-images/womens-bags/white-faux-leather-backpack/3.webp'
     ],
     accent: '#fff59d',
-    description: 'Clean architectural minimalist white backpack. Water-repellent vegan leather exterior with concealed rear anti-theft zipper pocket, padded shoulder straps, and dedicated padded tablet sleeve.',
+    description: 'Clean architectural minimalist commuter backpack manufactured by Kinetic. Crafted with weather-repellent structured matte leatherette, concealed anti-theft rear passport compartment, and padded tablet sleeve.',
     highlights: [
-      'Clean white vegan PU leather wipes clean with a damp cloth',
-      'Anti-theft rear zippered pocket keeps phone and passport safe',
-      'Ergonomic padded shoulder straps with metal adjustment sliders',
-      'Top grab handle for quick transit carrying'
+      'Manufactured by Kinetic with wipe-clean weatherproof structured matte exterior',
+      'Concealed rear zippered security pocket keeps passport and phone safe',
+      'Contoured padded shoulder straps with metal adjustment hardware',
+      'Padded internal tech divider protects devices up to 14"'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Goods & Carry',
       'Dimensions': '38cm x 29cm x 13cm',
-      'Material': 'Waterproof PU Vegan Leather',
-      'Capacity': '14 Liters',
-      'Weight': '680g'
+      'Volume': '14 Liters',
+      'Weight': '680g',
+      'Water Resistance': 'Splash & Rain Resistant'
     },
     reviews: [
       {
@@ -847,10 +998,10 @@ export const productList: Product[] = [
     ]
   },
 
-  // --- WORKSPACE & FURNITURE ---
+  // --- WORKSPACE & LIVING ---
   {
-    id: 22,
-    name: 'Knoll Saarinen Executive Chair',
+    id: 25,
+    name: 'Kinetic Sculptural Studio Task Chair',
     category: 'Workspace',
     price: 32999,
     oldPrice: 38999,
@@ -864,19 +1015,19 @@ export const productList: Product[] = [
     ],
     accent: '#ffd66b',
     featured: true,
-    description: 'Designed by Eero Saarinen in 1950, this design icon revolutionized executive seating with its fluid sculptural polyurethane shell, lumbar cutout for ventilation, and plush contoured foam cushioning.',
+    description: 'An ergonomic design statement manufactured by Kinetic Studio Furniture. Built with a fluid reinforced polyurethane shell, lumbar ventilation cutout, commercial-grade wool weave upholstery, and polished chrome steel swivel base.',
     highlights: [
-      'Sculptural reinforced molded polyurethane inner shell',
-      'Lumbar opening provides cooling airflow and ergonomic flex',
-      'Commercial-grade wool blend woven upholstery with welted piping',
+      'Manufactured by Kinetic Studio with reinforced molded ergonomic inner core',
+      'Lumbar opening provides passive cooling airflow and spinal articulation',
+      'High-resilience woven wool upholstery with welted perimeter piping',
       'Four-star polished chrome swivel base with floor glide feet'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Studio Furniture',
       'Dimensions': '66cm W x 63cm D x 80cm H',
       'Seat Height': '46 cm',
-      'Upholstery': 'KnollTextiles Premium Wool Weave',
-      'Frame': 'Tubular Chrome Steel',
-      'Weight Capacity': '160 kg'
+      'Base': 'Tubular Chrome Steel 360° Swivel',
+      'Weight Limit': '160 kg'
     },
     reviews: [
       {
@@ -889,8 +1040,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 23,
-    name: 'Annibale Colombo Tailored Lounge Sofa',
+    id: 26,
+    name: 'Kinetic Atelier Tailored Lounge Sofa',
     category: 'Workspace',
     price: 49999,
     oldPrice: 58999,
@@ -903,18 +1054,19 @@ export const productList: Product[] = [
       'https://cdn.dummyjson.com/product-images/furniture/annibale-colombo-sofa/3.webp'
     ],
     accent: '#c8e6c9',
-    description: 'Handcrafted luxury Italian lounge sofa. Features high-resilience memory foam cushions wrapped in channel-quilted textile upholstery, resting atop a kiln-dried solid beechwood frame.',
+    description: 'Handcrafted luxury studio sofa by Kinetic Furniture Atelier. Built atop a kiln-dried solid beechwood frame with multi-density memory foam core cushions wrapped in tactile channel-quilted Italian linen weave.',
     highlights: [
-      'Solid kiln-dried beechwood internal frame guaranteed for 20 years',
-      'Multi-density polyurethane foam core with hypoallergenic down feather topper',
-      'Stain-resistant textured weave fabric with removable dry-cleanable covers',
-      'Low architectural profile ideal for open-plan studios'
+      'Crafted by Kinetic Atelier with kiln-dried FSC certified solid beechwood',
+      'Dual-density foam cushioning with hypoallergenic plush topper',
+      'Stain-resistant textured linen weave with removable zip-off covers',
+      'Low architectural brutalist profile ideal for open-plan lofts'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Furniture Atelier',
       'Dimensions': '210cm L x 95cm D x 74cm H',
-      'Frame': 'FSC Certified Solid Beechwood',
-      'Fabric': 'Italian Textured Linen Weave',
-      'Seating Capacity': '3 Persons Comfortably'
+      'Frame': 'FSC Certified Solid Hardwood',
+      'Upholstery': 'Textured Italian Linen Weave',
+      'Seating': '3 Persons Comfortably'
     },
     reviews: [
       {
@@ -927,8 +1079,8 @@ export const productList: Product[] = [
     ]
   },
   {
-    id: 24,
-    name: 'African Cherry Wood Minimalist Nightstand',
+    id: 27,
+    name: 'Kinetic Solid African Cherry Wood Nightstand',
     category: 'Workspace',
     price: 9999,
     oldPrice: 12499,
@@ -942,18 +1094,19 @@ export const productList: Product[] = [
     ],
     accent: '#d4a373',
     featured: true,
-    description: 'Constructed from sustainably sourced African Cherry hardwood, this minimalist table features dovetailed soft-close drawer slides, open display cubby, and a satin beeswax hand-rubbed finish.',
+    description: 'Constructed from sustainably harvested African Cherry hardwood by Kinetic Woodworks. Features English dovetailed joinery, soft-close concealed German drawer slides, open display cubby, and a hand-rubbed satin beeswax finish.',
     highlights: [
-      '100% Solid African Cherry wood with rich red-amber grain',
-      'Traditional English dovetail joinery drawer construction',
-      'Soft-close concealed German ball-bearing drawer glides',
-      'Recessed rear cable pass-through notch for phone and lamp chargers'
+      'Crafted by Kinetic Woodworks with 100% solid African Cherry hardwood',
+      'Traditional English dovetail joinery with soft-close concealed glides',
+      'Rear cable pass-through notch for phone and lamp chargers',
+      'Finished with all-natural beeswax and linseed oil'
     ],
     specs: {
+      'Manufacturer': 'Kinetic Woodworks',
       'Dimensions': '50cm W x 42cm D x 55cm H',
-      'Wood Species': 'African Cherry (Makore)',
-      'Finish': 'Natural Beeswax & Linseed Oil',
-      'Assembly': 'Fully Assembled'
+      'Wood': 'Solid African Cherry (Makore)',
+      'Finish': 'Natural Beeswax & Satin Oil',
+      'Assembly': 'Fully Assembled Ready-to-Use'
     },
     reviews: [
       {
@@ -967,7 +1120,7 @@ export const productList: Product[] = [
   }
 ];
 
-export const PRODUCTS_KEY = 'kinetic-products-catalog-v3';
+export const PRODUCTS_KEY = 'kinetic-products-catalog-v5';
 
 export function getAllProducts(): Product[] {
   try {
@@ -982,14 +1135,24 @@ export function getAllProducts(): Product[] {
       return productList;
     }
 
-    // Migration check: Ensure catalog stays in sync with v3 multi-angle product list
+    // Migration check: Ensure catalog stays in sync with v5 Kinetic in-house branded list
     const needsSync =
       productList.length > parsed.length ||
-      parsed.some((p) => !p.images || !Array.isArray(p.images) || p.images.length < 2);
+      parsed.some(
+        (p) =>
+          !p.images ||
+          !Array.isArray(p.images) ||
+          p.images.length < 2 ||
+          p.name.includes('Nike') ||
+          p.name.includes('Rolex') ||
+          p.name.includes('Apple') ||
+          p.name.includes('Dell') ||
+          p.name.includes('Prada')
+      );
 
     if (needsSync) {
       const customProducts = parsed.filter(
-        (p) => !productList.some((d) => d.id === Number(p.id))
+        (p) => !productList.some((d) => d.id === Number(p.id)) && !p.name.includes('Nike') && !p.name.includes('Rolex')
       );
       const merged = [...productList, ...customProducts];
       localStorage.setItem(PRODUCTS_KEY, JSON.stringify(merged));
@@ -999,7 +1162,7 @@ export function getAllProducts(): Product[] {
     return parsed.map((p, idx) => ({
       ...p,
       id: Number(p.id) || idx + 1,
-      name: p.name || 'Untitled Product',
+      name: p.name || 'Kinetic Product',
       category: p.category || 'General',
       price: Number(p.price) || 0,
       stock: Number(p.stock) || 0,
