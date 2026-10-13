@@ -5,6 +5,7 @@ import { CartProvider } from './core/context/CartContext';
 import { WishlistProvider } from './core/context/WishlistContext';
 import { ToastProvider } from './core/context/ToastContext';
 import { Navbar } from './shared/components/Navbar';
+import { Footer } from './shared/components/Footer';
 import { Toast } from './shared/components/Toast';
 import { RequireAuth } from './core/guards/RequireAuth';
 import { RequireAdmin } from './core/guards/RequireAdmin';
@@ -94,6 +95,7 @@ export const App: React.FC = () => {
                 <Route path="*" element={<Navigate to="/home" replace />} />
               </Routes>
             </main>
+            <Footer />
             <Toast />
           </WishlistProvider>
         </CartProvider>

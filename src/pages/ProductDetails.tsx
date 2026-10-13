@@ -9,12 +9,15 @@ import { Review } from '../core/models/product.model';
 export const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const initialProduct = getProductById(Number(id));
-  const { add } = useCart();
+  const { items, add, increase, decrease } = useCart();
   const { has, toggle } = useWishlist();
   const { showToast } = useToast();
 
   const [product, setProduct] = useState(initialProduct);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  const cartItem = items.find((i) => i.product.id === product?.id);
+  const qtyInBag = cartItem ? cartItem.quantity : 0;
 
   useEffect(() => {
     const handleStockChange = () => {
@@ -131,9 +134,50 @@ export const ProductDetails: React.FC = () => {
           </div>
 
           <div className="actions">
-            <button className="add" onClick={handleAdd}>
-              Add to bag ↗
-            </button>
+            {qtyInBag === 0 ? (
+              <button className="add" onClick={handleAdd}>
+                Add to bag ↗
+              </button>
+            ) : (
+              <div className="detail-qty-group">
+                <div className="card-qty-control detail-qty">
+                  <button
+                    type="button"
+                    className="card-qty-btn dec"
+                    onClick={() => {
+                      decrease(product.id);
+                      showToast(qtyInBag === 1 ? 'Removed from your bag' : 'Reduced quantity');
+                    }}
+                    title="Decrease quantity"
+                  >
+                    −
+                  </button>
+                  <div className="card-qty-label">
+                    <span className="qty-count">{qtyInBag}</span>
+                    <span className="qty-text">IN BAG</span>
+                  </div>
+                  <button
+                    type="button"
+                    className="card-qty-btn inc"
+                    onClick={() => {
+                      if (qtyInBag < product.stock) {
+                        increase(product.id);
+                        showToast(`Added another (Total: ${qtyInBag + 1})`);
+                      } else {
+                        showToast('Maximum available stock reached');
+                      }
+                    }}
+                    disabled={qtyInBag >= product.stock}
+                    title={qtyInBag >= product.stock ? 'Maximum stock reached' : 'Increase quantity'}
+                  >
+                    +
+                  </button>
+                </div>
+                <Link to="/cart" className="view-bag-link-btn">
+                  View in Bag →
+                </Link>
+              </div>
+            )}
             <button className="save" onClick={() => toggle(product)}>
               {isWishlisted ? '♥ Saved' : '♡ Save'}
             </button>
