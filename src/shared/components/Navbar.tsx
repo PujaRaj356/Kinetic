@@ -50,11 +50,6 @@ export const Navbar: React.FC = () => {
         </nav>
 
         <div className="nav-actions">
-          {/* Dedicated Mobile Header Home Button */}
-          <NavLink to="/home" className="mobile-header-home-btn" title="Back to Home">
-            🏠 Home
-          </NavLink>
-
           {isLoggedIn ? (
             <>
               <Link to="/profile" className="hello-link" title="My Profile & Orders">
