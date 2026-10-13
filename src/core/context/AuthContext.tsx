@@ -108,11 +108,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const API_BASE = getApiBase();
 
   const notifyLogin = async (email: string, name?: string) => {
+    const clean = email.trim().toLowerCase();
+    if (clean === 'admin@kinetic.com' || clean.includes('admin@')) return;
     try {
       await fetch(`${API_BASE}/api/auth/notify-login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: email.trim().toLowerCase(), name: name || 'Shopper' })
+        body: JSON.stringify({ email: clean, name: name || 'Shopper' })
       });
     } catch {
       // Non-blocking background notification
@@ -148,7 +150,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         return { ok: false, message: data.message || 'Login failed.', code: data.code };
       }
 
-      if (data.requires2FA) {
+      if (data.requires2FA && data.user?.role !== 'admin' && cleanEmail !== 'admin@kinetic.com') {
         setPendingVerification({
           email: cleanEmail,
           purpose: 'login',

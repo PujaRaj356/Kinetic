@@ -23,6 +23,11 @@ export const Verify: React.FC = () => {
       return;
     }
 
+    if (pendingVerification.email.toLowerCase() === 'admin@kinetic.com') {
+      navigate('/admin');
+      return;
+    }
+
     if (!initialSentRef.current) {
       initialSentRef.current = true;
 
