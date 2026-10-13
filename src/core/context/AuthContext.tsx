@@ -11,10 +11,10 @@ interface AuthContextType {
   users: User[];
   pendingVerification: PendingVerification | null;
   setPendingVerification: React.Dispatch<React.SetStateAction<PendingVerification | null>>;
-  login: (email: string, password: string, rememberMe?: boolean) => Promise<{ ok: boolean; message?: string; user?: User; code?: string }>;
+  login: (email: string, password: string, rememberMe?: boolean) => Promise<{ ok: boolean; message?: string; user?: User; code?: string; requires2FA?: boolean }>;
   loginAs: (role: UserRole) => void;
   register: (name: string, email: string, password: string, role?: UserRole) => Promise<{ ok: boolean; message?: string; user?: User; code?: string }>;
-  verify: (code: string) => Promise<{ ok: boolean; message?: string }>;
+  verify: (code: string) => Promise<{ ok: boolean; message?: string; user?: User }>;
   resendCode: () => Promise<{ ok: boolean; message?: string; devOtp?: string; sent?: boolean; devMode?: boolean }>;
   sendOtp: (email: string) => Promise<{ ok: boolean; message?: string; devOtp?: string; sent?: boolean; devMode?: boolean }>;
   logout: () => void;
@@ -125,7 +125,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     email: string,
     password: string,
     rememberMe = true
-  ): Promise<{ ok: boolean; message?: string; user?: User; code?: string }> => {
+  ): Promise<{ ok: boolean; message?: string; user?: User; code?: string; requires2FA?: boolean }> => {
     const cleanEmail = email.trim().toLowerCase();
 
     // 1. Email format check
@@ -146,6 +146,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       if (!resp.ok || !data.ok) {
         return { ok: false, message: data.message || 'Login failed.', code: data.code };
+      }
+
+      if (data.requires2FA) {
+        setPendingVerification({
+          email: cleanEmail,
+          purpose: 'login',
+          codeSent: true,
+          devOtp: data.devOtp
+        });
+        return {
+          ok: true,
+          requires2FA: true,
+          message: data.message
+        };
       }
 
       const user = data.user;
@@ -307,7 +321,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return await sendOtp(pendingVerification.email);
   };
 
-  const verify = async (code: string): Promise<{ ok: boolean; message?: string }> => {
+  const verify = async (code: string): Promise<{ ok: boolean; message?: string; user?: User }> => {
     if (!pendingVerification) {
       return { ok: false, message: 'No verification in progress.' };
     }
@@ -325,14 +339,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       // Successful verification
       const allUsers = loadUsers();
-      const user = allUsers.find(u => u.email.toLowerCase() === pendingVerification.email.toLowerCase());
+      let user = data.user || allUsers.find(u => u.email.toLowerCase() === pendingVerification.email.toLowerCase());
       if (user) {
         localStorage.setItem(CURRENT_KEY, JSON.stringify(user));
         setCurrentUser(user);
         notifyLogin(user.email, user.name);
       }
       setPendingVerification(null);
-      return { ok: true, message: data.message };
+      return { ok: true, message: data.message, user };
     } catch (err: any) {
       return { ok: false, message: 'Could not reach server: ' + err.message };
     }

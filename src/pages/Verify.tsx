@@ -16,7 +16,7 @@ export const Verify: React.FC = () => {
 
   const initialSentRef = useRef(false);
 
-  // Send code automatically upon reaching the verification screen
+  // Send code automatically upon reaching the verification screen if not already dispatched
   useEffect(() => {
     if (!pendingVerification?.email) {
       navigate('/login');
@@ -25,23 +25,31 @@ export const Verify: React.FC = () => {
 
     if (!initialSentRef.current) {
       initialSentRef.current = true;
-      setIsSending(true);
-      sendOtp(pendingVerification.email)
-        .then((res) => {
-          setIsSending(false);
-          if (res.ok) {
-            setStatusMessage(`Verification code sent to ${pendingVerification.email}`);
-            if (res.devMode && res.devOtp) {
-              setDevOtpHint(res.devOtp);
+
+      if (pendingVerification.codeSent) {
+        setStatusMessage(`Security verification code sent to ${pendingVerification.email}`);
+        if (pendingVerification.devOtp) {
+          setDevOtpHint(pendingVerification.devOtp);
+        }
+      } else {
+        setIsSending(true);
+        sendOtp(pendingVerification.email)
+          .then((res) => {
+            setIsSending(false);
+            if (res.ok) {
+              setStatusMessage(`Verification code sent to ${pendingVerification.email}`);
+              if (res.devMode && res.devOtp) {
+                setDevOtpHint(res.devOtp);
+              }
+            } else {
+              setError(res.message || 'Could not send verification email.');
             }
-          } else {
-            setError(res.message || 'Could not send verification email.');
-          }
-        })
-        .catch((err) => {
-          setIsSending(false);
-          setError('Failed to dispatch verification email: ' + err.message);
-        });
+          })
+          .catch((err) => {
+            setIsSending(false);
+            setError('Failed to dispatch verification email: ' + err.message);
+          });
+      }
     }
   }, [pendingVerification, navigate, sendOtp]);
 
@@ -73,7 +81,12 @@ export const Verify: React.FC = () => {
       return;
     }
 
-    navigate('/products');
+    // Role-based destination
+    if (result.user?.role === 'admin') {
+      navigate('/admin');
+    } else {
+      navigate('/products');
+    }
   };
 
   const handleResend = async () => {

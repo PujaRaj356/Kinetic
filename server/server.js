@@ -547,7 +547,7 @@ app.post('/api/auth/verify-otp', async (req, res) => {
     const stored = otpStore.get(cleanEmail);
 
     if (!stored) {
-      return res.status(400).json({ ok: false, message: 'No verification code found. Please request a new code.' });
+      return res.status(400).json({ ok: false, message: 'No active verification code found. Please request a new code.' });
     }
 
     if (Date.now() > stored.expiresAt) {
@@ -559,8 +559,38 @@ app.post('/api/auth/verify-otp', async (req, res) => {
       return res.status(400).json({ ok: false, message: 'Incorrect verification code. Please check your email and try again.' });
     }
 
+    // Retrieve verified user
+    let user = stored.user;
+    if (!user) {
+      user = diskStore.users.find(u => u.email.toLowerCase() === cleanEmail);
+      if (!user && isMongoConnected) {
+        const mongoUser = await UserModel.findOne({ email: cleanEmail });
+        if (mongoUser) user = mongoUser.toObject();
+      }
+    }
+
     otpStore.delete(cleanEmail);
-    res.json({ ok: true, message: 'Identity verified successfully!' });
+
+    const sanitizedUser = user ? {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      phone: user.phone,
+      address: user.address,
+      city: user.city,
+      pincode: user.pincode
+    } : undefined;
+
+    if (sanitizedUser) {
+      await sendLoginSuccessEmail(sanitizedUser.email, sanitizedUser.name);
+    }
+
+    res.json({
+      ok: true,
+      message: 'Two-factor security verification successful!',
+      user: sanitizedUser
+    });
   } catch (err) {
     res.status(500).json({ ok: false, message: err.message });
   }
@@ -930,21 +960,35 @@ app.post('/api/auth/login', async (req, res) => {
       });
     }
 
-    // Send login notification email via Nodemailer
-    await sendLoginSuccessEmail(user.email, user.name);
+    // --- 2FA EMAIL OTP VERIFICATION LAYER ---
+    const sanitizedUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      phone: user.phone,
+      address: user.address,
+      city: user.city,
+      pincode: user.pincode
+    };
+
+    const otp = generateOtp();
+    const expiresAt = Date.now() + 10 * 60 * 1000;
+    otpStore.set(cleanEmail, { code: otp, expiresAt, user: sanitizedUser });
+
+    // Send 6-digit OTP code to user's real email address
+    const otpResult = await sendOtpEmail(cleanEmail, otp);
 
     res.json({
       ok: true,
-      user: {
-        id: user.id,
-        name: user.name,
-        email: user.email,
-        role: user.role,
-        phone: user.phone,
-        address: user.address,
-        city: user.city,
-        pincode: user.pincode
-      }
+      requires2FA: true,
+      email: cleanEmail,
+      message: otpResult.sent
+        ? `Password verified! Security code sent to ${cleanEmail}`
+        : `Password verified! Security code generated for ${cleanEmail} (Dev mode)`,
+      sent: otpResult.sent,
+      devMode: otpResult.devMode || false,
+      devOtp: otpResult.devMode ? otp : undefined
     });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });

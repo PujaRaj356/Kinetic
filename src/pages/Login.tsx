@@ -45,6 +45,11 @@ export const Login: React.FC = () => {
         return;
       }
 
+      if (res.requires2FA) {
+        navigate('/verify');
+        return;
+      }
+
       if (res.user?.role === 'admin') {
         navigate('/admin');
       } else {
