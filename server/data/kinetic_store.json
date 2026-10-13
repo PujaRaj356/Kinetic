@@ -7,7 +7,7 @@
       "price": 2499,
       "oldPrice": 3199,
       "rating": 5,
-      "stock": 43,
+      "stock": 42,
       "image": "https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/1.webp",
       "images": [
         "https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/1.webp",
@@ -1823,9 +1823,788 @@
           "comment": "Light on the head with incredible visibility through the grille. Premium build."
         }
       ]
+    },
+    {
+      "id": 47,
+      "name": "Kinetic Deck Pro OLED Handheld Console",
+      "category": "Gaming & Consoles",
+      "price": 49999,
+      "oldPrice": 56999,
+      "rating": 4.9,
+      "stock": 14,
+      "image": "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#00f5d4",
+      "featured": true,
+      "description": "Next-generation portable handheld console engineered by Kinetic Cyberworks. Boasts a 7.4-inch 90Hz HDR OLED display, custom AMD Zen 4 APU with RDNA 3 graphics, Hall Effect anti-drift thumbsticks, and aerospace vapor chamber cooling for sustained AAA gameplay anywhere.",
+      "highlights": [
+        "7.4\" 90Hz custom HDR OLED display with 1,000 nits peak brightness",
+        "Magnetic Hall Effect thumbsticks and linear triggers with zero drift",
+        "Dual ultra-quiet fluid-bearing vapor chamber cooling system",
+        "50Wh battery delivering up to 8 hours of immersive handheld gaming"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Cyberworks",
+        "Processor": "Custom AMD Zen 4 6C/12T APU",
+        "Graphics": "RDNA 3 GPU (12 Compute Units)",
+        "Memory": "16GB LPDDR5X-7500 Unified RAM",
+        "Storage": "1TB NVMe Gen4 SSD (MicroSD Expandable)",
+        "Display": "7.4\" 1280x800 90Hz HDR OLED (100% DCI-P3)"
+      },
+      "reviews": [
+        {
+          "id": "r-gp1",
+          "user": "Devansh Roy",
+          "rating": 5,
+          "date": "Oct 10, 2026",
+          "comment": "The OLED screen contrast is ridiculous and the Hall Effect thumbsticks feel so buttery smooth."
+        }
+      ]
+    },
+    {
+      "id": 48,
+      "name": "Kinetic Cyber-Glide Magnetic Mechanical Keyboard",
+      "category": "Gaming & Consoles",
+      "price": 14999,
+      "oldPrice": 18499,
+      "rating": 4.8,
+      "stock": 22,
+      "image": "https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1600080972464-8e5f35f63d08?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1587829741301-dc798b83add3?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#ff007f",
+      "featured": true,
+      "description": "Rapid-trigger mechanical keyboard built around magnetic Hall Effect analog switches. Features per-key 0.1mm actuation sensitivity adjustment, CNC anodized aluminum chassis, PORON acoustic gasket dampening, and South-facing RGB lighting.",
+      "highlights": [
+        "Magnetic Hall Effect analog switches with 0.1mm to 4.0mm adjustable rapid trigger",
+        "Solid CNC 6063 aerospace aluminum case with micro-beadblasted finish",
+        "Five-layer acoustic sound dampening with PORON and custom IXPE sheet",
+        "Hot-swappable PCB supporting 8000Hz hyper-polling rate"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Input Labs",
+        "Layout": "75% Compact Layout with CNC Rotary Knob",
+        "Switches": "Kinetic Flux HE Magnetic Hall Switches",
+        "Polling Rate": "8,000 Hz Hyper-Polling",
+        "Keycaps": "Double-shot PBT Cherry Profile",
+        "Connectivity": "Detachable Braided USB-C / 2.4GHz / BT 5.3"
+      },
+      "reviews": [
+        {
+          "id": "r-kb1",
+          "user": "Anish Sharma",
+          "rating": 5,
+          "date": "Oct 08, 2026",
+          "comment": "Rapid trigger makes counter-strafing in tactical shooters effortless. The sound profile is deep and creamy."
+        }
+      ]
+    },
+    {
+      "id": 49,
+      "name": "Kinetic Precision Tri-Mode Ultralight Gaming Mouse",
+      "category": "Gaming & Consoles",
+      "price": 7499,
+      "oldPrice": 8999,
+      "rating": 4.9,
+      "stock": 35,
+      "image": "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#7000ff",
+      "description": "Featherlight 49g wireless gaming mouse engineered for tournament-grade aim precision. Equipped with a flagship 32,000 DPI optical sensor, optical microswitches rated for 100M clicks, and 4K wireless polling dongle.",
+      "highlights": [
+        "Sub-50g magnesium-alloy skeleton structure with zero flex",
+        "Flagship 32,000 DPI optical sensor with 750 IPS tracking speed",
+        "Optical click switches eliminate debounce delay and double clicks",
+        "Pure virgin-grade PTFE skate feet for near-frictionless gliding"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Input Labs",
+        "Weight": "49 grams",
+        "Sensor": "PAW3395 Optical (32,000 DPI, 750 IPS, 50G)",
+        "Polling Rate": "Up to 4,000 Hz Wireless (Dongle Included)",
+        "Battery Life": "Up to 90 hours continuous gameplay"
+      },
+      "reviews": [
+        {
+          "id": "r-ms1",
+          "user": "Vikram Seth",
+          "rating": 5,
+          "date": "Oct 05, 2026",
+          "comment": "So light it feels like an extension of your hand. Zero wireless latency."
+        }
+      ]
+    },
+    {
+      "id": 50,
+      "name": "Kinetic Apex Wireless Haptic Pro Gamepad",
+      "category": "Gaming & Consoles",
+      "price": 8999,
+      "oldPrice": 10999,
+      "rating": 4.8,
+      "stock": 18,
+      "image": "https://images.unsplash.com/photo-1592840496694-26d035b52b48?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1592840496694-26d035b52b48?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#00e5ff",
+      "description": "Ergonomic pro controller designed for competitive gaming on PC, mobile, and console. Features dual voice-coil haptic actuators, mechanical tactile microswitch face buttons, 4 remappable rear paddles, and interchangeable thumbstick caps.",
+      "highlights": [
+        "Dual high-definition voice coil haptic motors provide pinpoint rumble cues",
+        "Tactile microswitch face buttons actuate with crisp 0.3mm mouse-click travel",
+        "Four ergonomic rear paddles for seamless complex inputs",
+        "Multi-platform pairing via low-latency 2.4GHz RF, Bluetooth 5.3, and USB-C"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Cyberworks",
+        "Compatibility": "PC, Mac, iOS, Android, Steam Deck, Switch",
+        "Thumbsticks": "Electromagnetic Hall Effect Sticks",
+        "Triggers": "Dual-Stage Hall Magnetic Linear / Hair-Trigger Modes",
+        "Battery": "1200mAh Lithium-Ion (30 hours play time)"
+      },
+      "reviews": [
+        {
+          "id": "r-pad1",
+          "user": "Rohit K.",
+          "rating": 5,
+          "date": "Oct 02, 2026",
+          "comment": "Hair trigger locks cut reaction time in half. Build quality feels miles ahead of standard controllers."
+        }
+      ]
+    },
+    {
+      "id": 51,
+      "name": "Kinetic Noir Cyber-Cedarwood Extrait De Parfum (50ml)",
+      "category": "Fragrance & Grooming",
+      "price": 9499,
+      "oldPrice": 11999,
+      "rating": 4.9,
+      "stock": 20,
+      "image": "https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/1.webp",
+        "https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/2.webp",
+        "https://cdn.dummyjson.com/product-images/fragrances/chanel-coco-noir-eau-de/3.webp"
+      ],
+      "accent": "#e0a96d",
+      "featured": true,
+      "description": "An avant-garde signature scent exploring contrasts between dark smoked cedarwood, crushed pink peppercorn, and metallic ozone. Blended in high 30% extrait concentration in Grasse for 14+ hours of lingering presence.",
+      "highlights": [
+        "30% Extrait de Parfum oil concentration for all-day sillage",
+        "Top notes: Bergamot, Black Pepper, Metallic Ozone Accord",
+        "Heart notes: Smoked Virginia Cedarwood, Iris Concrete, Incense",
+        "Base notes: Madagascar Bourbon Vanilla, Dark Ambergris, Haitian Vetiver"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Olfactory Studio (Grasse)",
+        "Volume": "50ml / 1.7 fl.oz",
+        "Concentration": "Extrait de Parfum (30% Oil Concentration)",
+        "Vessel": "Matte Black Ceramic-Coated Glass Flacon with Magnetic Cap",
+        "Origin": "Compounded & Hand-Bottled in Grasse, France"
+      },
+      "reviews": [
+        {
+          "id": "r-fg1",
+          "user": "Siddharth M.",
+          "rating": 5,
+          "date": "Oct 11, 2026",
+          "comment": "Extremely sophisticated dark woody aroma. Compliments every single time I wear it out."
+        }
+      ]
+    },
+    {
+      "id": 52,
+      "name": "Kinetic Solstice Citrus & Vetiver Eau De Parfum (100ml)",
+      "category": "Fragrance & Grooming",
+      "price": 7999,
+      "oldPrice": 9499,
+      "rating": 4.8,
+      "stock": 25,
+      "image": "https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/1.webp",
+        "https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/2.webp",
+        "https://cdn.dummyjson.com/product-images/fragrances/calvin-klein-ck-one/3.webp"
+      ],
+      "accent": "#d7ff4f",
+      "description": "Crisp, electrifying daytime energy captured in a minimalist frosted glass flacon. Opens with sparkling Italian bergamot and green cardamom, evolving into clean mineral vetiver and sheer musk.",
+      "highlights": [
+        "Vibrant unisex daytime scent crafted for warmth and modern elegance",
+        "Top notes: Italian Bergamot, Lemon Verbena, Crushed Mint",
+        "Heart notes: Cardamom, Green Tea, Solar Jasmine",
+        "Base notes: Mineral Vetiver, White Cedar, Clean Amber Musk"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Olfactory Studio",
+        "Volume": "100ml / 3.4 fl.oz",
+        "Concentration": "Eau De Parfum (20% Oil)",
+        "Vessel": "Frosted Borosilicate Cylinder with Machined Aluminum Cap",
+        "Longevity": "8 to 10 hours on skin"
+      },
+      "reviews": [
+        {
+          "id": "r-fg2",
+          "user": "Tanvi Shah",
+          "rating": 5,
+          "date": "Oct 09, 2026",
+          "comment": "Bright, fresh, and not overpowering. Perfect morning scent for the studio or office."
+        }
+      ]
+    },
+    {
+      "id": 53,
+      "name": "Kinetic Fleur Blanche Rare Botanical Elixir (75ml)",
+      "category": "Fragrance & Grooming",
+      "price": 8499,
+      "oldPrice": 10299,
+      "rating": 4.9,
+      "stock": 16,
+      "image": "https://cdn.dummyjson.com/product-images/fragrances/gucci-bloom-eau-de/1.webp",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/fragrances/gucci-bloom-eau-de/1.webp",
+        "https://cdn.dummyjson.com/product-images/fragrances/gucci-bloom-eau-de/2.webp",
+        "https://cdn.dummyjson.com/product-images/fragrances/gucci-bloom-eau-de/3.webp"
+      ],
+      "accent": "#f4978e",
+      "description": "A contemporary floral composition fusing Indian tuberose, wild Rangoon creeper, and powdery white musk. Packaged in a soft blush lacquer porcelain flacon with Kinetic blind-embossed typography.",
+      "highlights": [
+        "Lush white floral bouquet balanced with velvety green tea and modern sandalwood",
+        "Hand-harvested night-blooming jasmine and velvety tuberose absolute",
+        "Clean vegan formulation free of synthetic dyes and phthalates",
+        "Presented in a lacquered ceramic bottle with engraved metal collar"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Olfactory Studio",
+        "Volume": "75ml / 2.5 fl.oz",
+        "Concentration": "Eau De Parfum",
+        "Notes": "Tuberose, Jasmine, Rangoon Creeper, Mysore Sandalwood"
+      },
+      "reviews": [
+        {
+          "id": "r-fg3",
+          "user": "Ananya Iyer",
+          "rating": 5,
+          "date": "Oct 06, 2026",
+          "comment": "Hypnotic white floral fragrance. Not synthetic or cloying at all—just purely divine."
+        }
+      ]
+    },
+    {
+      "id": 54,
+      "name": "Kinetic Matte Black Titanium Safety Razor Grooming Set",
+      "category": "Fragrance & Grooming",
+      "price": 4999,
+      "oldPrice": 6499,
+      "rating": 4.8,
+      "stock": 28,
+      "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#a8dadc",
+      "description": "Precision-machined double-edge safety razor forged from Grade 5 titanium with black DLC (Diamond-Like Carbon) coating. Engineered blade gap eliminates razor burn and ingrown hairs while delivering barbershop-close shaves.",
+      "highlights": [
+        "Machined from Grade 5 titanium with scratch-resistant DLC matte black finish",
+        "Optimized 0.68mm safety blade exposure prevents razor bumps and irritation",
+        "Knurled micro-grip handle guarantees solid control even with wet soapy hands",
+        "Includes matching heavy solid aluminum stand and 20 Swedish steel blades"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Precision Tools",
+        "Material": "Grade 5 Titanium & Billet Aerospace Aluminum",
+        "Finish": "PVD Diamond-Like Carbon (DLC) Matte Black",
+        "Blade Compatibility": "Standard Double-Edge (DE) Blades",
+        "Weight": "88g (Perfect balance gravity assist)"
+      },
+      "reviews": [
+        {
+          "id": "r-rz1",
+          "user": "Kabir Verma",
+          "rating": 5,
+          "date": "Oct 04, 2026",
+          "comment": "Swapped my multi-blade cartridges for this and irritation vanished completely. Weight feels luxurious."
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "name": "Kinetic Monochrome Rangefinder 35mm Digital Camera",
+      "category": "Photography & Optics",
+      "price": 84999,
+      "oldPrice": 98000,
+      "rating": 5,
+      "stock": 8,
+      "image": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#ffd166",
+      "featured": true,
+      "description": "Purist optical rangefinder crafted from milled brass and magnesium alloy. Features a dedicated full-frame monochrome BSI sensor with no color filter array, capturing unprecedented dynamic range, micro-contrast, and film-like tonal depth.",
+      "highlights": [
+        "Dedicated 40MP full-frame monochrome sensor with 15 stops dynamic range",
+        "True mechanical optical split-image rangefinder viewfinder with 0.73x magnification",
+        "Solid brass top and bottom plates with handcrafted vulcanite leather wrap",
+        "Quiet leaf shutter rated for 500,000 actuations with instant tactile shutter speed dial"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Optics Laboratory",
+        "Sensor": "40MP Full-Frame BSI Monochrome CMOS (No Bayer Filter)",
+        "Mount": "Kinetic K-Mount (M-Mount Compatible via Adapter)",
+        "ISO Range": "100 to 102,400 Native Monochrome Sensitivity",
+        "Body": "Machined Solid Brass & Magnesium Alloy Chassis",
+        "Weight": "590g (with battery and card)"
+      },
+      "reviews": [
+        {
+          "id": "r-cam1",
+          "user": "Arjun Nambiar",
+          "rating": 5,
+          "date": "Oct 12, 2026",
+          "comment": "Pure photographic magic. B&W tonal gradations look just like Tri-X film printed on silver gelatin paper."
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "name": "Kinetic Cine-Prime 50mm f/1.2 Titanium Manual Lens",
+      "category": "Photography & Optics",
+      "price": 42999,
+      "oldPrice": 49999,
+      "rating": 4.9,
+      "stock": 12,
+      "image": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#06d6a0",
+      "description": "Ultra-fast 50mm f/1.2 prime cinema lens with 12 curved aperture blades producing creamy painterly bokeh. Precision all-metal helicoid barrel with 270° smooth focus throw and de-clicked stepless aperture ring.",
+      "highlights": [
+        "Ultra-fast f/1.2 aperture renders dreamlike subject separation and low-light prowess",
+        "12 circular aperture blades for circular bokeh balls across all f-stops",
+        "Multi-layer nano anti-reflective coating controls flare and chromatic aberration",
+        "Solid aerospace titanium and brass mechanical construction"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Optics Laboratory",
+        "Focal Length": "50mm Standard Prime",
+        "Maximum Aperture": "f/1.2 (Minimum f/16)",
+        "Focus Throw": "270° Cine-Grade Damped Rotation",
+        "Filter Thread": "67mm Brass Thread",
+        "Elements/Groups": "9 Elements in 7 Groups with 2 Aspherical Elements"
+      },
+      "reviews": [
+        {
+          "id": "r-ln1",
+          "user": "Nikhil Sen",
+          "rating": 5,
+          "date": "Oct 07, 2026",
+          "comment": "Wide open at f/1.2 it produces magical cinema falloff. Focus ring resistance feels like butter."
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "name": "Kinetic Carbon Traveler Studio Fluid Tripod",
+      "category": "Photography & Optics",
+      "price": 16499,
+      "oldPrice": 19999,
+      "rating": 4.8,
+      "stock": 15,
+      "image": "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1512790182412-b19e6d62bc39?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#118ab2",
+      "description": "Ten-layer cross-woven carbon fiber travel tripod with integrated hydraulic 2-way fluid pan head. Packs down to 39cm for urban explorations while supporting payloads up to 14kg with rock-solid rigidity.",
+      "highlights": [
+        "10-layer Japanese Toray carbon fiber tubing provides exceptional dampening",
+        "Compact reverse-folding leg geometry fits inside carry-on luggage with ease",
+        "Smooth hydraulic fluid pan & tilt head with Arca-Swiss quick release plate",
+        "Integrated hidden center column ballast hook and spirit bubble levels"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Precision Tools",
+        "Material": "10X Toray Carbon Fiber & Aircraft Aluminum",
+        "Max Height": "164 cm",
+        "Folded Length": "39.5 cm",
+        "Load Capacity": "14 kg (30.8 lbs)",
+        "Weight": "1.28 kg"
+      },
+      "reviews": [
+        {
+          "id": "r-tp1",
+          "user": "Pranav Joshi",
+          "rating": 5,
+          "date": "Oct 03, 2026",
+          "comment": "Amazingly light yet locks down tightly with zero shake even in windy conditions."
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "name": "Kinetic Bauhaus Architectural Desk Lamp",
+      "category": "Home & Living",
+      "price": 6999,
+      "oldPrice": 8499,
+      "rating": 4.9,
+      "stock": 22,
+      "image": "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#f39c12",
+      "featured": true,
+      "description": "Sculptural desk lamp inspired by modernist Bauhaus geometry. Assembled from spun aluminum, brass counterweights, and warm 95+ CRI warm LED strip with capacitive touch touchless gesture dimming.",
+      "highlights": [
+        "Balanced cantilever arm stays exactly where positioned with zero sag",
+        "High color rendering 95+ CRI warm LED eliminates eye fatigue and flicker",
+        "Touchless infrared hand-wave sensor controls power and smooth stepless brightness",
+        "Cast iron weighted base with cork padding protects furniture surfaces"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Living Lab",
+        "Color Temperature": "2700K - 4000K Adjustable Warm White",
+        "Luminous Flux": "850 Lumens (95+ CRI)",
+        "Materials": "Spun Aluminum, Solid Brass Counterweight, Cast Iron Base",
+        "Power": "USB-C Powered (65W GaN adapter included)"
+      },
+      "reviews": [
+        {
+          "id": "r-lp1",
+          "user": "Tara Deshmukh",
+          "rating": 5,
+          "date": "Oct 09, 2026",
+          "comment": "Looks like a piece of art on my desk whether on or off. The warm glow is so easy on the eyes."
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "name": "Kinetic Cast-Concrete Brutalist Planter Vessel",
+      "category": "Home & Living",
+      "price": 3499,
+      "oldPrice": 4299,
+      "rating": 4.8,
+      "stock": 30,
+      "image": "https://cdn.dummyjson.com/product-images/home-decoration/plant-pot/1.webp",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/home-decoration/plant-pot/1.webp",
+        "https://cdn.dummyjson.com/product-images/home-decoration/plant-pot/2.webp",
+        "https://cdn.dummyjson.com/product-images/home-decoration/plant-pot/3.webp",
+        "https://cdn.dummyjson.com/product-images/home-decoration/plant-pot/4.webp"
+      ],
+      "accent": "#b0bec5",
+      "description": "Raw architectural planter vessel hand-cast in high-strength micro-cement concrete. Features faceted geometric silhouette, hidden drainage reservoir tray, and interior hydrophobic sealing.",
+      "highlights": [
+        "Individually hand-cast in architectural concrete with natural raw pores and textures",
+        "Includes concealed internal brass saucer tray catching runoff water",
+        "Hydrophobic non-toxic sealer protects plant roots and exterior furniture",
+        "Generous depth accommodates succulents, ferns, or tropical houseplants"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Living Lab",
+        "Material": "High-Density Micro-Cement Concrete & Solid Brass",
+        "Dimensions": "18cm Diameter x 16cm Height",
+        "Weight": "2.2 kg",
+        "Finish": "Raw Hand-Sealed Concrete"
+      },
+      "reviews": [
+        {
+          "id": "r-pl1",
+          "user": "Raghav Mehra",
+          "rating": 5,
+          "date": "Oct 04, 2026",
+          "comment": "Heavy and gorgeously textured. Adds a clean industrial brutalist vibe to my bookshelf."
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "name": "Kinetic Matte Black Precision Gooseneck Pour-Over Kettle",
+      "category": "Home & Living",
+      "price": 5999,
+      "oldPrice": 7499,
+      "rating": 4.9,
+      "stock": 19,
+      "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+        "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-aluminium-cup/1.webp"
+      ],
+      "accent": "#ff5964",
+      "description": "Barista-grade temperature-controlled electric kettle with a precision counterbalanced gooseneck spout for optimal pour-over extraction. Features 1°C variable temperature dial and integrated brew stopwatch display.",
+      "highlights": [
+        "Precision counterbalanced gooseneck spout provides laminar 90° vertical water flow",
+        "Digital base holds water at exact desired temperature (40°C - 100°C) for up to 60 mins",
+        "High-speed 1200W heating element brings 0.9L to boil in under 3 minutes",
+        "Food-grade 304 stainless steel interior with zero plastic water contact"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Brew Works",
+        "Capacity": "0.9 Liters (30 oz)",
+        "Power": "1200 Watts Fast Heating",
+        "Material": "304 Stainless Steel with Matte Heat-Resistant Exterior Powder Coating",
+        "Display": "OLED Real-Time Temperature & Stopwatch Screen"
+      },
+      "reviews": [
+        {
+          "id": "r-kt1",
+          "user": "Zoya Khan",
+          "rating": 5,
+          "date": "Oct 08, 2026",
+          "comment": "Pour control is pinpoint accurate. Made a world of difference in my daily Chemex brews."
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "name": "Kinetic Handcrafted Matte Aluminum Thermal Tumbler Set",
+      "category": "Home & Living",
+      "price": 2199,
+      "oldPrice": 2899,
+      "rating": 4.8,
+      "stock": 40,
+      "image": "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-aluminium-cup/1.webp",
+      "images": [
+        "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-aluminium-cup/1.webp",
+        "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-aluminium-cup/2.webp"
+      ],
+      "accent": "#35a7ff",
+      "description": "Set of two double-walled vacuum insulated cups crafted from food-grade aluminum and 18/8 stainless steel. Keeps iced cold drinks chilled for 12 hours or hot espresso steaming for 6 hours with no condensation sweat.",
+      "highlights": [
+        "Twin pack (Set of 2) double-walled tumblers in sleek midnight black",
+        "Double-wall vacuum insulation prevents condensation on desk surfaces",
+        "Tapered rim engineered for smooth sipping comfort and aroma retention",
+        "Durable powder-coated tactile grip finish"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Living Lab",
+        "Capacity": "350ml (12 oz) each",
+        "Material": "18/8 Pro-Grade Stainless Steel & Aluminum Shell",
+        "Insulation": "Double-Wall Vacuum Sealed",
+        "Set Includes": "2 Matching Tumblers with Silicone Bases"
+      },
+      "reviews": [
+        {
+          "id": "r-tb1",
+          "user": "Samir Roy",
+          "rating": 5,
+          "date": "Oct 01, 2026",
+          "comment": "No condensation rings on my wooden desk! Fits under my espresso machine spout nicely."
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "name": "Kinetic Pulse True Wireless ANC Earbuds",
+      "category": "Audio",
+      "price": 11999,
+      "oldPrice": 14999,
+      "rating": 4.9,
+      "stock": 24,
+      "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#38b000",
+      "featured": true,
+      "description": "Flagship true wireless earbuds with custom 11mm beryllium-coated dynamic drivers and hybrid -48dB Active Noise Cancellation. Housed in a machined solid aluminum pocket charging case with wireless Qi charging.",
+      "highlights": [
+        "Hybrid Adaptive ANC eliminates up to 48dB of background commuter drone",
+        "11mm custom beryllium acoustic drivers deliver sub-bass extension to 10Hz",
+        "Bluetooth 5.4 with LDAC & aptX Lossless high-res codec streaming support",
+        "Up to 36 hours total battery with fast 10-minute quick charge for 3 hours playback"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Audio Labs",
+        "ANC": "Hybrid Adaptive ANC (-48dB Noise Reduction)",
+        "Codecs": "LDAC, aptX Adaptive, AAC, SBC",
+        "Battery": "8.5 hrs (buds) + 28 hrs (charging case)",
+        "Water Resistance": "IPX5 Sweat & Splash Proof",
+        "Case": "Solid Anodized Aluminum Charging Case with Qi Wireless Charging"
+      },
+      "reviews": [
+        {
+          "id": "r-eb1",
+          "user": "Aditya Rao",
+          "rating": 5,
+          "date": "Oct 11, 2026",
+          "comment": "ANC silences noisy flights and coffee shops completely. Crisp highs with punchy sub-bass."
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "name": "Kinetic Horizon Studio Over-Ear Reference Headphones",
+      "category": "Audio",
+      "price": 21999,
+      "oldPrice": 26499,
+      "rating": 5,
+      "stock": 11,
+      "image": "https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1583394838336-acd977736f90?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#9d4edd",
+      "description": "Open-back planar magnetic studio reference headphones tuned for audio engineers and audiophiles. Delivers lightning-fast transient response, pinpoint stereo imaging, and plush magnetic lambskin memory foam ear pads.",
+      "highlights": [
+        "Ultra-thin nano-scale planar magnetic diaphragms provide zero distortion (<0.05%)",
+        "Open-back acoustic architecture creates an expansive three-dimensional soundstage",
+        "Handcrafted spring steel headband with breathable perforated suspension strap",
+        "Includes detachable balanced 4.4mm Pentaconn and gold-plated 3.5mm OFC cables"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Audio Labs",
+        "Transducer": "100mm Planar Magnetic Drivers",
+        "Frequency Response": "6 Hz – 55,000 Hz",
+        "Impedance": "32 Ohms (Easy to drive via phones and DACs)",
+        "Ear Pads": "Perforated Genuine Lambskin & Cooling Gel Memory Foam"
+      },
+      "reviews": [
+        {
+          "id": "r-hp1",
+          "user": "Kunal Singhania",
+          "rating": 5,
+          "date": "Oct 09, 2026",
+          "comment": "You can hear every breath, acoustic reverb trail, and subtle instrument layer. World-class planar sound."
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "name": "Kinetic Monolith Dual Driver Desktop Reference Monitors",
+      "category": "Audio",
+      "price": 18499,
+      "oldPrice": 22999,
+      "rating": 4.9,
+      "stock": 14,
+      "image": "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1572536147248-ac59a8abfa4b?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#f72585",
+      "description": "Pair of precision nearfield active studio monitors housed in acoustic MDF enclosures with carbon weave front baffles. Dual Class-D bi-amped 120W amplification tuned for flat analytical response and room-filling musicality.",
+      "highlights": [
+        "Bi-amplified Class-D topology with 120W total RMS system power",
+        "4-inch woven Kevlar composite woofer paired with 1-inch silk dome waveguide tweeter",
+        "Rear acoustic space boundary switches tune bass response for corner or wall placement",
+        "Balanced 1/4\" TRS, RCA, and optical digital inputs with Bluetooth 5.3 receiver"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Audio Labs",
+        "Amplifier Power": "120W Total RMS (60W per speaker bi-amped)",
+        "Frequency Range": "45 Hz – 22,000 Hz",
+        "Inputs": "Balanced TRS, RCA Line In, Optical SPDIF, Bluetooth 5.3",
+        "Dimensions": "15cm W x 22cm D x 24cm H (per monitor)"
+      },
+      "reviews": [
+        {
+          "id": "r-spk1",
+          "user": "Devina Bannerjee",
+          "rating": 5,
+          "date": "Oct 06, 2026",
+          "comment": "Clarity is astonishing on these monitors. Compact footprint on my studio desk with mighty punch."
+        }
+      ]
     }
   ],
   "orders": [
+    {
+      "customerId": "47010372-b1a7-44af-8e2a-7f4f9e614d91",
+      "customerName": "Puja",
+      "customerEmail": "pujarangaraj356@gmail.com",
+      "customerPhone": "9865452727",
+      "shippingAddress": "werg2g q3r",
+      "city": "Coimbatore",
+      "pincode": "641014",
+      "items": [
+        {
+          "product": {
+            "id": 1,
+            "name": "Kinetic Heavyweight Cyber Graphic Merch Tee",
+            "category": "Apparel & Merch",
+            "price": 2499,
+            "oldPrice": 3199,
+            "rating": 4.9,
+            "stock": 45,
+            "image": "https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/1.webp",
+            "images": [
+              "https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/1.webp",
+              "https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/2.webp",
+              "https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/3.webp",
+              "https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/4.webp"
+            ],
+            "accent": "#ff7a5c",
+            "featured": true,
+            "description": "Official Kinetic Studio merch. Custom milled in-house from ultra-heavyweight 280 GSM combed organic cotton. Features dropped streetwear shoulders, thick ribbed collar binding, and high-density screenprinted Kinetic cyber-industrial graphics that never crack.",
+            "highlights": [
+              "Manufactured by Kinetic Studio with 100% pre-shrunk 280 GSM organic cotton",
+              "Relaxed boxy streetwear fit with dropped shoulder seams",
+              "High-density tactile chest and back graphics in signature cyber orange",
+              "Double-needle chainstitched hem and cuffs for lifelong durability"
+            ],
+            "specs": {
+              "Manufacturer": "Kinetic Studio (In-House Merch)",
+              "Fabric Weight": "280 GSM Heavyweight Jersey",
+              "Composition": "100% Combed Organic Cotton",
+              "Fit": "Boxy / Oversized Drop-Shoulder",
+              "Care": "Machine wash cold inside-out"
+            },
+            "reviews": [
+              {
+                "id": "r-m1",
+                "user": "Devansh K.",
+                "rating": 5,
+                "date": "Oct 11, 2026",
+                "comment": "The collar and fabric thickness are insane. Easily the best graphic merch tee in my wardrobe."
+              }
+            ]
+          },
+          "quantity": 1
+        }
+      ],
+      "subtotal": 2499,
+      "shipping": 149,
+      "total": 2648,
+      "paymentMethod": "Razorpay",
+      "status": "Processing",
+      "id": "ORD-18100",
+      "paymentId": "pay_test_1791885524488",
+      "paymentOrderId": "order_test_1791885505063_5424",
+      "paymentStatus": "Paid",
+      "createdAt": "2026-10-13T09:58:44.494Z"
+    },
+    {
+      "customerName": "Puja Test",
+      "customerEmail": "pujarangaraj356@gmail.com",
+      "total": 1599,
+      "items": [],
+      "id": "ORD-43262",
+      "paymentMethod": "razorpay",
+      "paymentId": "pay_test_live_verify",
+      "paymentOrderId": "order_test_1791885182494_7814",
+      "paymentStatus": "Paid",
+      "status": "Processing",
+      "createdAt": "2026-10-13T09:53:02.506Z"
+    },
     {
       "customerId": "usr-client-1",
       "customerName": "Alex Shopper",
@@ -1920,15 +2699,23 @@
       "id": "usr-admin-1",
       "name": "Kinetic Administrator",
       "email": "admin@kinetic.com",
-      "password": "Admin@123",
+      "password": "$2b$10$.VPRXGw4zJJeEyJFkXYTFevaOJMSQelOxC0K/tqXTSb60jU36.uw2",
       "role": "admin"
     },
     {
       "id": "usr-client-1",
       "name": "Alex Shopper",
       "email": "client@kinetic.com",
-      "password": "Client@123",
+      "password": "$2b$10$XAYFxn0NefpVDtvcbSNV4esyjyH8ymiZb2GpwCIekduRCiFwUkFHK",
       "role": "client"
+    },
+    {
+      "id": "usr-1791879758497",
+      "name": "Alex Kinetic",
+      "email": "tester_1791879758441@kinetic.com",
+      "password": "$2b$10$F0wEK33Ur8ezxvGcc4ltKe1niAE9fssKkEOXArN.vtAdUu.l.u61i",
+      "role": "client",
+      "createdAt": "2026-10-13T08:22:38.497Z"
     }
   ]
 }
