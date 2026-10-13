@@ -29,6 +29,11 @@ export const Navbar: React.FC = () => {
             Saved
           </NavLink>
         )}
+        {isLoggedIn && (
+          <NavLink to="/profile" className={({ isActive }) => (isActive ? 'active' : '')}>
+            Profile
+          </NavLink>
+        )}
         {/* Only visible to the Administrator */}
         {isAdmin && (
           <NavLink
@@ -43,10 +48,12 @@ export const Navbar: React.FC = () => {
       <div className="nav-actions">
         {isLoggedIn ? (
           <>
-            <span className="hello">
-              Hi, {currentUser?.name}
-              {isAdmin && <span className="admin-tag-label"> [ADMIN]</span>}
-            </span>
+            <Link to="/profile" className="hello-link" title="My Profile & Orders">
+              <span className="hello">
+                Hi, {currentUser?.name}
+                {isAdmin && <span className="admin-tag-label"> [ADMIN]</span>}
+              </span>
+            </Link>
             <button className="ghost" onClick={handleLogout}>
               Logout
             </button>

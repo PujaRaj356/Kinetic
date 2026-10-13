@@ -15,6 +15,8 @@ import { ProductDetails } from './pages/ProductDetails';
 import { CartPage } from './pages/CartPage';
 import { WishlistPage } from './pages/WishlistPage';
 import { CheckoutPage } from './pages/CheckoutPage';
+import { ProfilePage } from './pages/ProfilePage';
+import { OrderSuccessPage } from './pages/OrderSuccessPage';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Verify } from './pages/Verify';
@@ -69,6 +71,22 @@ export const App: React.FC = () => {
                   element={
                     <RequireAuth>
                       <CheckoutPage />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    <RequireAuth>
+                      <ProfilePage />
+                    </RequireAuth>
+                  }
+                />
+                <Route
+                  path="/order-success/:orderId"
+                  element={
+                    <RequireAuth>
+                      <OrderSuccessPage />
                     </RequireAuth>
                   }
                 />

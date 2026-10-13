@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { User, UserRole } from '../models/user.model';
 import { PendingVerification } from '../models/auth.model';
+import { getApiBase } from '../services/apiConfig';
 
 interface AuthContextType {
   currentUser: User | null;
@@ -19,6 +20,7 @@ interface AuthContextType {
   logout: () => void;
   updateUserRole: (userId: string, newRole: UserRole) => void;
   deleteUser: (userId: string) => void;
+  updateProfile: (updates: Partial<User>) => void;
 }
 
 const USERS_KEY = 'kinetic-users';
@@ -103,7 +105,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isAdmin = currentUser?.role === 'admin';
   const isClient = currentUser?.role === 'client';
 
-  const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+  const API_BASE = getApiBase();
 
   const notifyLogin = async (email: string, name?: string) => {
     try {
@@ -268,6 +270,18 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateProfile = (updates: Partial<User>) => {
+    if (!currentUser) return;
+    const updatedUser: User = { ...currentUser, ...updates };
+    localStorage.setItem(CURRENT_KEY, JSON.stringify(updatedUser));
+    setCurrentUser(updatedUser);
+
+    const allUsers = loadUsers();
+    const updatedList = allUsers.map(u => (u.id === updatedUser.id ? updatedUser : u));
+    localStorage.setItem(USERS_KEY, JSON.stringify(updatedList));
+    setUsers(updatedList);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -286,7 +300,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         sendOtp,
         logout,
         updateUserRole,
-        deleteUser
+        deleteUser,
+        updateProfile
       }}
     >
       {children}

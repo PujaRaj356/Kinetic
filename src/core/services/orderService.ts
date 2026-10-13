@@ -1,5 +1,6 @@
 import { Order, OrderStatus } from '../models/order.model';
 import { productList } from './productService';
+import { getApiBase } from './apiConfig';
 
 const ORDERS_KEY = 'kinetic-customer-orders';
 
@@ -126,3 +127,38 @@ export function updateOrderStatus(orderId: string, status: OrderStatus): boolean
   localStorage.setItem(ORDERS_KEY, JSON.stringify(all));
   return true;
 }
+
+export function getOrderById(orderId: string): Order | undefined {
+  const all = getOrders();
+  return all.find(o => o.id.toLowerCase() === orderId.toLowerCase());
+}
+
+export function getOrdersForUser(userId?: string, userEmail?: string): Order[] {
+  const all = getOrders();
+  if (!userId && !userEmail) return [];
+  const cleanEmail = userEmail?.toLowerCase().trim();
+  return all.filter(o => {
+    if (userId && o.customerId === userId) return true;
+    if (cleanEmail && o.customerEmail?.toLowerCase().trim() === cleanEmail) return true;
+    return false;
+  });
+}
+
+export async function resendOrderEmail(order: Order): Promise<{ ok: boolean; message?: string }> {
+  try {
+    const base = getApiBase();
+    const res = await fetch(`${base}/api/orders/send-confirmation`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ order })
+    });
+    const data = await res.json();
+    return {
+      ok: !!data.ok,
+      message: data.ok ? 'Order receipt resent to your email!' : (data.error || 'Failed to resend confirmation email.')
+    };
+  } catch (err: any) {
+    return { ok: false, message: err.message || 'Could not connect to mail service.' };
+  }
+}
+
