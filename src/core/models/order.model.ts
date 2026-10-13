@@ -20,7 +20,10 @@ export interface Order {
   subtotal: number;
   shipping: number;
   total: number;
-  paymentMethod: 'card' | 'upi';
+  paymentMethod: 'razorpay' | 'card' | 'upi' | string;
+  paymentId?: string;
+  paymentOrderId?: string;
+  paymentStatus?: 'Paid' | 'Pending' | 'Failed';
   status: OrderStatus;
   createdAt: string;
 }

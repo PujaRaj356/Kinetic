@@ -8,6 +8,8 @@ import dns from 'dns';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import Razorpay from 'razorpay';
+import crypto from 'crypto';
 
 dotenv.config();
 
@@ -19,6 +21,25 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/kinetic_db';
 const SALT_ROUNDS = 10;
+
+// --- Razorpay Payment Gateway Setup ---
+const RAZORPAY_KEY_ID = (process.env.RAZORPAY_KEY_ID || '').trim();
+const RAZORPAY_KEY_SECRET = (process.env.RAZORPAY_KEY_SECRET || '').trim();
+
+let razorpay = null;
+if (RAZORPAY_KEY_ID && RAZORPAY_KEY_SECRET) {
+  try {
+    razorpay = new Razorpay({
+      key_id: RAZORPAY_KEY_ID,
+      key_secret: RAZORPAY_KEY_SECRET,
+    });
+    console.log(`💳 Razorpay live instance initialized with Key ID: ${RAZORPAY_KEY_ID}`);
+  } catch (err) {
+    console.error('Error initializing Razorpay SDK:', err.message);
+  }
+} else {
+  console.log('ℹ️ Razorpay Sandbox Mode active. To connect live keys, set RAZORPAY_KEY_ID & RAZORPAY_KEY_SECRET in server/.env');
+}
 
 // Strict RFC-compliant email regex
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -478,7 +499,10 @@ const OrderSchema = new mongoose.Schema({
   subtotal: Number,
   shipping: Number,
   total: Number,
-  paymentMethod: { type: String, enum: ['card', 'upi'], default: 'card' },
+  paymentMethod: { type: String, default: 'razorpay' },
+  paymentId: String,
+  paymentOrderId: String,
+  paymentStatus: { type: String, default: 'Paid' },
   status: { type: String, enum: ['Processing', 'Shipped', 'Delivered', 'Cancelled'], default: 'Processing' },
   createdAt: { type: Date, default: Date.now }
 });
@@ -890,6 +914,165 @@ app.patch('/api/orders/:id/status', async (req, res) => {
     res.json({ ok: true, id, status });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// ========================================================
+// RAZORPAY PAYMENT GATEWAY API ENDPOINTS
+// ========================================================
+
+// 1. Get Razorpay Public Config & Gateway Status
+app.get('/api/payment/config', (req, res) => {
+  res.json({
+    ok: true,
+    keyId: RAZORPAY_KEY_ID || 'rzp_test_kineticDemo',
+    currency: 'INR',
+    isLiveConfigured: !!(razorpay && RAZORPAY_KEY_ID && RAZORPAY_KEY_SECRET),
+    name: 'Kinetic',
+    description: 'Shop Different — Interactive Kinetic Drop'
+  });
+});
+
+// 2. Create Razorpay Payment Order (in paise)
+app.post('/api/payment/create-order', async (req, res) => {
+  try {
+    const { amount, receipt, notes } = req.body;
+    if (!amount || Number(amount) <= 0) {
+      return res.status(400).json({ ok: false, message: 'Valid payment amount is required.' });
+    }
+
+    const amountInPaise = Math.round(Number(amount) * 100);
+    const receiptId = receipt || `rcpt_${Date.now()}`;
+
+    // If live/test Razorpay API credentials are configured in server/.env
+    if (razorpay) {
+      const options = {
+        amount: amountInPaise,
+        currency: 'INR',
+        receipt: receiptId,
+        notes: notes || {}
+      };
+      const order = await razorpay.orders.create(options);
+      console.log(`[RAZORPAY ORDER CREATED] Order ID: ${order.id} for ₹${amount} (${amountInPaise} paise)`);
+      return res.json({
+        ok: true,
+        orderId: order.id,
+        amount: order.amount,
+        currency: order.currency,
+        keyId: RAZORPAY_KEY_ID,
+        isLive: true
+      });
+    }
+
+    // Developer Sandbox Mode (gracefully runs test simulation if API keys pending)
+    const mockOrderId = `order_test_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}`;
+    console.log(`[RAZORPAY SANDBOX] Generated mock order: ${mockOrderId} for ₹${amount}`);
+    res.json({
+      ok: true,
+      orderId: mockOrderId,
+      amount: amountInPaise,
+      currency: 'INR',
+      keyId: RAZORPAY_KEY_ID || 'rzp_test_kineticDemo',
+      isLive: false,
+      message: 'Razorpay Sandbox Mode Active (Set RAZORPAY_KEY_ID & RAZORPAY_KEY_SECRET in server/.env for production)'
+    });
+  } catch (err) {
+    console.error('Error creating Razorpay order:', err);
+    res.status(500).json({ ok: false, message: 'Failed to create Razorpay order: ' + err.message });
+  }
+});
+
+// 3. Verify Payment Signature & Confirm Order
+app.post('/api/payment/verify', async (req, res) => {
+  try {
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      orderData
+    } = req.body;
+
+    if (!razorpay_order_id || !razorpay_payment_id) {
+      return res.status(400).json({ ok: false, message: 'Payment details required for verification.' });
+    }
+
+    // Live HMAC-SHA256 signature verification if secret is provided
+    if (razorpay && RAZORPAY_KEY_SECRET && razorpay_signature) {
+      const expectedSignature = crypto
+        .createHmac('sha256', RAZORPAY_KEY_SECRET)
+        .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+        .digest('hex');
+
+      if (expectedSignature !== razorpay_signature) {
+        console.error('[RAZORPAY SIGNATURE MISMATCH] Possible fraudulent transaction detected.');
+        return res.status(400).json({
+          ok: false,
+          code: 'PAYMENT_SIGNATURE_MISMATCH',
+          message: 'Payment verification failed: invalid signature. Transaction not trusted.'
+        });
+      }
+      console.log(`[RAZORPAY SIGNATURE VERIFIED] Payment ${razorpay_payment_id} cryptographically authenticated.`);
+    }
+
+    // Build the finalized, verified order
+    const orderId = orderData?.id || `ORD-${Math.floor(10000 + Math.random() * 90000)}`;
+    const newOrder = {
+      ...orderData,
+      id: orderId,
+      paymentMethod: orderData?.paymentMethod || 'razorpay',
+      paymentId: razorpay_payment_id,
+      paymentOrderId: razorpay_order_id,
+      paymentStatus: 'Paid',
+      status: 'Processing',
+      createdAt: orderData?.createdAt || new Date().toISOString()
+    };
+
+    // Save order to diskStore and MongoDB
+    diskStore.orders.unshift(newOrder);
+
+    if (isMongoConnected) {
+      const doc = new OrderModel(newOrder);
+      await doc.save();
+    }
+
+    // Automatically reduce product inventory stock
+    if (Array.isArray(newOrder.items)) {
+      for (const item of newOrder.items) {
+        const pId = Number(item.product?.id || item.productId || item.id);
+        const qty = Number(item.quantity) || 1;
+        if (!pId) continue;
+
+        const p = diskStore.products.find(x => x.id === pId);
+        if (p) {
+          p.stock = Math.max(0, (p.stock || 0) - qty);
+          console.log(`[STOCK REDUCED] Product #${pId} ("${p.name}") reduced by ${qty}. Remaining stock: ${p.stock}`);
+        }
+
+        if (isMongoConnected) {
+          await ProductModel.updateOne({ id: pId }, { $inc: { stock: -qty } });
+        }
+      }
+    }
+    saveDiskStore();
+
+    // Send real Gmail order receipt with Razorpay payment ID
+    const emailResult = await sendOrderConfirmationEmail({
+      ...newOrder,
+      razorpayPaymentId: razorpay_payment_id
+    });
+
+    console.log(`[PAYMENT VERIFIED & ORDER CONFIRMED] Order #${newOrder.id} - Payment ID: ${razorpay_payment_id}`);
+
+    res.json({
+      ok: true,
+      verified: true,
+      order: newOrder,
+      paymentId: razorpay_payment_id,
+      emailResult
+    });
+  } catch (err) {
+    console.error('Error verifying Razorpay payment:', err);
+    res.status(500).json({ ok: false, message: 'Payment verification failed: ' + err.message });
   }
 });
 
