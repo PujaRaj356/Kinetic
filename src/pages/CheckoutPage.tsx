@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCart } from '../core/context/CartContext';
 import { useAuth } from '../core/context/AuthContext';
 import { saveOrder } from '../core/services/orderService';
+import { deductProductStock } from '../core/services/productService';
 import { getApiBase } from '../core/services/apiConfig';
 import { useToast } from '../core/context/ToastContext';
 
@@ -97,6 +98,14 @@ export const CheckoutPage: React.FC = () => {
     };
 
     const newOrder = saveOrder(orderPayload);
+
+    // Automatically reduce product inventory stock in database and local catalog
+    deductProductStock(
+      items.map((item) => ({
+        productId: item.product.id,
+        quantity: item.quantity
+      }))
+    );
 
     // Send order confirmation email via backend Express service
     try {

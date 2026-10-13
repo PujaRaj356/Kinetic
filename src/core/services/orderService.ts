@@ -144,6 +144,33 @@ export function getOrdersForUser(userId?: string, userEmail?: string): Order[] {
   });
 }
 
+export async function fetchUserOrdersFromDatabase(userId?: string, userEmail?: string): Promise<Order[]> {
+  try {
+    const key = userId || userEmail;
+    if (!key) return getOrdersForUser(userId, userEmail);
+    const base = getApiBase();
+    const res = await fetch(`${base}/api/orders/user/${encodeURIComponent(key)}`);
+    if (res.ok) {
+      const serverOrders = await res.json();
+      if (Array.isArray(serverOrders) && serverOrders.length > 0) {
+        const local = getOrders();
+        // Merge server orders into local orders without duplicates
+        const merged = [...serverOrders];
+        local.forEach(l => {
+          if (!merged.some(m => m.id === l.id)) {
+            merged.push(l);
+          }
+        });
+        localStorage.setItem(ORDERS_KEY, JSON.stringify(merged));
+        return getOrdersForUser(userId, userEmail);
+      }
+    }
+  } catch (err) {
+    console.warn('Backend order history sync notice:', err);
+  }
+  return getOrdersForUser(userId, userEmail);
+}
+
 export async function resendOrderEmail(order: Order): Promise<{ ok: boolean; message?: string }> {
   try {
     const base = getApiBase();

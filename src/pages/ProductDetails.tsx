@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getProductById } from '../core/services/productService';
+import { getProductById, addProductReview } from '../core/services/productService';
 import { useCart } from '../core/context/CartContext';
 import { useWishlist } from '../core/context/WishlistContext';
 import { useToast } from '../core/context/ToastContext';
@@ -15,6 +15,15 @@ export const ProductDetails: React.FC = () => {
 
   const [product, setProduct] = useState(initialProduct);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+  useEffect(() => {
+    const handleStockChange = () => {
+      const fresh = getProductById(Number(id));
+      if (fresh) setProduct(fresh);
+    };
+    window.addEventListener('kinetic-stock-updated', handleStockChange);
+    return () => window.removeEventListener('kinetic-stock-updated', handleStockChange);
+  }, [id]);
 
   // Review form state
   const [reviewerName, setReviewerName] = useState('');
@@ -33,7 +42,7 @@ export const ProductDetails: React.FC = () => {
     showToast('Added to your bag');
   };
 
-  const handleAddReview = (e: React.FormEvent) => {
+  const handleAddReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!reviewerName.trim() || !reviewComment.trim()) return;
 
@@ -49,25 +58,15 @@ export const ProductDetails: React.FC = () => {
       comment: reviewComment.trim()
     };
 
-    const updatedReviews = [newReview, ...(product.reviews || [])];
-    const avgRating = Number(
-      (
-        updatedReviews.reduce((sum, r) => sum + r.rating, 0) / updatedReviews.length
-      ).toFixed(1)
-    );
-
-    const updatedProduct = {
-      ...product,
-      reviews: updatedReviews,
-      rating: avgRating
-    };
-
-    setProduct(updatedProduct);
+    const saved = await addProductReview(product.id, newReview);
+    if (saved) {
+      setProduct(saved);
+    }
     setReviewerName('');
     setReviewComment('');
     setReviewRating(5);
     setReviewSubmitted(true);
-    showToast('Thank you! Your review has been added.');
+    showToast('Thank you! Your review has been permanently saved.');
   };
 
   const isWishlisted = has(product.id);

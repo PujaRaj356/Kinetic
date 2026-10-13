@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../core/context/AuthContext';
 import { useWishlist } from '../core/context/WishlistContext';
 import { useToast } from '../core/context/ToastContext';
-import { getOrdersForUser, resendOrderEmail } from '../core/services/orderService';
+import { getOrdersForUser, fetchUserOrdersFromDatabase, resendOrderEmail } from '../core/services/orderService';
 import { Order } from '../core/models/order.model';
 
 export const ProfilePage: React.FC = () => {
@@ -32,6 +32,9 @@ export const ProfilePage: React.FC = () => {
       setPincode(currentUser.pincode || '');
       const userOrders = getOrdersForUser(currentUser.id, currentUser.email);
       setOrders(userOrders);
+      fetchUserOrdersFromDatabase(currentUser.id, currentUser.email).then((remote) => {
+        if (remote && remote.length > 0) setOrders(remote);
+      });
     }
   }, [currentUser]);
 

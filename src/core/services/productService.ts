@@ -1,4 +1,5 @@
 import { Product } from '../models/product.model';
+import { getApiBase } from './apiConfig';
 
 export const productList: Product[] = [
   // ==========================================
@@ -1990,3 +1991,65 @@ export function deleteProduct(id: number): boolean {
   }
   return false;
 }
+
+export function deductProductStock(items: { productId: number; quantity: number }[]): void {
+  const list = getAllProducts();
+  let changed = false;
+  items.forEach((item) => {
+    const idx = list.findIndex((p) => p.id === item.productId);
+    if (idx !== -1) {
+      list[idx].stock = Math.max(0, (list[idx].stock || 0) - item.quantity);
+      changed = true;
+    }
+  });
+  if (changed) {
+    localStorage.setItem(PRODUCTS_KEY, JSON.stringify(list));
+    window.dispatchEvent(new CustomEvent('kinetic-stock-updated', { detail: list }));
+  }
+}
+
+export async function addProductReview(
+  productId: number,
+  review: { id?: string; user: string; rating: number; date?: string; comment: string }
+): Promise<Product | undefined> {
+  const list = getAllProducts();
+  const idx = list.findIndex((p) => p.id === productId);
+  if (idx === -1) return undefined;
+
+  const newReview = {
+    id: review.id || 'rev_' + Date.now(),
+    user: review.user.trim(),
+    rating: review.rating,
+    date: review.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+    comment: review.comment.trim()
+  };
+
+  const currentReviews = list[idx].reviews || [];
+  const updatedReviews = [newReview, ...currentReviews];
+  const avgRating = Number(
+    (updatedReviews.reduce((sum, r) => sum + r.rating, 0) / updatedReviews.length).toFixed(1)
+  );
+
+  list[idx] = {
+    ...list[idx],
+    reviews: updatedReviews,
+    rating: avgRating
+  };
+
+  localStorage.setItem(PRODUCTS_KEY, JSON.stringify(list));
+
+  // Sync with backend API
+  try {
+    const apiBase = getApiBase();
+    await fetch(`${apiBase}/api/products/${productId}/reviews`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newReview)
+    });
+  } catch (err) {
+    console.warn('Backend review sync notice:', err);
+  }
+
+  return list[idx];
+}
+

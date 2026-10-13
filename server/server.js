@@ -3,8 +3,15 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const DATA_FILE = path.join(__dirname, 'data', 'kinetic_store.json');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -12,6 +19,34 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/kineti
 
 app.use(cors());
 app.use(express.json());
+
+// --- Persistent File Database Storage Engine ---
+function loadDiskStore() {
+  try {
+    if (fs.existsSync(DATA_FILE)) {
+      const raw = fs.readFileSync(DATA_FILE, 'utf8');
+      const parsed = JSON.parse(raw);
+      if (parsed && Array.isArray(parsed.products)) {
+        return parsed;
+      }
+    }
+  } catch (err) {
+    console.error('Error loading kinetic_store.json:', err.message);
+  }
+  return { products: [], orders: [], users: [] };
+}
+
+let diskStore = loadDiskStore();
+
+function saveDiskStore() {
+  try {
+    const dir = path.dirname(DATA_FILE);
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+    fs.writeFileSync(DATA_FILE, JSON.stringify(diskStore, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error saving kinetic_store.json:', err.message);
+  }
+}
 
 // --- Nodemailer Gmail Transporter Setup ---
 const transporter = nodemailer.createTransport({
@@ -30,7 +65,6 @@ function generateOtp() {
 }
 
 async function sendOtpEmail(toEmail, otp) {
-  // If credentials aren't set in .env yet, log to console for development testing
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
     console.log('----------------------------------------------------');
     console.log(`[EMAIL NOTICE] Gmail credentials not set in server/.env`);
@@ -71,14 +105,12 @@ async function sendOtpEmail(toEmail, otp) {
   return { sent: true, messageId: info.messageId };
 }
 
-// Helper: formats order placement date and 3-5 day delivery estimation
 function formatOrderDates(dateInput) {
   const d = dateInput ? new Date(dateInput) : new Date();
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
   const orderDateFormatted = d.toLocaleDateString('en-US', options);
   const orderTimeFormatted = d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 
-  // Calculate standard 3 to 5 business days delivery window
   const deliveryMin = new Date(d);
   deliveryMin.setDate(d.getDate() + 3);
   const deliveryMax = new Date(d);
@@ -96,103 +128,81 @@ function formatOrderDates(dateInput) {
 
 async function sendLoginSuccessEmail(toEmail, userName) {
   if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    console.log('----------------------------------------------------');
     console.log(`[EMAIL NOTICE] (Dev Mode) Login notification for ${toEmail} (${userName || 'User'})`);
-    console.log('----------------------------------------------------');
     return { sent: false, devMode: true };
   }
 
-  const now = new Date();
-  const dayDate = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-  const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  const loginTime = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+  const loginDate = new Date().toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 
   const mailOptions = {
-    from: `"Kinetic Store" <${process.env.EMAIL_USER}>`,
+    from: `"Kinetic Security" <${process.env.EMAIL_USER}>`,
     to: toEmail,
-    subject: `🔐 Login Successful - Welcome to Kinetic`,
+    subject: `🔐 Successful Login to Your Kinetic Account`,
     html: `
-      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f1e7; padding: 40px 16px; color: #111;">
-        <div style="max-width: 500px; margin: 0 auto; background: #ffffff; border: 3px solid #111111; box-shadow: 8px 8px 0px #111111; padding: 36px 30px;">
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f1e7; padding: 40px 20px; color: #111;">
+        <div style="max-width: 480px; margin: 0 auto; background: #ffffff; border: 3px solid #111111; box-shadow: 8px 8px 0px #111111; padding: 36px 30px;">
           <div style="display: inline-block; background: #d7ff4f; border: 2px solid #111; padding: 6px 14px; font-weight: 900; font-size: 13px; letter-spacing: 1px; margin-bottom: 20px;">
-            KINETIC STORE
+            KINETIC SECURITY
           </div>
-          <h1 style="margin: 0 0 12px; font-size: 26px; font-weight: 950; letter-spacing: -0.04em;">You're logged in! 👋</h1>
-          <p style="font-size: 15px; line-height: 1.5; color: #333; margin: 0 0 24px;">
-            Hi <b>${userName || 'there'}</b>, you have successfully signed in to your Kinetic account.
+          <h1 style="margin: 0 0 12px; font-size: 24px; font-weight: 900; letter-spacing: -0.04em;">You're Logged In! 👋</h1>
+          <p style="font-size: 15px; line-height: 1.5; color: #333; margin: 0 0 20px;">
+            Hi <b>${userName || 'Valued Member'}</b>, your Kinetic account was just accessed successfully.
           </p>
-
-          <div style="background: #faf8f5; border: 2px solid #111; padding: 18px 20px; margin-bottom: 24px;">
-            <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
-              <tr>
-                <td style="padding: 6px 0; color: #666; font-weight: 600;">Account Email:</td>
-                <td style="padding: 6px 0; color: #111; font-weight: 800; text-align: right;">${toEmail}</td>
-              </tr>
-              <tr>
-                <td style="padding: 6px 0; color: #666; font-weight: 600;">Day & Date:</td>
-                <td style="padding: 6px 0; color: #111; font-weight: 800; text-align: right;">${dayDate}</td>
-              </tr>
-              <tr>
-                <td style="padding: 6px 0; color: #666; font-weight: 600;">Time of Login:</td>
-                <td style="padding: 6px 0; color: #111; font-weight: 800; text-align: right;">${timeStr}</td>
-              </tr>
-              <tr>
-                <td style="padding: 6px 0; color: #666; font-weight: 600;">Security Status:</td>
-                <td style="padding: 6px 0; color: #10b981; font-weight: 900; text-align: right;">Session Verified ✓</td>
-              </tr>
-            </table>
+          <div style="background: #faf8f5; border: 2px solid #111; padding: 16px 18px; margin-bottom: 20px; font-size: 13px; line-height: 1.6;">
+            <div>🕒 <b>Time:</b> ${loginTime} on ${loginDate}</div>
+            <div>✉️ <b>Account:</b> ${toEmail}</div>
+            <div>🛡️ <b>Status:</b> Session Authenticated</div>
           </div>
-
-          <p style="font-size: 13px; color: #666; line-height: 1.6; margin: 0 0 24px;">
-            🛡️ <b>Security Notice:</b> If this was you, you're all set to explore and shop. If you did NOT authorize this login, please change your password immediately.
+          <p style="font-size: 12px; color: #777; margin: 0; line-height: 1.5;">
+            If you did not perform this login, please change your password immediately or contact Kinetic Security.
           </p>
-
-          <div style="text-align: center; border-top: 2px dashed #ddd; padding-top: 20px;">
-            <p style="font-size: 12px; color: #888; margin: 0;">Kinetic E-Commerce · Good Products. Zero Boring.</p>
-          </div>
         </div>
       </div>
     `,
   };
 
   const info = await transporter.sendMail(mailOptions);
-  console.log(`[LOGIN EMAIL DELIVERED] Successfully sent login notification to ${toEmail}: ${info.messageId}`);
+  console.log(`[LOGIN EMAIL DELIVERED] Sent login confirmation to ${toEmail}`);
   return { sent: true, messageId: info.messageId };
 }
 
 async function sendOrderConfirmationEmail(order) {
   const toEmail = order.customerEmail;
   if (!toEmail || !toEmail.includes('@')) {
-    return { sent: false, reason: 'Valid customer email required' };
-  }
-
-  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-    console.log('----------------------------------------------------');
-    console.log(`[ORDER EMAIL NOTICE] (Dev Mode) Order #${order.id} summary for ${toEmail}`);
-    console.log('----------------------------------------------------');
-    return { sent: false, devMode: true };
+    console.warn(`[ORDER EMAIL SKIPPED] No valid customerEmail provided for order #${order.id}`);
+    return { sent: false, error: 'No valid recipient email' };
   }
 
   const { orderDateFormatted, orderTimeFormatted, estimatedDelivery } = formatOrderDates(order.createdAt);
 
-  const itemsHtml = (order.items || []).map((item) => {
-    const prod = item.product || {};
-    const itemTotal = (prod.price || 0) * (item.quantity || 1);
-    return `
-      <tr style="border-bottom: 1.5px solid #eee;">
-        <td style="padding: 14px 0; width: 70px; vertical-align: top;">
-          ${prod.image ? `<img src="${prod.image}" alt="${prod.name || 'Product'}" width="60" height="60" style="object-fit: cover; border: 2px solid #111; display: block;" />` : ''}
+  const itemsHtml = (order.items || [])
+    .map(
+      (item) => `
+      <tr style="border-bottom: 1px solid #e5e5e5;">
+        <td style="padding: 12px 0; display: flex; align-items: center; gap: 12px;">
+          <img src="${item.product?.image || ''}" alt="${item.product?.name || 'Item'}" style="width: 52px; height: 52px; object-fit: cover; border: 2px solid #111; background: ${item.product?.accent || '#eee'};" />
+          <div>
+            <div style="font-weight: 800; font-size: 14px; color: #111;">${item.product?.name || 'Product'}</div>
+            <div style="font-size: 12px; color: #666;">Qty: ${item.quantity} · ${item.product?.category || ''}</div>
+          </div>
         </td>
-        <td style="padding: 14px 12px; vertical-align: top;">
-          <div style="font-weight: 900; font-size: 15px; color: #111; margin-bottom: 4px;">${prod.name || 'Item'}</div>
-          <div style="font-size: 12px; color: #666; font-weight: 600;">Category: ${prod.category || 'Curated'}</div>
-          <div style="font-size: 13px; color: #444; margin-top: 4px;">Qty: <b>${item.quantity || 1}</b> × ₹${(prod.price || 0).toLocaleString('en-IN')}</div>
-        </td>
-        <td style="padding: 14px 0; vertical-align: top; text-align: right; font-weight: 900; font-size: 15px; color: #111;">
-          ₹${itemTotal.toLocaleString('en-IN')}
+        <td style="padding: 12px 0; text-align: right; font-weight: 800; font-size: 14px; color: #111; white-space: nowrap;">
+          ₹${((item.product?.price || 0) * (item.quantity || 1)).toLocaleString('en-IN')}
         </td>
       </tr>
-    `;
-  }).join('');
+    `
+    )
+    .join('');
+
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log('----------------------------------------------------');
+    console.log(`[ORDER EMAIL NOTICE] (Dev Mode) Gmail credentials not set in server/.env`);
+    console.log(`[ORDER SUMMARY] Order #${order.id} placed by ${order.customerName} (${toEmail})`);
+    console.log(`[TOTAL] ₹${(order.total || 0).toLocaleString('en-IN')} | Est. Delivery: ${estimatedDelivery}`);
+    console.log('----------------------------------------------------');
+    return { sent: false, devMode: true };
+  }
 
   const mailOptions = {
     from: `"Kinetic Store" <${process.env.EMAIL_USER}>`,
@@ -201,8 +211,6 @@ async function sendOrderConfirmationEmail(order) {
     html: `
       <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f1e7; padding: 40px 16px; color: #111;">
         <div style="max-width: 580px; margin: 0 auto; background: #ffffff; border: 3px solid #111111; box-shadow: 10px 10px 0px #111111; padding: 36px 30px;">
-          
-          <!-- Header -->
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 2px solid #111; padding-bottom: 18px;">
             <div style="display: inline-block; background: #d7ff4f; border: 2px solid #111; padding: 6px 14px; font-weight: 900; font-size: 13px; letter-spacing: 1px;">
               KINETIC STORE
@@ -214,10 +222,9 @@ async function sendOrderConfirmationEmail(order) {
 
           <h1 style="margin: 0 0 10px; font-size: 28px; font-weight: 950; letter-spacing: -0.04em;">Thank you for your order! 🎉</h1>
           <p style="font-size: 15px; line-height: 1.5; color: #333; margin: 0 0 24px;">
-            Hi <b>${order.customerName || 'Shopper'}</b>, we have received your order and our team is preparing it for dispatch.
+            Hi <b>${order.customerName || 'Shopper'}</b>, we have received your order and our studio team is preparing it for dispatch.
           </p>
 
-          <!-- Delivery Highlight Card -->
           <div style="background: #d7ff4f; border: 2px solid #111; padding: 18px 20px; margin-bottom: 24px;">
             <div style="font-size: 11px; font-weight: 900; letter-spacing: 1px; color: #111; margin-bottom: 6px;">
               ESTIMATED DELIVERY TIMELINE
@@ -230,13 +237,11 @@ async function sendOrderConfirmationEmail(order) {
             </div>
           </div>
 
-          <!-- Items Ordered Table -->
           <h2 style="font-size: 18px; font-weight: 900; margin: 24px 0 12px; letter-spacing: -0.02em;">Items Summary</h2>
           <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
             ${itemsHtml}
           </table>
 
-          <!-- Financial Breakdown -->
           <div style="background: #faf8f5; border: 2px solid #111; padding: 18px 20px; margin-bottom: 24px;">
             <table style="width: 100%; border-collapse: collapse; font-size: 14px;">
               <tr>
@@ -254,7 +259,6 @@ async function sendOrderConfirmationEmail(order) {
             </table>
           </div>
 
-          <!-- Delivery Address & Details -->
           <div style="border: 2px solid #111; padding: 18px 20px; margin-bottom: 26px;">
             <div style="font-size: 12px; font-weight: 900; letter-spacing: 1px; color: #777; margin-bottom: 8px;">
               DELIVERY ADDRESS
@@ -278,7 +282,6 @@ async function sendOrderConfirmationEmail(order) {
           <div style="text-align: center; border-top: 2px dashed #ccc; padding-top: 20px;">
             <p style="font-size: 12px; color: #888; margin: 0;">Kinetic Store · Good Products. Zero Boring.</p>
           </div>
-
         </div>
       </div>
     `,
@@ -321,7 +324,11 @@ const UserSchema = new mongoose.Schema({
   name: String,
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, enum: ['admin', 'client'], default: 'client' }
+  role: { type: String, enum: ['admin', 'client'], default: 'client' },
+  phone: String,
+  address: String,
+  city: String,
+  pincode: String
 });
 
 const OrderItemSchema = new mongoose.Schema({
@@ -351,88 +358,19 @@ const ProductModel = mongoose.model('Product', ProductSchema);
 const UserModel = mongoose.model('User', UserSchema);
 const OrderModel = mongoose.model('Order', OrderSchema);
 
-// Initial Seed Data
-const seedProducts = [
-  {
-    id: 1,
-    name: 'Orbit Wireless Headphones',
-    category: 'Audio',
-    price: 4999,
-    oldPrice: 6499,
-    rating: 4.8,
-    stock: 12,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=800&q=80',
-    accent: '#d7ff4f',
-    featured: true,
-    description: 'Engineered for audio purists and daily commuters alike, the Orbit Wireless Headphones blend custom 40mm neodymium drivers with active noise cancellation.',
-    highlights: ['Active Noise Cancellation', '32 Hours Playback', 'Multipoint Bluetooth 5.2'],
-    specs: { 'Driver Size': '40mm', 'Battery': '32 Hours', 'Warranty': '1 Year' }
-  },
-  {
-    id: 2,
-    name: 'Mono Runner Sneaker',
-    category: 'Footwear',
-    price: 3299,
-    oldPrice: 3999,
-    rating: 4.6,
-    stock: 18,
-    image: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
-    accent: '#ff7a5c',
-    featured: true,
-    description: 'Crafted with breathable knit uppers and responsive dual-density foam midsoles for maximum impact absorption.',
-    highlights: ['Engineered Mesh', 'Dual-density EVA sole', 'Reflective heel accents'],
-    specs: { 'Upper': 'FlyKnit', 'Sole': 'Rubber', 'Fit': 'Regular' }
-  },
-  {
-    id: 3,
-    name: 'Grid Minimalist Backpack',
-    category: 'Bags',
-    price: 2499,
-    rating: 4.7,
-    stock: 9,
-    image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80',
-    accent: '#8bd3ff',
-    featured: true,
-    description: 'Weather-resistant Cordura exterior with dedicated shockproof compartments for up to a 16-inch laptop.',
-    highlights: ['Water-repellent 900D Cordura', '16" Laptop Sleeve', 'RFID-blocking pocket'],
-    specs: { 'Capacity': '20L', 'Compatibility': '16" Laptop', 'Waterproof': 'IPX4' }
-  }
-];
-
 let isMongoConnected = false;
-let inMemoryProducts = [...seedProducts];
-let inMemoryUsers = [
-  { id: 'usr-admin-1', name: 'Store Administrator', email: 'admin@kinetic.com', password: 'Admin@123', role: 'admin' },
-  { id: 'usr-client-1', name: 'Alex Shopper', email: 'client@kinetic.com', password: 'Client@123', role: 'client' }
-];
-let inMemoryOrders = [
-  {
-    id: 'ORD-90214',
-    customerId: 'usr-demo-1',
-    customerName: 'Aarav Sharma',
-    customerEmail: 'aarav.sharma@example.com',
-    customerPhone: '9876543210',
-    shippingAddress: '42 Indiranagar 12th Main',
-    city: 'Bengaluru',
-    pincode: '560038',
-    items: [{ product: seedProducts[0], quantity: 1 }],
-    subtotal: 4999,
-    shipping: 0,
-    total: 4999,
-    paymentMethod: 'card',
-    status: 'Delivered',
-    createdAt: new Date().toISOString()
-  }
-];
 
 // --- API Routes ---
 
-// Health & Status check
+// Health & Database Status
 app.get('/api/health', (req, res) => {
   res.json({
     ok: true,
     server: 'Node.js Express',
-    database: isMongoConnected ? 'MongoDB Connected' : 'In-Memory Fallback (Active)',
+    database: isMongoConnected ? 'MongoDB (Cloud / Local Connected)' : 'Persistent File-Backed JSON Database (Active & Permanent)',
+    dataPath: DATA_FILE,
+    totalProductsInDb: diskStore.products.length,
+    totalOrdersInDb: diskStore.orders.length,
     emailService: process.env.EMAIL_USER ? `Configured (${process.env.EMAIL_USER})` : 'Dev Mode (Logged to console)',
     timestamp: new Date().toISOString()
   });
@@ -448,10 +386,9 @@ app.post('/api/auth/send-otp', async (req, res) => {
 
     const cleanEmail = email.trim().toLowerCase();
     const otp = generateOtp();
-    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes expiry
+    const expiresAt = Date.now() + 10 * 60 * 1000;
 
     otpStore.set(cleanEmail, { code: otp, expiresAt });
-
     const result = await sendOtpEmail(cleanEmail, otp);
 
     res.json({
@@ -493,7 +430,6 @@ app.post('/api/auth/verify-otp', async (req, res) => {
       return res.status(400).json({ ok: false, message: 'Incorrect verification code. Please check your email and try again.' });
     }
 
-    // OTP Verified successfully!
     otpStore.delete(cleanEmail);
     res.json({ ok: true, message: 'Identity verified successfully!' });
   } catch (err) {
@@ -505,8 +441,9 @@ app.post('/api/auth/verify-otp', async (req, res) => {
 app.get('/api/products', async (req, res) => {
   try {
     const { query = '', category = 'All' } = req.query;
-    let list = isMongoConnected ? await ProductModel.find() : inMemoryProducts;
-    
+    let list = isMongoConnected ? await ProductModel.find().lean() : diskStore.products;
+    if (!list || list.length === 0) list = diskStore.products;
+
     if (category !== 'All') {
       list = list.filter(p => p.category === category);
     }
@@ -522,8 +459,8 @@ app.get('/api/products', async (req, res) => {
 
 app.get('/api/categories', async (req, res) => {
   try {
-    const list = isMongoConnected ? await ProductModel.distinct('category') : Array.from(new Set(inMemoryProducts.map(p => p.category)));
-    res.json(['All', ...list]);
+    const list = diskStore.products.map(p => p.category);
+    res.json(['All', ...Array.from(new Set(list))]);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -532,7 +469,8 @@ app.get('/api/categories', async (req, res) => {
 app.get('/api/products/:id', async (req, res) => {
   try {
     const id = Number(req.params.id);
-    const product = isMongoConnected ? await ProductModel.findOne({ id }) : inMemoryProducts.find(p => p.id === id);
+    let product = isMongoConnected ? await ProductModel.findOne({ id }).lean() : diskStore.products.find(p => p.id === id);
+    if (!product) product = diskStore.products.find(p => p.id === id);
     if (!product) return res.status(404).json({ message: 'Product not found' });
     res.json(product);
   } catch (err) {
@@ -540,21 +478,102 @@ app.get('/api/products/:id', async (req, res) => {
   }
 });
 
+// Customer Review Persistence Route
+app.post('/api/products/:id/reviews', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const reviewData = req.body;
+    if (!reviewData.user || !reviewData.comment) {
+      return res.status(400).json({ ok: false, message: 'Reviewer name and comment are required.' });
+    }
+
+    const newReview = {
+      id: reviewData.id || `rev_${Date.now()}`,
+      user: String(reviewData.user).trim(),
+      rating: Number(reviewData.rating) || 5,
+      date: reviewData.date || new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+      comment: String(reviewData.comment).trim()
+    };
+
+    let updatedProduct = null;
+
+    // 1. Update in local persistent disk store
+    const diskProd = diskStore.products.find(p => p.id === id);
+    if (diskProd) {
+      if (!Array.isArray(diskProd.reviews)) diskProd.reviews = [];
+      diskProd.reviews.unshift(newReview);
+      const avg = Number((diskProd.reviews.reduce((sum, r) => sum + r.rating, 0) / diskProd.reviews.length).toFixed(1));
+      diskProd.rating = avg;
+      saveDiskStore();
+      updatedProduct = diskProd;
+    }
+
+    // 2. Update in MongoDB if connected
+    if (isMongoConnected) {
+      const mongoProd = await ProductModel.findOne({ id });
+      if (mongoProd) {
+        if (!Array.isArray(mongoProd.reviews)) mongoProd.reviews = [];
+        mongoProd.reviews.unshift(newReview);
+        mongoProd.rating = Number((mongoProd.reviews.reduce((sum, r) => sum + r.rating, 0) / mongoProd.reviews.length).toFixed(1));
+        await mongoProd.save();
+        updatedProduct = mongoProd.toObject();
+      }
+    }
+
+    if (!updatedProduct) {
+      return res.status(404).json({ ok: false, message: 'Product not found' });
+    }
+
+    console.log(`[REVIEW SAVED] New review by ${newReview.user} for Product #${id}. New rating: ${updatedProduct.rating}`);
+    res.status(201).json({ ok: true, product: updatedProduct, review: newReview });
+  } catch (err) {
+    console.error('Error saving review:', err);
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// Product Stock Management Route
+app.patch('/api/products/:id/stock', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const { stock, delta } = req.body;
+    let newStock = 0;
+
+    const diskProd = diskStore.products.find(p => p.id === id);
+    if (diskProd) {
+      if (typeof stock === 'number') diskProd.stock = Math.max(0, stock);
+      else if (typeof delta === 'number') diskProd.stock = Math.max(0, (diskProd.stock || 0) + delta);
+      newStock = diskProd.stock;
+      saveDiskStore();
+    }
+
+    if (isMongoConnected) {
+      if (typeof stock === 'number') {
+        await ProductModel.updateOne({ id }, { $set: { stock: Math.max(0, stock) } });
+      } else if (typeof delta === 'number') {
+        await ProductModel.updateOne({ id }, { $inc: { stock: delta } });
+      }
+    }
+
+    res.json({ ok: true, id, stock: newStock });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
 // Admin: Add Product
 app.post('/api/products', async (req, res) => {
   try {
     const data = req.body;
-    const nextId = isMongoConnected
-      ? (await ProductModel.countDocuments()) + 1
-      : inMemoryProducts.length > 0 ? Math.max(...inMemoryProducts.map(p => p.id)) + 1 : 1;
-    
+    const nextId = diskStore.products.length > 0 ? Math.max(...diskStore.products.map(p => p.id)) + 1 : 1;
     const newProduct = { ...data, id: nextId, rating: 5.0, reviews: [] };
-    
+
+    diskStore.products.unshift(newProduct);
+    saveDiskStore();
+
     if (isMongoConnected) {
       const doc = new ProductModel(newProduct);
       await doc.save();
-    } else {
-      inMemoryProducts.unshift(newProduct);
     }
     res.status(201).json({ ok: true, product: newProduct });
   } catch (err) {
@@ -566,10 +585,11 @@ app.post('/api/products', async (req, res) => {
 app.delete('/api/products/:id', async (req, res) => {
   try {
     const id = Number(req.params.id);
+    diskStore.products = diskStore.products.filter(p => p.id !== id);
+    saveDiskStore();
+
     if (isMongoConnected) {
       await ProductModel.deleteOne({ id });
-    } else {
-      inMemoryProducts = inMemoryProducts.filter(p => p.id !== id);
     }
     res.json({ ok: true, message: `Product ${id} deleted` });
   } catch (err) {
@@ -577,16 +597,44 @@ app.delete('/api/products/:id', async (req, res) => {
   }
 });
 
-// Orders & Transactions Routes
+// Orders & Order History Routes
 app.get('/api/orders', async (req, res) => {
   try {
-    const list = isMongoConnected ? await OrderModel.find().sort({ createdAt: -1 }) : inMemoryOrders;
+    let list = isMongoConnected ? await OrderModel.find().sort({ createdAt: -1 }).lean() : diskStore.orders;
+    if (!list || list.length === 0) list = diskStore.orders;
     res.json(list);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
+// Customer-Specific Order History
+app.get('/api/orders/user/:userKey', async (req, res) => {
+  try {
+    const userKey = decodeURIComponent(req.params.userKey).toLowerCase().trim();
+    let orders = [];
+
+    if (isMongoConnected) {
+      orders = await OrderModel.find({
+        $or: [
+          { customerId: req.params.userKey },
+          { customerEmail: { $regex: new RegExp(`^${userKey}$`, 'i') } }
+        ]
+      }).sort({ createdAt: -1 }).lean();
+    }
+
+    if (!orders || orders.length === 0) {
+      orders = diskStore.orders.filter(
+        o => o.customerId === req.params.userKey || (o.customerEmail && o.customerEmail.toLowerCase().trim() === userKey)
+      );
+    }
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Order Placement: Saves Order AND Automatically Decrements Stock
 app.post('/api/orders', async (req, res) => {
   try {
     const orderData = req.body;
@@ -596,17 +644,44 @@ app.post('/api/orders', async (req, res) => {
       status: 'Processing',
       createdAt: orderData.createdAt || new Date().toISOString()
     };
+
+    // 1. Save order to diskStore and MongoDB
+    diskStore.orders.unshift(newOrder);
+
     if (isMongoConnected) {
       const doc = new OrderModel(newOrder);
       await doc.save();
-    } else {
-      inMemoryOrders.unshift(newOrder);
     }
 
-    // Automatically send comprehensive Order Confirmation Email
+    // 2. Automatically reduce product stock for each ordered item
+    const updatedStocks = [];
+    if (Array.isArray(newOrder.items)) {
+      for (const item of newOrder.items) {
+        const pId = Number(item.product?.id || item.productId || item.id);
+        const qty = Number(item.quantity) || 1;
+        if (!pId) continue;
+
+        // Deduct in disk store
+        const p = diskStore.products.find(x => x.id === pId);
+        if (p) {
+          p.stock = Math.max(0, (p.stock || 0) - qty);
+          updatedStocks.push({ productId: pId, remainingStock: p.stock });
+          console.log(`[STOCK REDUCED] Product #${pId} ("${p.name}") reduced by ${qty}. Remaining stock: ${p.stock}`);
+        }
+
+        // Deduct in MongoDB
+        if (isMongoConnected) {
+          await ProductModel.updateOne({ id: pId }, { $inc: { stock: -qty } });
+        }
+      }
+    }
+    saveDiskStore();
+
+    // 3. Send real Gmail order receipt
     const emailResult = await sendOrderConfirmationEmail(newOrder);
-    res.status(201).json({ ok: true, order: newOrder, emailResult });
+    res.status(201).json({ ok: true, order: newOrder, updatedStocks, emailResult });
   } catch (err) {
+    console.error('Error processing order:', err);
     res.status(500).json({ ok: false, error: err.message });
   }
 });
@@ -628,11 +703,15 @@ app.patch('/api/orders/:id/status', async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
+
+    const order = diskStore.orders.find(o => o.id === id);
+    if (order) {
+      order.status = status;
+      saveDiskStore();
+    }
+
     if (isMongoConnected) {
       await OrderModel.updateOne({ id }, { status });
-    } else {
-      const order = inMemoryOrders.find(o => o.id === id);
-      if (order) order.status = status;
     }
     res.json({ ok: true, id, status });
   } catch (err) {
@@ -657,16 +736,19 @@ app.post('/api/auth/notify-login', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    let user = null;
+    const cleanEmail = email.toLowerCase().trim();
+
+    let user = diskStore.users.find(u => u.email.toLowerCase() === cleanEmail && u.password === password);
+
     if (isMongoConnected) {
-      user = await UserModel.findOne({ email: email.toLowerCase(), password });
-    } else {
-      user = inMemoryUsers.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+      const mongoUser = await UserModel.findOne({ email: cleanEmail, password });
+      if (mongoUser) user = mongoUser.toObject();
     }
+
     if (!user) {
       return res.status(401).json({ ok: false, message: 'Invalid email or password.' });
     }
-    // Send login success email notification
+
     await sendLoginSuccessEmail(user.email, user.name);
     res.json({ ok: true, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
   } catch (err) {
@@ -678,11 +760,8 @@ app.post('/api/auth/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
     const cleanEmail = email.trim().toLowerCase();
-    
-    const existing = isMongoConnected
-      ? await UserModel.findOne({ email: cleanEmail })
-      : inMemoryUsers.some(u => u.email.toLowerCase() === cleanEmail);
 
+    const existing = diskStore.users.some(u => u.email.toLowerCase() === cleanEmail);
     if (existing) {
       return res.status(400).json({ ok: false, message: 'Account already exists.' });
     }
@@ -695,14 +774,14 @@ app.post('/api/auth/register', async (req, res) => {
       role: 'client'
     };
 
+    diskStore.users.push(newUser);
+    saveDiskStore();
+
     if (isMongoConnected) {
       const doc = new UserModel(newUser);
       await doc.save();
-    } else {
-      inMemoryUsers.push(newUser);
     }
 
-    // Send welcome and login notification email
     await sendLoginSuccessEmail(cleanEmail, name.trim());
     res.status(201).json({ ok: true, user: { id: newUser.id, name: newUser.name, email: newUser.email, role: newUser.role } });
   } catch (err) {
@@ -714,19 +793,31 @@ app.post('/api/auth/register', async (req, res) => {
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`🚀 Node.js Express server listening on http://localhost:${PORT}`);
+    console.log(`📁 Persistent database engine loaded: ${diskStore.products.length} products, ${diskStore.orders.length} orders.`);
   });
 }
 
 // Connect to MongoDB asynchronously
 mongoose
   .connect(MONGODB_URI, { serverSelectionTimeoutMS: 2000 })
-  .then(() => {
+  .then(async () => {
     isMongoConnected = true;
     console.log('✅ Connected to MongoDB Database successfully!');
+    try {
+      const prodCount = await ProductModel.countDocuments();
+      if (prodCount === 0 && diskStore.products.length > 0) {
+        console.log(`Seeding MongoDB with ${diskStore.products.length} products...`);
+        await ProductModel.insertMany(diskStore.products);
+      }
+    } catch (seedErr) {
+      console.warn('Initial MongoDB sync notice:', seedErr.message);
+    }
   })
   .catch(() => {
     isMongoConnected = false;
-    console.log('ℹ️ MongoDB not detected locally. Node.js server running in high-performance in-memory mode.');
+    console.log('ℹ️ MongoDB not detected locally.');
+    console.log(`🛡️ Persistent Local Database is ACTIVE at server/data/kinetic_store.json.`);
+    console.log('👉 To connect MongoDB Atlas: add your connection string to server/.env (MONGODB_URI=mongodb+srv://...)');
   });
 
 export default app;
