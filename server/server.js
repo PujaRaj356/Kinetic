@@ -457,10 +457,12 @@ app.post('/api/auth/register', async (req, res) => {
   }
 });
 
-// Start listening immediately
-app.listen(PORT, () => {
-  console.log(`🚀 Node.js Express server listening on http://localhost:${PORT}`);
-});
+// Start listening when running standalone, not when imported as Vercel serverless function
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`🚀 Node.js Express server listening on http://localhost:${PORT}`);
+  });
+}
 
 // Connect to MongoDB asynchronously
 mongoose
@@ -473,3 +475,5 @@ mongoose
     isMongoConnected = false;
     console.log('ℹ️ MongoDB not detected locally. Node.js server running in high-performance in-memory mode.');
   });
+
+export default app;

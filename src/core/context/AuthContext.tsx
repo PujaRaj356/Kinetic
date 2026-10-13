@@ -161,11 +161,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return { ok: true, user: newUser };
   };
 
+  const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+
   const sendOtp = async (
     email: string
   ): Promise<{ ok: boolean; message?: string; devOtp?: string; sent?: boolean; devMode?: boolean }> => {
     try {
-      const resp = await fetch('http://localhost:5000/api/auth/send-otp', {
+      const resp = await fetch(`${API_BASE}/api/auth/send-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email.trim().toLowerCase() })
@@ -196,7 +198,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
 
     try {
-      const resp = await fetch('http://localhost:5000/api/auth/verify-otp', {
+      const resp = await fetch(`${API_BASE}/api/auth/verify-otp`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: pendingVerification.email, code: code.trim() })
