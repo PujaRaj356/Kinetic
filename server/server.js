@@ -162,6 +162,7 @@ function loadDiskStore() {
       const raw = fs.readFileSync(DATA_FILE, 'utf8');
       const parsed = JSON.parse(raw);
       if (parsed && Array.isArray(parsed.products)) {
+        if (!Array.isArray(parsed.priceAlerts)) parsed.priceAlerts = [];
         // Automatically encrypt/hash any legacy plain passwords in diskStore
         if (Array.isArray(parsed.users)) {
           let updated = false;
@@ -183,7 +184,7 @@ function loadDiskStore() {
   } catch (err) {
     console.error('Error loading kinetic_store.json:', err.message);
   }
-  return { products: [], orders: [], users: [] };
+  return { products: [], orders: [], users: [], priceAlerts: [] };
 }
 
 let diskStore = loadDiskStore();
@@ -442,6 +443,217 @@ async function sendOrderConfirmationEmail(order) {
   return { sent: true, messageId: info.messageId };
 }
 
+
+// --- Price Drop Alert Email Dispatchers ---
+async function sendPriceAlertConfirmationEmail({ email, product, targetPrice, alertId }) {
+  const currentPrice = product.price || 0;
+  const targetSavings = Math.max(0, currentPrice - targetPrice);
+  const targetPercent = currentPrice > 0 ? Math.round((targetSavings / currentPrice) * 100) : 0;
+
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log('----------------------------------------------------');
+    console.log('[ALERT EMAIL NOTICE] (Dev Mode) Price Alert Confirmation');
+    console.log(`[ALERT ACTIVE] ${product.name} watching for target ₹${targetPrice.toLocaleString('en-IN')} (Target savings: ₹${targetSavings.toLocaleString('en-IN')})`);
+    console.log(`[SUBSCRIBER] ${email}`);
+    console.log('----------------------------------------------------');
+    return { sent: false, devMode: true };
+  }
+
+  const mailOptions = {
+    from: `"Kinetic Drops" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: `🔔 Price Alert Active: ${product.name} at ₹${targetPrice.toLocaleString('en-IN')}`,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f1e7; padding: 40px 16px; color: #111;">
+        <div style="max-width: 540px; margin: 0 auto; background: #ffffff; border: 3px solid #111111; box-shadow: 10px 10px 0px #111111; padding: 36px 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 2px solid #111; padding-bottom: 16px;">
+            <div style="display: inline-block; background: #d7ff4f; border: 2px solid #111; padding: 6px 14px; font-weight: 900; font-size: 13px; letter-spacing: 1px;">
+              KINETIC PRICE RADAR
+            </div>
+            <div style="font-size: 13px; font-weight: 800; color: #666;">
+              ALERT #${alertId || 'ACTIVE'}
+            </div>
+          </div>
+
+          <h1 style="margin: 0 0 10px; font-size: 26px; font-weight: 950; letter-spacing: -0.04em;">We're tracking this item for you! 🎯</h1>
+          <p style="font-size: 15px; line-height: 1.5; color: #333; margin: 0 0 24px;">
+            Your price alert is active. As soon as <b>${product.name}</b> drops to your target or lower, we will send an immediate alert directly to your inbox.
+          </p>
+
+          <div style="display: flex; gap: 16px; align-items: center; border: 2px solid #111; padding: 16px; background: #faf8f5; margin-bottom: 22px;">
+            <img src="${product.image || ''}" alt="${product.name}" style="width: 72px; height: 72px; object-fit: cover; border: 2px solid #111; background: ${product.accent || '#ddd'};" />
+            <div style="flex: 1;">
+              <div style="font-size: 11px; font-weight: 900; color: #777; text-transform: uppercase;">${product.category || 'Product'}</div>
+              <div style="font-size: 16px; font-weight: 900; color: #111;">${product.name}</div>
+              <div style="margin-top: 4px; font-size: 13px; color: #555;">Current Price: <b>₹${currentPrice.toLocaleString('en-IN')}</b></div>
+            </div>
+          </div>
+
+          <div style="background: #d7ff4f; border: 2px solid #111; padding: 18px 20px; margin-bottom: 24px;">
+            <div style="font-size: 11px; font-weight: 900; letter-spacing: 1px; color: #111; margin-bottom: 4px;">TARGET NOTIFICATION THRESHOLD</div>
+            <div style="font-size: 32px; font-weight: 950; color: #111; letter-spacing: -0.03em;">₹${targetPrice.toLocaleString('en-IN')}</div>
+            <div style="font-size: 13px; font-weight: 700; color: #222; margin-top: 4px;">
+              Potential Savings: <span style="background: #111; color: #fff; padding: 2px 8px; border-radius: 3px;">₹${targetSavings.toLocaleString('en-IN')} (${targetPercent}% OFF)</span>
+            </div>
+          </div>
+
+          <p style="font-size: 13px; color: #666; line-height: 1.5; margin: 0 0 20px;">
+            Sit back and relax. Kinetic automatically scans inventory updates and catalog discounts around the clock.
+          </p>
+
+          <div style="text-align: center; border-top: 2px dashed #ccc; padding-top: 20px;">
+            <p style="font-size: 12px; color: #888; margin: 0;">Kinetic Drops · Smart Price Alerts System</p>
+          </div>
+        </div>
+      </div>
+    `
+  };
+
+  const info = await transporter.sendMail(mailOptions);
+  console.log(`[ALERT CONFIRMATION SENT] Sent alert confirmation for ${product.name} to ${email}: ${info.messageId}`);
+  return { sent: true, messageId: info.messageId };
+}
+
+async function sendPriceDropAlertEmail({ email, product, targetPrice, oldPrice, newPrice, alertId }) {
+  const previousPrice = oldPrice || product.price || (newPrice * 1.2);
+  const savings = Math.max(0, previousPrice - newPrice);
+  const percentOff = previousPrice > 0 ? Math.round((savings / previousPrice) * 100) : 0;
+  const storeUrl = `http://localhost:3000/products/${product.id}`;
+
+  if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+    console.log('----------------------------------------------------');
+    console.log(`[PRICE DROP ALERT] (Dev Mode) Triggered for ${email}`);
+    console.log(`[PRODUCT] ${product.name}`);
+    console.log(`[PRICE DROPPED] Was: ₹${previousPrice.toLocaleString('en-IN')} ➔ Now: ₹${newPrice.toLocaleString('en-IN')} (Target: ₹${targetPrice.toLocaleString('en-IN')})`);
+    console.log(`[TOTAL SAVINGS] ₹${savings.toLocaleString('en-IN')} (${percentOff}% OFF)`);
+    console.log(`[URL] ${storeUrl}`);
+    console.log('----------------------------------------------------');
+    return { sent: false, devMode: true };
+  }
+
+  const mailOptions = {
+    from: `"Kinetic Drops" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: `⚡ PRICE DROP: ${product.name} is now ₹${newPrice.toLocaleString('en-IN')}!`,
+    html: `
+      <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background-color: #f6f1e7; padding: 40px 16px; color: #111;">
+        <div style="max-width: 580px; margin: 0 auto; background: #ffffff; border: 3px solid #111111; box-shadow: 12px 12px 0px #111111; padding: 36px 30px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 2px solid #111; padding-bottom: 16px;">
+            <div style="display: inline-block; background: #ff5964; color: #fff; border: 2px solid #111; padding: 6px 14px; font-weight: 900; font-size: 13px; letter-spacing: 1px;">
+              ⚡ PRICE DROP ALERT
+            </div>
+            <div style="font-size: 12px; font-weight: 900; color: #111; text-transform: uppercase;">
+              TARGET REACHED
+            </div>
+          </div>
+
+          <h1 style="margin: 0 0 10px; font-size: 32px; font-weight: 950; letter-spacing: -0.05em; line-height: 1.1;">
+            It happened! The price just plummeted. 🔥
+          </h1>
+          <p style="font-size: 16px; line-height: 1.5; color: #333; margin: 0 0 24px;">
+            You asked us to watch <b>${product.name}</b>. It just dropped to or below your target price of <b>₹${targetPrice.toLocaleString('en-IN')}</b>!
+          </p>
+
+          <div style="border: 2px solid #111; padding: 20px; background: #faf8f5; margin-bottom: 24px; display: flex; gap: 20px; align-items: center;">
+            <img src="${product.image || ''}" alt="${product.name}" style="width: 100px; height: 100px; object-fit: cover; border: 2px solid #111; background: ${product.accent || '#eee'};" />
+            <div style="flex: 1;">
+              <span style="display: inline-block; background: #111; color: #fff; padding: 3px 8px; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-bottom: 6px;">
+                ${product.category || 'Product'}
+              </span>
+              <div style="font-size: 18px; font-weight: 900; color: #111; margin-bottom: 8px;">
+                ${product.name}
+              </div>
+              <div style="display: flex; align-items: baseline; gap: 10px;">
+                <span style="font-size: 28px; font-weight: 950; color: #111; letter-spacing: -0.03em;">
+                  ₹${newPrice.toLocaleString('en-IN')}
+                </span>
+                <span style="font-size: 16px; text-decoration: line-through; color: #888; font-weight: 700;">
+                  ₹${previousPrice.toLocaleString('en-IN')}
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div style="background: #d7ff4f; border: 2px solid #111; padding: 18px 20px; margin-bottom: 26px; text-align: center;">
+            <div style="font-size: 12px; font-weight: 900; letter-spacing: 1px; color: #111; margin-bottom: 4px;">
+              TOTAL DEAL SAVINGS
+            </div>
+            <div style="font-size: 26px; font-weight: 950; color: #111;">
+              Save ₹${savings.toLocaleString('en-IN')} (${percentOff}% OFF)
+            </div>
+            <div style="font-size: 12px; color: #333; margin-top: 4px;">
+              Target was ₹${targetPrice.toLocaleString('en-IN')} · Now beating your target by ₹${Math.max(0, targetPrice - newPrice).toLocaleString('en-IN')}
+            </div>
+          </div>
+
+          <div style="text-align: center; margin-bottom: 26px;">
+            <a href="${storeUrl}" style="display: inline-block; width: 100%; box-sizing: border-box; background: #111111; color: #ffffff; text-decoration: none; padding: 18px 24px; font-weight: 950; font-size: 16px; letter-spacing: 0.5px; border: 2px solid #111; box-shadow: 6px 6px 0 #d7ff4f;">
+              Claim Deal & Add to Bag ↗
+            </a>
+          </div>
+
+          <p style="font-size: 12px; color: #777; line-height: 1.5; margin: 0; text-align: center;">
+            ⚠️ Prices and promotional discounts are subject to stock availability.<br/>
+            You received this because you set a price alert on Kinetic Store.
+          </p>
+        </div>
+      </div>
+    `
+  };
+
+  const info = await transporter.sendMail(mailOptions);
+  console.log(`[PRICE DROP ALERT DELIVERED] Successfully sent price drop alert for ${product.name} to ${email}: ${info.messageId}`);
+  return { sent: true, messageId: info.messageId };
+}
+
+async function checkAndTriggerPriceAlerts(productId, newPrice, oldPrice) {
+  if (!Array.isArray(diskStore.priceAlerts)) return [];
+  const triggered = [];
+  const matchingAlerts = diskStore.priceAlerts.filter(
+    a => a.productId === Number(productId) && (a.status === 'active' || !a.status)
+  );
+
+  const product = diskStore.products.find(p => p.id === Number(productId));
+  if (!product) return [];
+
+  for (const alert of matchingAlerts) {
+    if (Number(newPrice) <= Number(alert.targetPrice)) {
+      console.log(`[PRICE DROP TRIGGERED] ${product.name} dropped to ₹${newPrice} (Target: ₹${alert.targetPrice}) for ${alert.email}`);
+      try {
+        const emailResult = await sendPriceDropAlertEmail({
+          email: alert.email,
+          product,
+          targetPrice: alert.targetPrice,
+          oldPrice: oldPrice || alert.originalPrice || product.price,
+          newPrice: Number(newPrice),
+          alertId: alert.id
+        });
+        alert.status = 'triggered';
+        alert.triggeredAt = new Date().toISOString();
+        alert.lastNotifiedPrice = Number(newPrice);
+        triggered.push({ alert, emailResult });
+      } catch (err) {
+        console.error('Error triggering price alert email:', err.message);
+      }
+    }
+  }
+
+  if (triggered.length > 0) {
+    saveDiskStore();
+    if (isMongoConnected) {
+      for (const t of triggered) {
+        try {
+          await PriceAlertModel.updateOne(
+            { id: t.alert.id },
+            { status: 'triggered', triggeredAt: new Date(), lastNotifiedPrice: Number(newPrice) }
+          );
+        } catch {}
+      }
+    }
+  }
+  return triggered;
+}
+
 // --- MongoDB Schemas & Models ---
 const ReviewSchema = new mongoose.Schema({
   id: String,
@@ -510,6 +722,25 @@ const OrderSchema = new mongoose.Schema({
 const ProductModel = mongoose.model('Product', ProductSchema);
 const UserModel = mongoose.model('User', UserSchema);
 const OrderModel = mongoose.model('Order', OrderSchema);
+
+const PriceAlertSchema = new mongoose.Schema({
+  id: { type: String, required: true, unique: true },
+  productId: { type: Number, required: true },
+  productName: String,
+  productImage: String,
+  productCategory: String,
+  originalPrice: Number,
+  targetPrice: { type: Number, required: true },
+  email: { type: String, required: true },
+  userId: String,
+  status: { type: String, enum: ['active', 'triggered', 'cancelled'], default: 'active' },
+  createdAt: { type: Date, default: Date.now },
+  triggeredAt: Date,
+  lastNotifiedPrice: Number
+});
+
+const PriceAlertModel = mongoose.model('PriceAlert', PriceAlertSchema);
+
 
 let isMongoConnected = false;
 
@@ -790,6 +1021,243 @@ app.delete('/api/products/:id', async (req, res) => {
       await ProductModel.deleteOne({ id });
     }
     res.json({ ok: true, message: `Product ${id} deleted` });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+
+// ==========================================
+// --- PRICE ALERTS & WATCHLIST ENDPOINTS ---
+// ==========================================
+
+// Get All Price Alerts (optionally filtered by email or productId)
+app.get('/api/alerts', async (req, res) => {
+  try {
+    const { email, productId } = req.query;
+    let list = Array.isArray(diskStore.priceAlerts) ? diskStore.priceAlerts : [];
+    if (email) {
+      const cleanEmail = email.trim().toLowerCase();
+      list = list.filter(a => (a.email || '').toLowerCase() === cleanEmail);
+    }
+    if (productId) {
+      const pId = Number(productId);
+      list = list.filter(a => a.productId === pId);
+    }
+    res.json({ ok: true, alerts: list });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// Set or Update a Price Alert
+app.post('/api/alerts', async (req, res) => {
+  try {
+    const { productId, targetPrice, email, userId } = req.body;
+    if (!productId || targetPrice === undefined || !email) {
+      return res.status(400).json({ ok: false, message: 'Product ID, target price, and email are required.' });
+    }
+    if (!validateEmail(email)) {
+      return res.status(400).json({ ok: false, message: 'Please provide a valid email address (e.g. name@domain.com).' });
+    }
+
+    const cleanEmail = email.trim().toLowerCase();
+    const pId = Number(productId);
+    const target = Number(targetPrice);
+
+    if (isNaN(target) || target <= 0) {
+      return res.status(400).json({ ok: false, message: 'Target price must be a valid positive amount.' });
+    }
+
+    const product = diskStore.products.find(p => p.id === pId);
+    if (!product) {
+      return res.status(404).json({ ok: false, message: 'Product not found in catalog.' });
+    }
+
+    if (target >= product.price) {
+      return res.status(400).json({
+        ok: false,
+        message: `Target price (₹${target.toLocaleString('en-IN')}) must be lower than the current price (₹${product.price.toLocaleString('en-IN')}).`
+      });
+    }
+
+    if (!Array.isArray(diskStore.priceAlerts)) diskStore.priceAlerts = [];
+
+    // Find existing alert for this user & product
+    let alert = diskStore.priceAlerts.find(a => a.productId === pId && a.email.toLowerCase() === cleanEmail);
+    if (alert) {
+      alert.targetPrice = target;
+      alert.status = 'active';
+      alert.originalPrice = product.price;
+      alert.createdAt = new Date().toISOString();
+      alert.triggeredAt = undefined;
+    } else {
+      alert = {
+        id: `alt_${Date.now()}_${Math.floor(1000 + Math.random() * 9000)}`,
+        productId: pId,
+        productName: product.name,
+        productImage: product.image || (product.images && product.images[0]) || '',
+        productCategory: product.category,
+        originalPrice: product.price,
+        targetPrice: target,
+        email: cleanEmail,
+        userId: userId || undefined,
+        status: 'active',
+        createdAt: new Date().toISOString()
+      };
+      diskStore.priceAlerts.unshift(alert);
+    }
+
+    saveDiskStore();
+
+    if (isMongoConnected) {
+      try {
+        await PriceAlertModel.findOneAndUpdate(
+          { productId: pId, email: cleanEmail },
+          alert,
+          { upsert: true, new: true }
+        );
+      } catch (mErr) {
+        console.warn('Mongo alert save warning:', mErr.message);
+      }
+    }
+
+    // Send confirmation email
+    const emailResult = await sendPriceAlertConfirmationEmail({
+      email: cleanEmail,
+      product,
+      targetPrice: target,
+      alertId: alert.id
+    });
+
+    console.log(`[PRICE ALERT SAVED] ${cleanEmail} is watching ${product.name} at ₹${target}`);
+
+    res.json({
+      ok: true,
+      alert,
+      emailResult,
+      message: `Price alert activated! We'll notify ${cleanEmail} the moment the price drops to ₹${target.toLocaleString('en-IN')} or below.`
+    });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// Delete / Cancel Price Alert
+app.delete('/api/alerts/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!Array.isArray(diskStore.priceAlerts)) diskStore.priceAlerts = [];
+    const idx = diskStore.priceAlerts.findIndex(a => a.id === id);
+    if (idx !== -1) {
+      diskStore.priceAlerts.splice(idx, 1);
+      saveDiskStore();
+    }
+    if (isMongoConnected) {
+      await PriceAlertModel.deleteOne({ id });
+    }
+    res.json({ ok: true, message: 'Price alert cancelled successfully.' });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// Simulate / Test Trigger an Alert Now
+app.post('/api/alerts/test-trigger/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!Array.isArray(diskStore.priceAlerts)) diskStore.priceAlerts = [];
+    const alert = diskStore.priceAlerts.find(a => a.id === id);
+    if (!alert) {
+      return res.status(404).json({ ok: false, message: 'Price alert not found.' });
+    }
+
+    const product = diskStore.products.find(p => p.id === alert.productId) || {
+      id: alert.productId,
+      name: alert.productName,
+      price: alert.targetPrice,
+      image: alert.productImage,
+      category: alert.productCategory,
+      accent: '#d7ff4f'
+    };
+
+    const simulatedPrice = alert.targetPrice;
+    const oldPrice = alert.originalPrice || Math.round(alert.targetPrice * 1.2);
+
+    const emailResult = await sendPriceDropAlertEmail({
+      email: alert.email,
+      product,
+      targetPrice: alert.targetPrice,
+      oldPrice,
+      newPrice: simulatedPrice,
+      alertId: alert.id
+    });
+
+    alert.status = 'triggered';
+    alert.triggeredAt = new Date().toISOString();
+    alert.lastNotifiedPrice = simulatedPrice;
+    saveDiskStore();
+
+    if (isMongoConnected) {
+      await PriceAlertModel.updateOne({ id }, { status: 'triggered', triggeredAt: new Date(), lastNotifiedPrice: simulatedPrice });
+    }
+
+    res.json({
+      ok: true,
+      sent: emailResult.sent,
+      devMode: emailResult.devMode || false,
+      message: emailResult.sent
+        ? `Real price drop alert email sent to ${alert.email}!`
+        : `Price drop alert notification generated for ${alert.email} (Dev mode active).`,
+      alert
+    });
+  } catch (err) {
+    res.status(500).json({ ok: false, error: err.message });
+  }
+});
+
+// Admin Update Product Details and Check Price Drops
+app.put('/api/products/:id', async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    const updates = req.body;
+
+    const prodIdx = diskStore.products.findIndex(p => p.id === id);
+    if (prodIdx === -1) {
+      return res.status(404).json({ ok: false, message: 'Product not found.' });
+    }
+
+    const oldProduct = diskStore.products[prodIdx];
+    const oldPrice = Number(oldProduct.price);
+    const newPrice = updates.price !== undefined ? Number(updates.price) : oldPrice;
+
+    diskStore.products[prodIdx] = {
+      ...oldProduct,
+      ...updates,
+      id
+    };
+
+    saveDiskStore();
+
+    if (isMongoConnected) {
+      await ProductModel.updateOne({ id }, { $set: diskStore.products[prodIdx] });
+    }
+
+    // Check if price dropped and trigger alerts
+    let triggeredCount = 0;
+    if (newPrice < oldPrice) {
+      const triggered = await checkAndTriggerPriceAlerts(id, newPrice, oldPrice);
+      triggeredCount = triggered.length;
+    }
+
+    res.json({
+      ok: true,
+      product: diskStore.products[prodIdx],
+      triggeredCount,
+      message: triggeredCount > 0
+        ? `Product updated! ${triggeredCount} customer(s) notified of the price drop via email.`
+        : 'Product updated successfully.'
+    });
   } catch (err) {
     res.status(500).json({ ok: false, error: err.message });
   }

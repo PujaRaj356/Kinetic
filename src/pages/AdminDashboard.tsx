@@ -7,15 +7,20 @@ import { Order, OrderStatus } from '../core/models/order.model';
 import { getAllProducts, addProduct, updateProduct, deleteProduct, productList, PRODUCTS_KEY } from '../core/services/productService';
 import { getOrders, updateOrderStatus } from '../core/services/orderService';
 import { useToast } from '../core/context/ToastContext';
+import { PriceAlert } from '../core/models/priceAlert.model';
+import { fetchPriceAlerts, triggerTestAlert } from '../core/services/alertService';
+import { getApiBase } from '../core/services/apiConfig';
 
 export const AdminDashboard: React.FC = () => {
   const { currentUser, isAdmin, loginAs, users, updateUserRole, deleteUser } = useAuth();
   const { showToast } = useToast();
   const navigate = useNavigate();
 
-  const [activeTab, setActiveTab] = useState<'products' | 'transactions' | 'users'>('products');
+  const [activeTab, setActiveTab] = useState<'products' | 'transactions' | 'users' | 'alerts'>('products');
   const [products, setProducts] = useState<Product[]>([]);
   const [orders, setOrders] = useState<Order[]>([]);
+  const [alerts, setAlerts] = useState<PriceAlert[]>([]);
+  const [testingAlertId, setTestingAlertId] = useState<string | null>(null);
   const [productSearch, setProductSearch] = useState('');
 
   // Add / Edit Product Modal state
@@ -39,6 +44,7 @@ export const AdminDashboard: React.FC = () => {
   const reloadData = () => {
     setProducts(getAllProducts());
     setOrders(getOrders());
+    fetchPriceAlerts().then(setAlerts).catch(() => {});
   };
 
   useEffect(() => {
@@ -140,7 +146,28 @@ export const AdminDashboard: React.FC = () => {
         highlights: highlightsArr.length > 0 ? highlightsArr : editingProduct.highlights,
       };
       updateProduct(updated);
-      showToast(`Updated "${updated.name}"`);
+      try {
+        const apiBase = getApiBase();
+        fetch(`${apiBase}/api/products/${editingProduct.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(updated)
+        })
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.triggeredCount > 0) {
+              showToast(`⚡ Price drop detected! Notified ${data.triggeredCount} customer(s) via email!`);
+              fetchPriceAlerts().then(setAlerts).catch(() => {});
+            } else {
+              showToast(`Updated "${updated.name}"`);
+            }
+          })
+          .catch(() => {
+            showToast(`Updated "${updated.name}"`);
+          });
+      } catch {
+        showToast(`Updated "${updated.name}"`);
+      }
     } else {
       addProduct({
         name: formData.name.trim(),
@@ -236,6 +263,12 @@ export const AdminDashboard: React.FC = () => {
           onClick={() => setActiveTab('users')}
         >
           👥 User Accounts & Roles ({users.length})
+        </button>
+        <button
+          className={`tab-btn ${activeTab === 'alerts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('alerts')}
+        >
+          🔔 Price Watchers ({alerts.length})
         </button>
       </div>
 
@@ -487,6 +520,114 @@ export const AdminDashboard: React.FC = () => {
                     </td>
                   </tr>
                 ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* Tab 4: Price Watchers */}
+      {activeTab === 'alerts' && (
+        <div className="admin-tab-content">
+          <div className="table-responsive">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>Product</th>
+                  <th>Customer Email</th>
+                  <th>Current Price</th>
+                  <th>Target Price</th>
+                  <th>Potential Discount</th>
+                  <th>Status</th>
+                  <th style={{ textAlign: 'right' }}>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {alerts.length === 0 ? (
+                  <tr>
+                    <td colSpan={7} style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+                      No active price alerts set by customers yet.
+                    </td>
+                  </tr>
+                ) : (
+                  alerts.map((al) => {
+                    const prod = products.find((p) => p.id === al.productId);
+                    const currentPrice = prod?.price || al.originalPrice;
+                    const savings = Math.max(0, currentPrice - al.targetPrice);
+                    const percent = currentPrice > 0 ? Math.round((savings / currentPrice) * 100) : 0;
+
+                    return (
+                      <tr key={al.id}>
+                        <td>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                            <img
+                              src={al.productImage || prod?.image || ''}
+                              alt={al.productName}
+                              style={{ width: '42px', height: '42px', objectFit: 'cover', border: '1px solid #111' }}
+                            />
+                            <div>
+                              <b>{al.productName}</b>
+                              <div style={{ fontSize: '12px', color: '#666' }}>{al.productCategory}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <code style={{ fontSize: '13px', background: '#f1f5f9', padding: '2px 6px', borderRadius: '4px' }}>
+                            {al.email}
+                          </code>
+                        </td>
+                        <td>₹{currentPrice.toLocaleString('en-IN')}</td>
+                        <td>
+                          <b style={{ color: '#059669', fontSize: '15px' }}>
+                            ₹{al.targetPrice.toLocaleString('en-IN')}
+                          </b>
+                        </td>
+                        <td>
+                          <span style={{ background: '#d7ff4f', padding: '2px 8px', fontWeight: 800, fontSize: '12px' }}>
+                            Save ₹{savings.toLocaleString('en-IN')} (-{percent}%)
+                          </span>
+                        </td>
+                        <td>
+                          <span
+                            style={{
+                              background: al.status === 'triggered' ? '#ff5964' : '#111',
+                              color: '#fff',
+                              padding: '3px 8px',
+                              fontSize: '11px',
+                              fontWeight: 800,
+                              textTransform: 'uppercase'
+                            }}
+                          >
+                            {al.status === 'triggered' ? '⚡ Triggered' : '🔔 Active'}
+                          </span>
+                        </td>
+                        <td style={{ textAlign: 'right' }}>
+                          <button
+                            type="button"
+                            disabled={testingAlertId === al.id}
+                            className="view-btn"
+                            style={{ background: '#111', color: '#fff', cursor: 'pointer', padding: '6px 12px' }}
+                            onClick={async () => {
+                              setTestingAlertId(al.id);
+                              try {
+                                const res = await triggerTestAlert(al.id);
+                                showToast(res.message || '⚡ Sent test price drop email!');
+                                reloadData();
+                              } catch (err: any) {
+                                showToast(err.message || 'Failed to trigger alert');
+                              } finally {
+                                setTestingAlertId(null);
+                              }
+                            }}
+                            title="Simulate price drop and send real email notification"
+                          >
+                            {testingAlertId === al.id ? 'Sending...' : '⚡ Test Alert Email'}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>

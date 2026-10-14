@@ -5,16 +5,18 @@ import { useCart } from '../core/context/CartContext';
 import { useWishlist } from '../core/context/WishlistContext';
 import { useToast } from '../core/context/ToastContext';
 import { Review } from '../core/models/product.model';
+import { PriceAlertModal } from '../shared/components/PriceAlertModal';
 
 export const ProductDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const initialProduct = getProductById(Number(id));
   const { items, add, increase, decrease } = useCart();
-  const { has, toggle } = useWishlist();
+  const { has, toggle, getAlert } = useWishlist();
   const { showToast } = useToast();
 
   const [product, setProduct] = useState(initialProduct);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isAlertModalOpen, setIsAlertModalOpen] = useState(false);
 
   const cartItem = items.find((i) => i.product.id === product?.id);
   const qtyInBag = cartItem ? cartItem.quantity : 0;
@@ -181,9 +183,25 @@ export const ProductDetails: React.FC = () => {
             <button className="save" onClick={() => toggle(product)}>
               {isWishlisted ? '♥ Saved' : '♡ Save'}
             </button>
+            <button
+              type="button"
+              className={`product-price-alert-btn ${getAlert(product.id) ? 'active' : ''}`}
+              onClick={() => setIsAlertModalOpen(true)}
+              title="Set target price alert"
+            >
+              {getAlert(product.id)
+                ? `🔔 Alert: ₹${getAlert(product.id)!.targetPrice.toLocaleString('en-IN')}`
+                : '🔔 Price Alert'}
+            </button>
           </div>
         </div>
       </div>
+
+      <PriceAlertModal
+        product={product}
+        isOpen={isAlertModalOpen}
+        onClose={() => setIsAlertModalOpen(false)}
+      />
 
       {/* Highlights & Specs Section */}
       <div className="extra-info-grid">

@@ -11,7 +11,7 @@ interface ProductCardProps {
 
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onAdded }) => {
   const { items, add, increase, decrease } = useCart();
-  const { has, toggle } = useWishlist();
+  const { has, toggle, getAlert } = useWishlist();
   const [isHovered, setIsHovered] = React.useState(false);
 
   const cartItem = items.find((i) => i.product.id === product.id);
@@ -60,6 +60,11 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAdded }) =>
         <span className="badge">{product.category}</span>
         {images.length > 1 && (
           <span className="angles-badge">{images.length} Angles</span>
+        )}
+        {getAlert(product.id) && (
+          <span className="card-alert-badge" title={`Price alert set at ₹${getAlert(product.id)!.targetPrice}`}>
+            🔔 ₹{getAlert(product.id)!.targetPrice.toLocaleString('en-IN')}
+          </span>
         )}
         <img src={displayImage} alt={product.name} className="product-img" />
         <button

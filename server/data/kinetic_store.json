@@ -2717,5 +2717,21 @@
       "role": "client",
       "createdAt": "2026-10-13T08:22:38.497Z"
     }
+  ],
+  "priceAlerts": [
+    {
+      "id": "alt_1791943136298_5398",
+      "productId": 1,
+      "productName": "Kinetic Heavyweight Cyber Graphic Merch Tee",
+      "productImage": "https://cdn.dummyjson.com/product-images/mens-shirts/gigabyte-aorus-men-tshirt/1.webp",
+      "productCategory": "Apparel & Merch",
+      "originalPrice": 2499,
+      "targetPrice": 2199,
+      "email": "pujarangaraj356@gmail.com",
+      "status": "triggered",
+      "createdAt": "2026-10-14T01:58:56.298Z",
+      "triggeredAt": "2026-10-14T01:59:01.882Z",
+      "lastNotifiedPrice": 2199
+    }
   ]
 }
