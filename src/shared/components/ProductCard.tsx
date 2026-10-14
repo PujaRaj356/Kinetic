@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Product } from '../../core/models/product.model';
 import { useCart } from '../../core/context/CartContext';
 import { useWishlist } from '../../core/context/WishlistContext';
+import { PriceAlertModal } from './PriceAlertModal';
 
 interface ProductCardProps {
   product: Product;
@@ -13,6 +14,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAdded }) =>
   const { items, add, increase, decrease } = useCart();
   const { has, toggle, getAlert } = useWishlist();
   const [isHovered, setIsHovered] = React.useState(false);
+  const [isAlertModalOpen, setIsAlertModalOpen] = React.useState(false);
 
   const cartItem = items.find((i) => i.product.id === product.id);
   const qtyInBag = cartItem ? cartItem.quantity : 0;
@@ -67,17 +69,41 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAdded }) =>
           </span>
         )}
         <img src={displayImage} alt={product.name} className="product-img" />
-        <button
-          className="heart"
-          onClick={(e) => {
-            e.preventDefault();
-            toggle(product);
-          }}
-          aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
-        >
-          {isWishlisted ? '♥' : '♡'}
-        </button>
+        <div className="card-top-actions" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+          <button
+            type="button"
+            className={`card-bell-btn ${getAlert(product.id) ? 'has-alert' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setIsAlertModalOpen(true);
+            }}
+            title={getAlert(product.id) ? `Alert active at ₹${getAlert(product.id)!.targetPrice} (Click to edit)` : 'Set Price Alert'}
+            aria-label="Set price alert"
+          >
+            🔔
+          </button>
+          <button
+            type="button"
+            className="heart"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggle(product);
+            }}
+            aria-label={isWishlisted ? 'Remove from wishlist' : 'Add to wishlist'}
+            title={isWishlisted ? 'Saved in wishlist' : 'Save to wishlist'}
+          >
+            {isWishlisted ? '♥' : '♡'}
+          </button>
+        </div>
       </Link>
+
+      <PriceAlertModal
+        product={product}
+        isOpen={isAlertModalOpen}
+        onClose={() => setIsAlertModalOpen(false)}
+      />
 
       <div className="info">
         <div>
