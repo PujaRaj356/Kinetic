@@ -2099,6 +2099,44 @@
       ]
     },
     {
+      "id": 54,
+      "name": "Kinetic Matte Black Titanium Safety Razor Grooming Set",
+      "category": "Fragrance & Grooming",
+      "price": 4999,
+      "oldPrice": 6499,
+      "rating": 4.8,
+      "stock": 28,
+      "image": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&w=800&q=80",
+        "https://images.unsplash.com/photo-1621259182978-fbf93132d53d?auto=format&fit=crop&w=800&q=80"
+      ],
+      "accent": "#a8dadc",
+      "description": "Precision-machined double-edge safety razor forged from Grade 5 titanium with black DLC (Diamond-Like Carbon) coating. Engineered blade gap eliminates razor burn and ingrown hairs while delivering barbershop-close shaves.",
+      "highlights": [
+        "Machined from Grade 5 titanium with scratch-resistant DLC matte black finish",
+        "Optimized 0.68mm safety blade exposure prevents razor bumps and irritation",
+        "Knurled micro-grip handle guarantees solid control even with wet soapy hands",
+        "Includes matching heavy solid aluminum stand and 20 Swedish steel blades"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Precision Tools",
+        "Material": "Grade 5 Titanium & Billet Aerospace Aluminum",
+        "Finish": "PVD Diamond-Like Carbon (DLC) Matte Black",
+        "Blade Compatibility": "Standard Double-Edge (DE) Blades",
+        "Weight": "88g (Perfect balance gravity assist)"
+      },
+      "reviews": [
+        {
+          "id": "r-rz1",
+          "user": "Kabir Verma",
+          "rating": 5,
+          "date": "Oct 04, 2026",
+          "comment": "Swapped my multi-blade cartridges for this and irritation vanished completely. Weight feels luxurious."
+        }
+      ]
+    },
+    {
       "id": 55,
       "name": "Kinetic Monochrome Rangefinder 35mm Digital Camera",
       "category": "Photography & Optics",
@@ -2292,6 +2330,44 @@
           "rating": 5,
           "date": "Oct 04, 2026",
           "comment": "Heavy and gorgeously textured. Adds a clean industrial brutalist vibe to my bookshelf."
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "name": "Kinetic Matte Black Precision Gooseneck Pour-Over Kettle",
+      "category": "Home & Living",
+      "price": 5999,
+      "oldPrice": 7499,
+      "rating": 4.9,
+      "stock": 19,
+      "image": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+      "images": [
+        "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=800&q=80",
+        "https://cdn.dummyjson.com/product-images/kitchen-accessories/black-aluminium-cup/1.webp"
+      ],
+      "accent": "#ff5964",
+      "description": "Barista-grade temperature-controlled electric kettle with a precision counterbalanced gooseneck spout for optimal pour-over extraction. Features 1°C variable temperature dial and integrated brew stopwatch display.",
+      "highlights": [
+        "Precision counterbalanced gooseneck spout provides laminar 90° vertical water flow",
+        "Digital base holds water at exact desired temperature (40°C - 100°C) for up to 60 mins",
+        "High-speed 1200W heating element brings 0.9L to boil in under 3 minutes",
+        "Food-grade 304 stainless steel interior with zero plastic water contact"
+      ],
+      "specs": {
+        "Manufacturer": "Kinetic Brew Works",
+        "Capacity": "0.9 Liters (30 oz)",
+        "Power": "1200 Watts Fast Heating",
+        "Material": "304 Stainless Steel with Matte Heat-Resistant Exterior Powder Coating",
+        "Display": "OLED Real-Time Temperature & Stopwatch Screen"
+      },
+      "reviews": [
+        {
+          "id": "r-kt1",
+          "user": "Zoya Khan",
+          "rating": 5,
+          "date": "Oct 08, 2026",
+          "comment": "Pour control is pinpoint accurate. Made a world of difference in my daily Chemex brews."
         }
       ]
     },
