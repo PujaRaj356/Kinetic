@@ -3991,25 +3991,44 @@ button, input, textarea, select {
   background: #d7ff4f;
   color: #111;
 }
-.compare-cta-secondary {
+.compare-secondary-btns {
   display: flex;
   gap: 6px;
+  width: 100%;
 }
-.compare-alert-btn,
-.compare-wish-btn {
+.compare-btn-alert,
+.compare-btn-save {
   flex: 1;
-  background: #ffffff;
-  color: #111;
-  border: 1.5px solid #111;
-  padding: 6px;
-  font-weight: 900;
-  font-size: 11px;
-  cursor: pointer;
-  text-align: center;
+  height: 34px !important;
+  max-height: 34px !important;
+  min-height: 34px !important;
+  background: #ffffff !important;
+  color: #111 !important;
+  border: 1.5px solid #111 !important;
+  padding: 0 6px !important;
+  font-size: 11px !important;
+  font-weight: 900 !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 2px 2px 0 #111 !important;
+  box-sizing: border-box !important;
+  white-space: nowrap !important;
+  transition: transform 0.1s, background 0.15s !important;
 }
-.compare-alert-btn:hover,
-.compare-wish-btn:hover {
-  background: #f0f0f0;
+.compare-btn-alert:hover,
+.compare-btn-save:hover {
+  background: #f0f0f0 !important;
+  transform: translate(-1px, -1px);
+}
+.compare-btn-alert:active,
+.compare-btn-save:active {
+  transform: translate(1px, 1px);
+}
+.compare-btn-save.saved {
+  background: #d7ff4f !important;
+  color: #111 !important;
 }
 
 /* Matrix Section Headers (Specifications) */

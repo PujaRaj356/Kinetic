@@ -183,15 +183,15 @@ export const ComparePage: React.FC = () => {
                             <div className="compare-secondary-btns">
                               <button
                                 type="button"
-                                className="compare-sec-btn alert"
+                                className="compare-btn-alert"
                                 onClick={() => setSelectedAlertProduct(product)}
                                 title="Set target price alert"
                               >
-                                🔔 Alert
+                                🔔 Price Alert
                               </button>
                               <button
                                 type="button"
-                                className="compare-sec-btn wish"
+                                className={`compare-btn-save ${isWishlisted ? 'saved' : ''}`}
                                 onClick={() => toggle(product)}
                                 title={isWishlisted ? 'Saved in wishlist' : 'Save to wishlist'}
                               >
