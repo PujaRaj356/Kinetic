@@ -3,10 +3,12 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './core/context/AuthContext';
 import { CartProvider } from './core/context/CartContext';
 import { WishlistProvider } from './core/context/WishlistContext';
+import { CompareProvider } from './core/context/CompareContext';
 import { ToastProvider } from './core/context/ToastContext';
 import { Navbar } from './shared/components/Navbar';
 import { Footer } from './shared/components/Footer';
 import { Toast } from './shared/components/Toast';
+import { CompareDock } from './shared/components/CompareDock';
 import { RequireAuth } from './core/guards/RequireAuth';
 import { RequireAdmin } from './core/guards/RequireAdmin';
 
@@ -15,6 +17,7 @@ import { Products } from './pages/Products';
 import { ProductDetails } from './pages/ProductDetails';
 import { CartPage } from './pages/CartPage';
 import { WishlistPage } from './pages/WishlistPage';
+import { ComparePage } from './pages/ComparePage';
 import { CheckoutPage } from './pages/CheckoutPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { OrderSuccessPage } from './pages/OrderSuccessPage';
@@ -30,17 +33,19 @@ export const App: React.FC = () => {
       <AuthProvider>
         <CartProvider>
           <WishlistProvider>
-            <Navbar />
-            <main className="page-shell">
-              <Routes>
-                <Route path="/" element={<Navigate to="/home" replace />} />
-                <Route path="/home" element={<Home />} />
-                <Route path="/products" element={<Products />} />
-                <Route path="/products/:id" element={<ProductDetails />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/verify" element={<Verify />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
+            <CompareProvider>
+              <Navbar />
+              <main className="page-shell">
+                <Routes>
+                  <Route path="/" element={<Navigate to="/home" replace />} />
+                  <Route path="/home" element={<Home />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/products/:id" element={<ProductDetails />} />
+                  <Route path="/compare" element={<ComparePage />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/verify" element={<Verify />} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
 
                 <Route
                   path="/admin"
@@ -96,10 +101,12 @@ export const App: React.FC = () => {
               </Routes>
             </main>
             <Footer />
+            <CompareDock />
             <Toast />
-          </WishlistProvider>
-        </CartProvider>
-      </AuthProvider>
-    </ToastProvider>
+          </CompareProvider>
+        </WishlistProvider>
+      </CartProvider>
+    </AuthProvider>
+  </ToastProvider>
   );
 };

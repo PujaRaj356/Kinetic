@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Product } from '../../core/models/product.model';
 import { useCart } from '../../core/context/CartContext';
 import { useWishlist } from '../../core/context/WishlistContext';
+import { useCompare } from '../../core/context/CompareContext';
 import { PriceAlertModal } from './PriceAlertModal';
 
 interface ProductCardProps {
@@ -13,8 +14,11 @@ interface ProductCardProps {
 export const ProductCard: React.FC<ProductCardProps> = ({ product, onAdded }) => {
   const { items, add, increase, decrease } = useCart();
   const { has, toggle, getAlert } = useWishlist();
+  const { isInCompare, toggleCompare } = useCompare();
   const [isHovered, setIsHovered] = React.useState(false);
   const [isAlertModalOpen, setIsAlertModalOpen] = React.useState(false);
+
+  const isCompared = isInCompare(product.id);
 
   const cartItem = items.find((i) => i.product.id === product.id);
   const qtyInBag = cartItem ? cartItem.quantity : 0;
@@ -70,6 +74,19 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product, onAdded }) =>
         )}
         <img src={displayImage} alt={product.name} className="product-img" />
         <div className="card-top-actions" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+          <button
+            type="button"
+            className={`card-compare-btn ${isCompared ? 'in-compare' : ''}`}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              toggleCompare(product);
+            }}
+            title={isCompared ? 'Remove from comparison' : 'Add to compare'}
+            aria-label="Compare product"
+          >
+            ⇄
+          </button>
           <button
             type="button"
             className={`card-bell-btn ${getAlert(product.id) ? 'has-alert' : ''}`}

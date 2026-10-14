@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { getProductById, addProductReview } from '../core/services/productService';
 import { useCart } from '../core/context/CartContext';
 import { useWishlist } from '../core/context/WishlistContext';
+import { useCompare } from '../core/context/CompareContext';
 import { useToast } from '../core/context/ToastContext';
 import { Review } from '../core/models/product.model';
 import { PriceAlertModal } from '../shared/components/PriceAlertModal';
@@ -12,6 +13,7 @@ export const ProductDetails: React.FC = () => {
   const initialProduct = getProductById(Number(id));
   const { items, add, increase, decrease } = useCart();
   const { has, toggle, getAlert } = useWishlist();
+  const { isInCompare, toggleCompare, getSimilarProducts, addToCompare } = useCompare();
   const { showToast } = useToast();
 
   const [product, setProduct] = useState(initialProduct);
@@ -41,6 +43,7 @@ export const ProductDetails: React.FC = () => {
   }
 
   const productImages = product.images && product.images.length > 0 ? product.images : [product.image];
+  const similarItems = getSimilarProducts(product, 3);
 
   const handleAdd = () => {
     add(product);
@@ -185,6 +188,14 @@ export const ProductDetails: React.FC = () => {
             </button>
             <button
               type="button"
+              className={`product-compare-action-btn ${isInCompare(product.id) ? 'active' : ''}`}
+              onClick={() => toggleCompare(product)}
+              title={isInCompare(product.id) ? 'Remove from comparison' : 'Add to product comparison'}
+            >
+              {isInCompare(product.id) ? '✓ Comparing' : '⇄ Compare'}
+            </button>
+            <button
+              type="button"
               className={`product-price-alert-btn ${getAlert(product.id) ? 'active' : ''}`}
               onClick={() => setIsAlertModalOpen(true)}
               title="Set target price alert"
@@ -229,6 +240,80 @@ export const ProductDetails: React.FC = () => {
           </table>
         </div>
       </div>
+
+      {/* Smart Similar Products Comparison Section */}
+      {similarItems.length > 0 && (
+        <div className="similar-compare-section">
+          <div className="similar-compare-header">
+            <div>
+              <p className="eyebrow">SMART COMPARISON</p>
+              <h2>Compare With Similar {product.category} Items</h2>
+            </div>
+            <Link
+              to="/compare"
+              className="view-full-compare-link"
+              onClick={() => {
+                addToCompare(product);
+                similarItems.forEach((item) => addToCompare(item));
+              }}
+            >
+              Open Full Matrix ↗
+            </Link>
+          </div>
+
+          <div className="similar-compare-grid">
+            {/* Current Item Card */}
+            <div className="similar-compare-card is-current">
+              <span className="current-badge">Currently Viewing</span>
+              <img src={product.image} alt={product.name} />
+              <h4>{product.name}</h4>
+              <div className="similar-price">₹{product.price.toLocaleString('en-IN')}</div>
+              <div className="similar-rating">★ {product.rating}</div>
+              <div className="similar-stock">{product.stock > 0 ? `${product.stock} in stock` : 'Out of Stock'}</div>
+              <button
+                type="button"
+                className={`similar-compare-btn ${isInCompare(product.id) ? 'active' : ''}`}
+                onClick={() => toggleCompare(product)}
+              >
+                {isInCompare(product.id) ? '✓ In Compare' : '+ Add to Compare'}
+              </button>
+            </div>
+
+            {/* Similar Items */}
+            {similarItems.map((item) => {
+              const diff = item.price - product.price;
+              const diffPercent = Math.round((Math.abs(diff) / product.price) * 100);
+              return (
+                <div className="similar-compare-card" key={item.id}>
+                  {diff < 0 ? (
+                    <span className="price-tag-badge cheaper">₹{Math.abs(diff).toLocaleString('en-IN')} cheaper (-{diffPercent}%)</span>
+                  ) : diff > 0 ? (
+                    <span className="price-tag-badge higher">+₹{diff.toLocaleString('en-IN')} (+{diffPercent}%)</span>
+                  ) : (
+                    <span className="price-tag-badge same">Same Price</span>
+                  )}
+                  <Link to={`/products/${item.id}`}>
+                    <img src={item.image} alt={item.name} />
+                  </Link>
+                  <h4>
+                    <Link to={`/products/${item.id}`}>{item.name}</Link>
+                  </h4>
+                  <div className="similar-price">₹{item.price.toLocaleString('en-IN')}</div>
+                  <div className="similar-rating">★ {item.rating}</div>
+                  <div className="similar-stock">{item.stock > 0 ? `${item.stock} in stock` : 'Out of Stock'}</div>
+                  <button
+                    type="button"
+                    className={`similar-compare-btn ${isInCompare(item.id) ? 'active' : ''}`}
+                    onClick={() => toggleCompare(item)}
+                  >
+                    {isInCompare(item.id) ? '✓ In Compare' : '+ Add to Compare'}
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Customer Reviews Section */}
       <div className="reviews-section">

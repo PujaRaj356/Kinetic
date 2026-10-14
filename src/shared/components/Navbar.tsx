@@ -2,10 +2,12 @@ import React from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../core/context/AuthContext';
 import { useCart } from '../../core/context/CartContext';
+import { useCompare } from '../../core/context/CompareContext';
 
 export const Navbar: React.FC = () => {
   const { isLoggedIn, isAdmin, currentUser, logout } = useAuth();
   const { count } = useCart();
+  const { compareItems } = useCompare();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -27,6 +29,9 @@ export const Navbar: React.FC = () => {
           </NavLink>
           <NavLink to="/products" className={({ isActive }) => (isActive ? 'active' : '')}>
             Shop
+          </NavLink>
+          <NavLink to="/compare" className={({ isActive }) => (isActive ? 'active' : '')}>
+            Compare {compareItems.length > 0 && <span className="nav-counter-badge">{compareItems.length}</span>}
           </NavLink>
           {isLoggedIn && (
             <NavLink to="/wishlist" className={({ isActive }) => (isActive ? 'active' : '')}>
