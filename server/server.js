@@ -1798,7 +1798,7 @@ if (!process.env.VERCEL) {
 
 // Connect to MongoDB asynchronously
 mongoose
-  .connect(MONGODB_URI, { serverSelectionTimeoutMS: 2000 })
+  .connect(MONGODB_URI, { serverSelectionTimeoutMS: 10000 })
   .then(async () => {
     isMongoConnected = true;
     console.log('✅ Connected to MongoDB Database successfully!');
@@ -1808,13 +1808,29 @@ mongoose
         console.log(`Seeding MongoDB with ${diskStore.products.length} products...`);
         await ProductModel.insertMany(diskStore.products);
       }
+      const userCount = await UserModel.countDocuments();
+      if (userCount === 0 && diskStore.users.length > 0) {
+        console.log(`Seeding MongoDB with ${diskStore.users.length} users...`);
+        await UserModel.insertMany(diskStore.users);
+      }
+      const orderCount = await OrderModel.countDocuments();
+      if (orderCount === 0 && diskStore.orders.length > 0) {
+        console.log(`Seeding MongoDB with ${diskStore.orders.length} orders...`);
+        await OrderModel.insertMany(diskStore.orders);
+      }
+      const alertCount = await PriceAlertModel.countDocuments();
+      if (alertCount === 0 && diskStore.priceAlerts.length > 0) {
+        console.log(`Seeding MongoDB with ${diskStore.priceAlerts.length} price alerts...`);
+        await PriceAlertModel.insertMany(diskStore.priceAlerts);
+      }
+      console.log('🎉 MongoDB Atlas synced with all store collections!');
     } catch (seedErr) {
       console.warn('Initial MongoDB sync notice:', seedErr.message);
     }
   })
-  .catch(() => {
+  .catch((err) => {
     isMongoConnected = false;
-    console.log('ℹ️ MongoDB not detected locally.');
+    console.log('ℹ️ MongoDB connection notice:', err.message);
     console.log(`🛡️ Persistent Local Database is ACTIVE at server/data/kinetic_store.json.`);
     console.log('👉 To connect MongoDB Atlas: add your connection string to server/.env (MONGODB_URI=mongodb+srv://...)');
   });
