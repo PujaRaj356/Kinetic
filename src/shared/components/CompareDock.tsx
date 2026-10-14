@@ -7,7 +7,8 @@ export const CompareDock: React.FC = () => {
   const location = useLocation();
 
   // Hide the dock on the actual compare page itself to avoid duplication
-  if (compareItems.length === 0 || location.pathname === '/compare') {
+  const isComparePage = location.pathname.toLowerCase().includes('/compare');
+  if (compareItems.length === 0 || isComparePage) {
     return null;
   }
 
